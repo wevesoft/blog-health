@@ -1,0 +1,566 @@
+<!--
+  워드프레스 적용: "사용자 정의 HTML" 블록에 이 파일에서 <style> 부터 </script> 까지 통째로 복사해 붙여넣으세요.
+  계산기 링크: data-calc-url 값을 실제 비타민 D/철분 계산기·블로그 주소로 바꾸세요.
+  예: https://내블로그.com/vitamin-d-dosage-calculator/
+  템플릿: 마그네슘 인포그래픽과 같은 구조(H2→H3→H4), 검은 배경, -shell 래퍼 없이 사용합니다.
+-->
+<style>
+/* ===== 워드프레스 철분(Iron) 인포그래픽 공통 (모바일·PC 글자 큼) ===== */
+html, body { margin:0; background:#000000; font-size: 18px; }
+#fe-infographic {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 28px 16px 40px;
+  box-sizing: border-box;
+  background: #000000;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #e5e7eb;
+  line-height: 1.65;
+  font-size: 1.0625rem;
+}
+
+/* 헤더 */
+.fe-header {
+  text-align: center;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #333333;
+}
+.fe-header p {
+  font-size: 1.15rem;
+  color: #d1d5db;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* 섹션 공통 · H2 / H3 / H4 계층 */
+.fe-section {
+  border-radius: 16px;
+  padding: 20px 20px 24px;
+  background: #111827;
+  border: 1px solid #333333;
+  margin-bottom: 20px;
+}
+.fe-section h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.fe-section h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.fe-section h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.fe-section p {
+  font-size: 1.05rem;
+  color: #d1d5db;
+  margin: 0 0 8px;
+  line-height: 1.6;
+}
+.fe-section p:last-child { margin-bottom: 0; }
+
+/* 역할 카드 (H4 = 카드 제목) */
+.fe-roles-main { margin-bottom: 20px; }
+.fe-roles-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.fe-role {
+  background: #020617;
+  border-radius: 14px;
+  padding: 14px 12px 16px;
+  text-align: left;
+  border: 1px solid #333333;
+}
+.fe-role-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.fe-role-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  background: #7f1d1d;
+}
+.fe-role-label {
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+.fe-role-desc {
+  font-size: 1rem;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+.fe-roles-note {
+  margin-top: 16px;
+  font-size: 1rem;
+  color: #fca5a5;
+  line-height: 1.5;
+}
+
+/* RDA 그래프 */
+.fe-rda-main { }
+.fe-rda-nums {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 14px 0 18px;
+}
+.fe-rda-nums .num { text-align:center; }
+.fe-rda-nums .val {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #f97373;
+}
+.fe-rda-nums .label {
+  font-size: 1rem;
+  color: #a0a0a0;
+  margin-top: 4px;
+}
+.fe-rda-bar { margin-top: 12px; }
+.fe-rda-row { margin-bottom: 12px; }
+.fe-rda-row-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: #a0a0a0;
+  margin-bottom: 6px;
+}
+.fe-rda-row-bg {
+  height: 22px;
+  background: #1f2937 !important;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.fe-rda-row-fill {
+  height: 100%;
+  background: linear-gradient(90deg,#f97373,#b91c1c) !important;
+  border-radius: 999px;
+  min-width: 4px;
+}
+
+/* 부족/과다 (H3 사용) */
+.fe-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.fe-two-col ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 1.05rem;
+  color: #e5e7eb;
+  line-height: 1.6;
+}
+.fe-two-col li { margin: 6px 0; }
+.fe-two-col h3.fe-sub { font-size: 1.15rem; margin-bottom: 6px; }
+
+/* 형태별·섭취 가이드 (H4 = 형태명) */
+.fe-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.fe-type-card {
+  background: #020617;
+  border-radius: 14px;
+  padding: 14px 14px 16px;
+  border: 1px solid #333333;
+}
+.fe-type-card h4 {
+  font-size: 1.1rem;
+  margin: 0 0 6px;
+}
+.fe-type-card p {
+  font-size: 1rem;
+  color: #d1d5db;
+  margin: 0;
+}
+.fe-type-tag {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #f97373;
+  color: #f97373;
+  font-size: 0.9rem;
+}
+
+/* 퀴즈 & 버튼 */
+.fe-quiz-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.fe-quiz-btn {
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid #333333;
+  background: #111827;
+  color: #e5e7eb;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.fe-quiz-btn:hover { background: #1f2937; }
+.fe-quiz-btn.selected {
+  background: #f97373;
+  border-color: #f97373;
+  color: #020617;
+}
+.fe-quiz-result {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #333333;
+  display: none;
+  font-size: 1.05rem;
+}
+.fe-quiz-result.visible { display: block; }
+.fe-quiz-result strong { color: #f97373; font-size: 1.1rem; }
+.fe-link-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: #f97373;
+  color: #020617;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-decoration: none;
+}
+.fe-link-btn:hover { opacity:0.95; color:#020617; }
+
+/* CTA */
+.fe-cta-main {
+  text-align:center;
+  margin-top:8px;
+}
+.fe-cta-main p {
+  margin:0 0 10px;
+  font-size:1rem;
+  color:#e5e7eb;
+}
+.fe-cta-main .primary {
+  display:inline-block;
+  padding:12px 26px;
+  border-radius:999px;
+  background:#f97373;
+  color:#020617;
+  font-weight:700;
+  text-decoration:none;
+  font-size:0.98rem;
+}
+.fe-cta-main .primary:hover { opacity:0.95; color:#020617; }
+
+/* 참고 문헌 */
+.fe-trust-list {
+  margin:4px 0 0;
+  padding-left:18px;
+  font-size:0.9rem;
+  color:#d1d5db;
+}
+.fe-trust-list li { margin:4px 0; }
+.fe-trust a { color:#f97373; text-decoration:none; }
+.fe-trust a:hover { text-decoration:underline; }
+.fe-trust small {
+  display:block;
+  margin-top:10px;
+  font-size:0.86rem;
+  color:#9ca3af;
+  font-style:italic;
+}
+
+/* ? 아이콘 툴팁 */
+.fe-info {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  margin-left:4px;
+  border-radius:999px;
+  background:#1f2937;
+  color:#f97373;
+  font-size:0.8rem;
+  cursor:help;
+  position:relative;
+}
+.fe-info::after {
+  content: attr(data-tip);
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:120%;
+  min-width:160px;
+  max-width:230px;
+  padding:8px 10px;
+  border-radius:8px;
+  background:#020617;
+  color:#e5e7eb;
+  font-size:0.78rem;
+  line-height:1.5;
+  border:1px solid #1f2937;
+  box-shadow:0 4px 18px rgba(0,0,0,0.6);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  z-index:5;
+}
+.fe-info::before {
+  content:'';
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:110%;
+  border-width:6px;
+  border-style:solid;
+  border-color:#020617 transparent transparent transparent;
+  opacity:0;
+  visibility:hidden;
+}
+.fe-info:hover::after,
+.fe-info:hover::before {
+  opacity:1;
+  visibility:visible;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 520px) {
+  #fe-infographic {
+    padding: 22px 12px 32px;
+  }
+  .fe-section {
+    padding:18px 14px 20px;
+    border-radius:14px;
+    margin-bottom:16px;
+  }
+  .fe-section h2 { font-size:1.2rem; }
+  .fe-section h3 { font-size:1.08rem; }
+  .fe-section h4 { font-size:1.02rem; }
+  .fe-section p { font-size:0.98rem; }
+  .fe-roles-list { grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); }
+  .fe-two-col { grid-template-columns:1fr; gap:12px; }
+  .fe-types-grid { grid-template-columns:1fr; }
+  .fe-quiz-btn { font-size:0.98rem; padding:11px 14px; }
+  .fe-link-btn { font-size:0.95rem; padding:10px 18px; }
+}
+</style>
+
+<div id="fe-infographic" data-calc-url="https://YOUR-SITE.com/vitamin-d-dosage-calculator/">
+  <header class="fe-header">
+    <p>산소 운반·피로·집중력과 직결되는 철분. 부족·과다·권장량·음식·보충제를 한 번에 정리했습니다.</p>
+  </header>
+
+  <section class="fe-section fe-roles-main">
+    <h2>철분의 주요 역할과 효능</h2>
+    <div class="fe-roles-list">
+      <div class="fe-role">
+        <div class="fe-role-top">
+          <div class="fe-role-icon">🩸</div>
+          <div class="fe-role-label">산소 운반</div>
+        </div>
+        <div class="fe-role-desc">적혈구 속 헤모글로빈의 핵심 성분으로, 폐에서 온몸으로 산소를 운반합니다.</div>
+      </div>
+      <div class="fe-role">
+        <div class="fe-role-top">
+          <div class="fe-role-icon">⚙️</div>
+          <div class="fe-role-label">에너지·피로</div>
+        </div>
+        <div class="fe-role-desc">에너지 생성 과정에 관여해, 부족 시 쉽게 피로하고 숨이 찰 수 있습니다.</div>
+      </div>
+      <div class="fe-role">
+        <div class="fe-role-top">
+          <div class="fe-role-icon">🧠</div>
+          <div class="fe-role-label">집중력·인지</div>
+        </div>
+        <div class="fe-role-desc">뇌 기능과도 관련이 있어, 아이·청소년에서 학습·집중력과의 연관성이 연구되고 있습니다.</div>
+      </div>
+      <div class="fe-role">
+        <div class="fe-role-top">
+          <div class="fe-role-icon">🧬</div>
+          <div class="fe-role-label">면역·효소</div>
+        </div>
+        <div class="fe-role-desc">면역세포와 여러 효소 시스템에도 필요하지만, 과다 시 오히려 산화 스트레스를 높일 수 있습니다.</div>
+      </div>
+    </div>
+    <p class="fe-roles-note">※ 철분은 “부족도 문제, 과다도 문제” 인 영양소라, <strong>혈액검사와 의료진 지도</strong>와 함께 보는 것이 중요합니다.</p>
+  </section>
+
+  <section class="fe-section fe-rda-main">
+    <h2>일일 권장량 (NIH RDA 기준)</h2>
+    <div class="fe-rda-nums">
+      <div class="num">
+        <div class="val">8</div>
+        <div class="label">성인 남성 mg/일</div>
+      </div>
+      <div class="num">
+        <div class="val">18</div>
+        <div class="label">가임기 여성 mg/일 <span class="fe-info" data-tip="만 19~50세 가임기 여성은 월경으로 인한 손실을 고려해 더 높은 권장량(18 mg)이 제시됩니다.">?</span></div>
+      </div>
+      <div class="num">
+        <div class="val">45</div>
+        <div class="label">상한 UL mg/일 <span class="fe-info" data-tip="일반 성인이 장기간 넘기지 않기를 권장하는 하루 상한선(UL)입니다. 빈혈 치료 등 고용량은 예외로, 반드시 의사 처방이 필요합니다.">?</span></div>
+      </div>
+    </div>
+    <div class="fe-rda-bar">
+      <div class="fe-rda-row">
+        <div class="fe-rda-row-header"><span>성인 남성</span><span>8 mg</span></div>
+        <div class="fe-rda-row-bg"><div class="fe-rda-row-fill" style="width:30%;"></div></div>
+      </div>
+      <div class="fe-rda-row">
+        <div class="fe-rda-row-header"><span>가임기 여성</span><span>18 mg</span></div>
+        <div class="fe-rda-row-bg"><div class="fe-rda-row-fill" style="width:65%;"></div></div>
+      </div>
+      <div class="fe-rda-row">
+        <div class="fe-rda-row-header"><span>상한선(UL)</span><span>45 mg</span></div>
+        <div class="fe-rda-row-bg"><div class="fe-rda-row-fill" style="width:100%;"></div></div>
+      </div>
+    </div>
+    <p style="margin-top:8px;">월경량·임신·수유·운동량·위장질환 여부에 따라 실제 필요량이 달라질 수 있습니다. 기본 가이드는 8~18 mg, 상한은 45 mg으로 보되, <strong>빈혈 진단 여부</strong>에 따라 전략이 매우 달라집니다.</p>
+    <a href="#" class="fe-link-btn fe-calc-link">→ 비타민 D·철분 관련 계산/설명 보기</a>
+  </section>
+
+  <section class="fe-section">
+    <h2>부족 시 / 과다 시</h2>
+    <div class="fe-two-col">
+      <div>
+        <h3 class="fe-sub" style="color:#f97373;">부족 시</h3>
+        <ul>
+          <li>쉽게 피로하고 숨이 참, 두통·어지러움, 창백해 보이는 피부</li>
+          <li>심하면 철결핍 빈혈로 진행해 심장 부담, 운동능력 저하를 유발할 수 있음</li>
+          <li>어린이·청소년에서는 성장·인지 발달과의 연관성이 보고됩니다.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="fe-sub" style="color:#4ade80;">과다 시</h3>
+        <ul>
+          <li>급성 과다 섭취 시 구토·복통·설사·저혈압 등 위급한 증상이 나타날 수 있음</li>
+          <li>장기간 과다 시 간·심장 등 장기에 철이 쌓여 손상을 줄 수 있음 <span class="fe-info" data-tip="혈색소증(hemochromatosis) 같이 철이 과도하게 축적되는 질환에서는 일반적인 보충도 위험할 수 있습니다.">?</span></li>
+          <li>성인에서 “피곤하다”는 이유만으로 고용량을 장기간 복용하는 것은 피해야 합니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="fe-section">
+    <h2>음식·보충제 선택 가이드</h2>
+    <div class="fe-types-grid">
+      <div class="fe-type-card">
+        <h4>음식으로 섭취</h4>
+        <p>붉은 고기·간·해산물(조개류), 강화 시리얼·콩류 등에 철분이 풍부합니다. 단, 식물성(non-heme) 철은 흡수율이 낮습니다 <span class="fe-info" data-tip="동물성 heme 철은 흡수율이 높고, 식물성 non-heme 철은 비타민 C와 함께 먹을 때 흡수가 조금 더 좋아집니다.">?</span>.</p>
+        <span class="fe-type-tag">식단이 좋다면 보충량 ↓</span>
+      </div>
+      <div class="fe-type-card">
+        <h4>철분 제제 종류 (Fe2+, Fe3+)</h4>
+        <p>황산·푸마르산·글루콘산 철 등 다양한 형태가 있으며, 흡수율·위장 부작용이 조금씩 다릅니다. 변비·속쓰림이 잦다면 제형·용량 조절을 고려해야 합니다.</p>
+        <span class="fe-type-tag">위장 부작용 체크 <span class="fe-info" data-tip="일반적으로 공복에 흡수가 잘 되지만, 속이 많이 불편하면 식사와 함께 저용량부터 시작하기도 합니다.">?</span></span>
+      </div>
+      <div class="fe-type-card">
+        <h4>비타민 C·칼슘과의 관계</h4>
+        <p>비타민 C는 철 흡수를 돕고, 칼슘·커피·차 속 성분은 흡수를 방해할 수 있습니다. 하루 전체 패턴 안에서 타이밍을 나눠 주는 것이 좋습니다.</p>
+        <span class="fe-type-tag">커피·차·칼슘 타이밍 조절</span>
+      </div>
+      <div class="fe-type-card">
+        <h4>임신·수유기 보충</h4>
+        <p>임신·수유기에는 필요량이 늘어나지만, 이미 저장 철분이 충분한 사람에게 고용량을 계속 주는 것은 오히려 해가 될 수 있어 <strong>혈액검사</strong>가 중요합니다.</p>
+        <span class="fe-type-tag">산부인과와 용량 상의 <span class="fe-info" data-tip="산전 검사를 통해 헤모글로빈·페리틴 수치를 확인한 뒤, 용량·기간을 정하는 것이 좋습니다.">?</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="fe-section">
+    <h2>간단 체험 — 나는 어느 쪽에 가깝나요?</h2>
+    <p style="margin-bottom:8px;">본인 상황과 가장 가까운 선택지를 하나 골라보세요.</p>
+    <div class="fe-quiz-options">
+      <button type="button" class="fe-quiz-btn"
+        data-type="heavyPeriod"
+        data-name="월경량이 많고 피로함"
+        data-desc="월경량이 많고, 피곤하고 어지럽고 창백해 보인다면 철분 부족 가능성을 의심해볼 수 있습니다. 다만 자가 판단보다는 혈액검사와 진료가 우선입니다.">
+        월경량이 많고, 늘 피곤하다
+      </button>
+      <button type="button" class="fe-quiz-btn"
+        data-type="vegan"
+        data-name="채식 위주 식단"
+        data-desc="완전 채식 또는 붉은 고기를 거의 먹지 않는다면, non-heme 철 위주가 되어 부족해지기 쉽습니다. 음식 구성·비타민 C·보충제 여부를 함께 점검해야 합니다.">
+        붉은 고기를 거의 먹지 않는다
+      </button>
+      <button type="button" class="fe-quiz-btn"
+        data-type="multiSupps"
+        data-name="철분제·멀티비타민을 여러 개 복용"
+        data-desc="여러 제품에 철분이 중복되어 들어 있다면 상한(45 mg)을 넘지 않는지, 저장 철분이 이미 높은 것은 아닌지 확인이 필요합니다. 계산기는 참고용으로, 실제 조정은 의료진과 상의하세요.">
+        철분 들어간 영양제를 여러 개 먹는다
+      </button>
+    </div>
+    <div class="fe-quiz-result" id="feQuizResult">
+      <strong id="feQuizType"></strong>
+      <p id="feQuizDesc" style="margin:6px 0 0;"></p>
+      <a href="#" class="fe-link-btn fe-calc-link">→ 비타민 D·철분 관련 계산/설명 페이지로 이동</a>
+    </div>
+  </section>
+
+  <section class="fe-section fe-trust">
+    <h2>참고 문헌 및 면책</h2>
+    <ul class="fe-trust-list">
+      <li><a href="https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/" target="_blank" rel="noopener">NIH ODS, Iron – Health Professional Fact Sheet</a> — 연령·성별별 RDA(남 8 mg, 가임기 여성 18 mg), 상한(UL 45 mg) 및 연구 정리</li>
+      <li><a href="https://www.kns.or.kr/nutrient.asp" target="_blank" rel="noopener">한국영양학회 영양소 섭취기준</a> — 2020 한국인 영양소 섭취기준(철 포함)</li>
+    </ul>
+    <small>본 글과 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 복용 전에는 개인의 질환·복용 약·혈액검사 결과를 함께 고려해 <strong>의료진과 상담</strong>하는 것을 권장합니다.</small>
+  </section>
+
+  <section class="fe-section">
+    <div class="fe-cta-main">
+      <p>성별·나이·월경·식습관·다른 영양제 복용 여부를 입력하면, 하루 철분·비타민 D 권장량과 상한선을 한눈에 볼 수 있어요.</p>
+      <a href="#" class="primary fe-calc-link">맞춤형 비타민 D·철분 계산/설명 페이지 열기</a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function() {
+  var root = document.getElementById('fe-infographic');
+  if (!root) return;
+  var calcUrl = (root.getAttribute('data-calc-url') || '').trim();
+  if (calcUrl) {
+    root.querySelectorAll('.fe-calc-link').forEach(function(a) { a.href = calcUrl; });
+  }
+  var opts = root.querySelectorAll('.fe-quiz-btn');
+  var result = root.querySelector('#feQuizResult');
+  var typeName = root.querySelector('#feQuizType');
+  var quizDesc = root.querySelector('#feQuizDesc');
+  opts.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      opts.forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      typeName.textContent = '선택한 상황: ' + btn.getAttribute('data-name');
+      quizDesc.textContent = btn.getAttribute('data-desc');
+      result.classList.add('visible');
+    });
+  });
+})();
+</script>
+

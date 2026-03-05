@@ -1,0 +1,678 @@
+<!--
+  워드프레스 적용: "사용자 정의 HTML" 블록에
+  이 파일의 <style> 부터 </script> 까지 통째로 복사해 붙여넣으세요.
+  (본문 제목 H1은 워드프레스 글 제목으로 입력하는 것을 권장합니다.)
+-->
+<style>
+/* ===== 맞춤형 마그네슘 계산기 — 워드프레스용 (다크, 글자 큼) ===== */
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  width:100%;
+  min-height:100%;
+  background:#1a1a1a;
+  font-family:'Noto Sans KR',sans-serif;
+  color:#e0e0e0;
+  line-height:1.55;
+  font-size:18px;
+}
+
+.mg-calc-wrap {
+  max-width:560px;
+  margin:0 auto;
+  padding:28px 20px 48px;
+  background:#252525;
+  border-radius:20px;
+  border:1px solid #333;
+  box-shadow:0 4px 24px rgba(0,0,0,0.4);
+}
+.mg-calc-wrap * { box-sizing:border-box; }
+
+/* 헤더 (요약 설명만) */
+.mg-calc-wrap .header {
+  text-align:center;
+  margin-bottom:28px;
+  padding-bottom:20px;
+  border-bottom:1px solid #333;
+}
+.mg-calc-wrap .header p {
+  font-size:1.1rem;
+  color:#b0b0b0;
+  line-height:1.6;
+}
+
+/* 섹션 제목 H2/H3/H4 */
+.mg-calc-wrap .section-title {
+  font-size:1.25rem;
+  font-weight:700;
+  color:#e5e7eb;
+  margin-bottom:16px;
+  line-height:1.35;
+}
+.mg-calc-wrap h3 {
+  font-size:1.1rem;
+  font-weight:600;
+  color:#d1d5db;
+  margin-bottom:8px;
+}
+.mg-calc-wrap h4 {
+  font-size:1.05rem;
+  font-weight:600;
+  color:#e5e7eb;
+  margin-bottom:8px;
+}
+
+/* 폼 필드 */
+.mg-calc-wrap .field { margin:20px 0; }
+.mg-calc-wrap .label {
+  display:block;
+  font-size:1.05rem;
+  font-weight:500;
+  margin-bottom:10px;
+  color:#c0c0c0;
+}
+.mg-calc-wrap .label .hint {
+  font-weight:400;
+  color:#909090;
+  font-size:0.95rem;
+}
+
+/* 숫자/셀렉트 (글자 잘림 방지) */
+.mg-calc-wrap input[type=number],
+.mg-calc-wrap select {
+  width:100%;
+  min-height:52px;
+  padding:14px 44px 14px 18px;
+  border:1px solid #404040;
+  border-radius:12px;
+  font-size:1.05rem;
+  line-height:1.5;
+  background-color:#2c2c2c;
+  color:#ffffff;
+  transition:border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance:none;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0a0a0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 16px center;
+}
+.mg-calc-wrap select option {
+  padding:10px 8px;
+  font-size:1.02rem;
+  background:#2c2c2c;
+  color:#ffffff;
+}
+.mg-calc-wrap input[type=number]::placeholder { color:#808080; }
+.mg-calc-wrap input[type=number]:focus,
+.mg-calc-wrap select:focus {
+  outline:none;
+  border-color:#ff7043;
+  box-shadow:0 0 0 2px rgba(255,112,67,0.25);
+}
+
+/* 프리셋 버튼 */
+.mg-calc-wrap .presets {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:10px;
+}
+.mg-calc-wrap .preset-btn {
+  padding:10px 16px;
+  border:1px solid #404040;
+  border-radius:10px;
+  background:#2c2c2c;
+  font-size:1rem;
+  color:#b0b0b0;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.mg-calc-wrap .preset-btn:hover {
+  background:#353535;
+  border-color:#505050;
+  color:#e0e0e0;
+}
+.mg-calc-wrap .preset-btn.active {
+  background:#ff7043;
+  border-color:#ff7043;
+  color:#ffffff;
+}
+
+/* 슬라이더 */
+.mg-calc-wrap .slider-wrap {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-top:8px;
+}
+.mg-calc-wrap .slider-wrap input[type=range] {
+  flex:1;
+  height:10px;
+  -webkit-appearance:none;
+  appearance:none;
+  background:#404040;
+  border-radius:5px;
+}
+.mg-calc-wrap .slider-wrap input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#ff7043;
+  cursor:pointer;
+  box-shadow:0 0 8px rgba(255,112,67,0.5);
+}
+.mg-calc-wrap .slider-value {
+  min-width:52px;
+  font-weight:600;
+  color:#ff7043;
+  font-size:1.05rem;
+}
+
+/* 체크박스 그룹 */
+.mg-calc-wrap .checkbox-group {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.mg-calc-wrap .checkbox-group label {
+  flex:1;
+  min-width:110px;
+  background:#2c2c2c;
+  padding:14px 16px;
+  border-radius:12px;
+  cursor:pointer;
+  border:1px solid #404040;
+  font-size:1rem;
+  transition:all 0.2s;
+  color:#b0b0b0;
+}
+.mg-calc-wrap .checkbox-group label:hover {
+  background:#353535;
+  border-color:#505050;
+  color:#e0e0e0;
+}
+.mg-calc-wrap .checkbox-group input[type=checkbox] { margin-right:10px; }
+.mg-calc-wrap .checkbox-group input:checked + span {
+  font-weight:600;
+  color:#66bb6a;
+}
+
+/* 계산 버튼 */
+.mg-calc-wrap button.calc-btn {
+  width:100%;
+  padding:16px;
+  font-size:1.1rem;
+  font-weight:600;
+  background:#ff7043;
+  color:#ffffff;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  margin-top:28px;
+  transition:transform 0.15s, box-shadow 0.2s;
+  box-shadow:0 2px 12px rgba(255,112,67,0.35);
+}
+.mg-calc-wrap button.calc-btn:hover {
+  transform:translateY(-1px);
+  box-shadow:0 4px 16px rgba(255,112,67,0.45);
+  background:#ff8a65;
+}
+.mg-calc-wrap button.calc-btn:active { transform:translateY(0); }
+
+/* 결과 영역 애니메이션 */
+@keyframes mgFadeInUp {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@keyframes mgFadeIn {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+.mg-calc-wrap .result-section {
+  margin-top:32px;
+  display:none;
+}
+.mg-calc-wrap .result-section.visible { display:block; animation:mgFadeIn 0.35s ease; }
+.mg-calc-wrap .result-section.visible .result-applied { animation:mgFadeInUp 0.45s ease 0.05s both; }
+.mg-calc-wrap .result-section.visible .result-card.primary { animation:mgFadeInUp 0.45s ease 0.15s both; }
+.mg-calc-wrap .result-section.visible .result-card.secondary { animation:mgFadeInUp 0.45s ease both; }
+
+.mg-calc-wrap .result-applied {
+  background:rgba(26,61,26,0.6);
+  border:1px solid #388e3c;
+  border-radius:14px;
+  padding:18px 20px;
+  margin-bottom:18px;
+  font-size:1.02rem;
+  color:#81c784;
+}
+.mg-calc-wrap .result-applied ul { margin:0; padding-left:20px; }
+.mg-calc-wrap .result-applied li { margin:6px 0; }
+.mg-calc-wrap .result-applied .effect {
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid #388e3c;
+  font-size:0.98rem;
+  color:#81c784;
+}
+
+.mg-calc-wrap .result-card {
+  margin-bottom:16px;
+  padding:20px;
+  border-radius:14px;
+  font-size:1.02rem;
+  border:1px solid #333;
+}
+.mg-calc-wrap .result-card.primary {
+  background:#2c2c2c;
+  border-color:#404040;
+}
+.mg-calc-wrap .result-card.primary .value {
+  font-size:1.65rem;
+  font-weight:700;
+  color:#ff7043;
+}
+.mg-calc-wrap .result-card.secondary {
+  background:#252525;
+  border:1px solid #333;
+}
+.mg-calc-wrap .result-card h3 {
+  font-size:1.05rem;
+  font-weight:600;
+  color:#b0b0b0;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.mg-calc-wrap .result-card ul {
+  margin:10px 0 0 20px;
+  color:#b0b0b0;
+  font-size:1.02rem;
+}
+.mg-calc-wrap .result-card li { margin:6px 0; }
+
+.mg-calc-wrap .calc-basis {
+  margin-top:16px;
+  border:1px solid #333;
+  border-radius:12px;
+  overflow:hidden;
+  background:#2c2c2c;
+}
+.mg-calc-wrap .calc-basis summary {
+  padding:14px 18px;
+  background:#252525;
+  font-size:1rem;
+  font-weight:500;
+  color:#a0a0a0;
+  cursor:pointer;
+  list-style:none;
+}
+.mg-calc-wrap .calc-basis summary::-webkit-details-marker { display:none; }
+.mg-calc-wrap .calc-basis summary::after { content:' 펼치기'; }
+.mg-calc-wrap .calc-basis[open] summary::after { content:' 접기'; }
+.mg-calc-wrap .calc-basis .content {
+  padding:16px;
+  font-size:0.96rem;
+  color:#a0a0a0;
+  line-height:1.6;
+  border-top:1px solid #333;
+}
+
+.mg-calc-wrap .trust-block {
+  margin-top:28px;
+  padding:20px;
+  background:#252525;
+  border-radius:14px;
+  border:1px solid #333;
+  font-size:0.96rem;
+  color:#a0a0a0;
+}
+.mg-calc-wrap .trust-block h4 {
+  font-size:1.05rem;
+  font-weight:600;
+  color:#b0b0b0;
+  margin-bottom:10px;
+}
+.mg-calc-wrap .trust-block ul { margin-left:18px; }
+.mg-calc-wrap .trust-block li { margin:6px 0; }
+.mg-calc-wrap .trust-block .disclaimer {
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid #333;
+  font-style:italic;
+  color:#808080;
+  font-size:0.9rem;
+}
+.mg-calc-wrap .trust-block a { color:#ff7043; text-decoration:none; }
+.mg-calc-wrap .trust-block a:hover { text-decoration:underline; }
+
+.mg-calc-wrap .result-card.primary p,
+.mg-calc-wrap #resultRange { color:#a0a0a0; font-size:0.98rem; }
+.mg-calc-wrap #resultRange strong { color:#ff7043; }
+
+/* 모바일: 화면 꽉 차게 + 글자 유지 */
+@media (max-width:520px) {
+  html, body { font-size:17px; }
+  .mg-calc-wrap {
+    max-width:100%;
+    width:100%;
+    margin:0;
+    padding:22px 16px 40px;
+    border-radius:0;
+    border-left:none;
+    border-right:none;
+  }
+  .mg-calc-wrap .section-title { font-size:1.2rem; }
+  .mg-calc-wrap .label { font-size:1rem; }
+  .mg-calc-wrap input[type=number],
+  .mg-calc-wrap select {
+    min-height:50px;
+    font-size:1rem;
+    padding:13px 42px 13px 14px;
+  }
+  .mg-calc-wrap .preset-btn { font-size:0.98rem; padding:10px 14px; }
+  .mg-calc-wrap .checkbox-group label { font-size:0.98rem; padding:12px 14px; }
+  .mg-calc-wrap button.calc-btn { font-size:1.05rem; padding:15px; }
+}
+</style>
+
+<div class="mg-calc-wrap">
+  <header class="header">
+    <p>성별, 체중, 생활 습관을 반영한 참고용 마그네슘 권장량입니다.</p>
+  </header>
+
+  <h2 class="section-title">나의 정보 입력</h2>
+
+  <div class="field">
+    <span class="label">성별</span>
+    <select id="gender">
+      <option value="male">남성</option>
+      <option value="female">여성</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <span class="label">체중 (kg) <span class="hint">— 빠른 선택</span></span>
+    <div class="slider-wrap">
+      <input type="range" id="weightSlider" min="40" max="120" value="70" step="1">
+      <span class="slider-value" id="weightDisplay">70</span> kg
+    </div>
+    <input type="number" id="weight" min="40" max="120" value="70" placeholder="70" style="margin-top:10px;">
+    <div class="presets" id="weightPresets">
+      <button type="button" class="preset-btn" data-value="50">50</button>
+      <button type="button" class="preset-btn" data-value="60">60</button>
+      <button type="button" class="preset-btn active" data-value="70">70</button>
+      <button type="button" class="preset-btn" data-value="80">80</button>
+      <button type="button" class="preset-btn" data-value="90">90</button>
+    </div>
+  </div>
+
+  <div class="field">
+    <span class="label">운동 수준</span>
+    <select id="exercise">
+      <option value="none">거의 없음</option>
+      <option value="light">가벼움 (주 1~2회)</option>
+      <option value="moderate" selected>중간 (주 3~4회)</option>
+      <option value="high">높음 (주 5회 이상)</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <span class="label">카페인 (커피·녹차 등) 잔/일</span>
+    <div class="slider-wrap">
+      <input type="range" id="caffeineSlider" min="0" max="6" value="1" step="1">
+      <span class="slider-value" id="caffeineDisplay">1</span> 잔
+    </div>
+    <div class="presets" id="caffeinePresets">
+      <button type="button" class="preset-btn" data-value="0">없음</button>
+      <button type="button" class="preset-btn active" data-value="1">1잔</button>
+      <button type="button" class="preset-btn" data-value="2">2잔</button>
+      <button type="button" class="preset-btn" data-value="3">3잔</button>
+      <button type="button" class="preset-btn" data-value="4">4잔+</button>
+    </div>
+  </div>
+
+  <div class="field">
+    <span class="label">겪고 있는 증상 (해당 시 선택)</span>
+    <div class="checkbox-group">
+      <label><input type="checkbox" id="sym1" value="eye_twitch"><span>눈 떨림</span></label>
+      <label><input type="checkbox" id="sym2" value="leg_cramp"><span>다리 쥐</span></label>
+      <label><input type="checkbox" id="sym3" value="poor_sleep"><span>수면 문제</span></label>
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calculateMag()">권장량 계산하기</button>
+
+  <section class="result-section" id="resultSection">
+    <h2 class="section-title">계산 결과</h2>
+    <div class="result-applied" id="resultApplied">
+      <h3>✅ 적용된 조건 (이 권장량에 반영된 입력이에요)</h3>
+      <ul id="appliedList"></ul>
+      <div class="effect" id="appliedEffect"></div>
+    </div>
+
+    <div class="result-card primary">
+      <h3>📊 일일 마그네슘 권장량</h3>
+      <div class="value" id="resultMain"></div>
+      <p style="margin:6px 0 0;color:#a0a0a0;">입력하신 조건에 따라 계산된 맞춤 권장량이에요.</p>
+      <div id="resultRange" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="result-card secondary">
+      <h3>💊 추천 마그네슘 형태</h3>
+      <div id="resultType"></div>
+    </div>
+
+    <div class="result-card secondary">
+      <h3>⏰ 섭취 방법 제안</h3>
+      <div id="resultSplit"></div>
+    </div>
+
+    <div class="result-card secondary">
+      <h3>💡 참고 팁</h3>
+      <ul id="resultTips"></ul>
+    </div>
+
+    <details class="calc-basis">
+      <summary>이 결과는 어떻게 계산되었나요?</summary>
+      <div class="content" id="calcExplanation"></div>
+    </details>
+  </section>
+
+  <div style="text-align:center;margin:20px 0 0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;">
+    <a href="https://healthion.kr/magnesium-glycinate-vs-citrate-vs-malate/" target="_blank" rel="noopener"
+       style="display:inline-block;padding:10px 18px;border-radius:999px;border:1px solid #4b9fff;color:#4b9fff;font-size:0.95rem;text-decoration:none;white-space:nowrap;">
+      📘 마그네슘 형태 비교 글 보기
+    </a>
+  </div>
+
+  <div class="trust-block">
+    <h4>📚 참고 문헌 및 근거</h4>
+    <p style="margin-bottom:10px;">본 계산기의 <strong>기본 권장량</strong>은 NIH ODS 등을 참고했고, 운동·카페인·증상 보정은 문헌에 명시된 공식이 아니라 <strong>단순화된 참고 모델</strong>입니다.</p>
+    <ul>
+      <li><a href="https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/" target="_blank" rel="noopener">NIH ODS, Magnesium – Health Professional Fact Sheet</a> — 성인 RDA(남 400~420 mg, 여 310~320 mg) 및 보충제 형태별 흡수 차이</li>
+      <li><a href="https://www.kns.or.kr/nutrient.asp" target="_blank" rel="noopener">한국영양학회 영양소 섭취기준</a> — 2020 한국인 영양소 섭취기준(마그네슘 포함) 안내</li>
+      <li>운동 시 마그네슘 요구량·배설 증가: <em>Magnesium and the Athlete</em>(ACSM), 운동선수 메타분석 등 참고. 카페인·스트레스 보정은 문헌 근거가 제한적이어서 참고용 가산으로만 적용했습니다.</li>
+    </ul>
+    <p class="disclaimer">
+      본 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 복용 전 의료진 상담을 권장합니다.
+    </p>
+  </div>
+</div>
+
+<script>
+(function() {
+  var weightSlider = document.getElementById('weightSlider');
+  var weightInput = document.getElementById('weight');
+  var weightDisplay = document.getElementById('weightDisplay');
+  var caffeineSlider = document.getElementById('caffeineSlider');
+  var caffeineDisplay = document.getElementById('caffeineDisplay');
+  if (!weightSlider || !weightInput) return;
+
+  function syncWeight() {
+    var v = weightSlider.value;
+    weightInput.value = v;
+    weightDisplay.textContent = v;
+    var btns = document.querySelectorAll('#weightPresets .preset-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('active', btns[i].getAttribute('data-value') === v);
+    }
+  }
+  function syncWeightFromInput() {
+    var v = Math.min(120, Math.max(40, parseInt(weightInput.value, 10) || 70));
+    weightInput.value = v;
+    weightSlider.value = v;
+    weightDisplay.textContent = v;
+    var btns = document.querySelectorAll('#weightPresets .preset-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('active', parseInt(btns[i].getAttribute('data-value'), 10) === v);
+    }
+  }
+  weightSlider.addEventListener('input', syncWeight);
+  weightInput.addEventListener('change', syncWeightFromInput);
+
+  document.getElementById('weightPresets').addEventListener('click', function(e) {
+    if (!e.target.classList.contains('preset-btn')) return;
+    var v = e.target.getAttribute('data-value');
+    weightSlider.value = v;
+    weightInput.value = v;
+    weightDisplay.textContent = v;
+    var b = this.querySelectorAll('.preset-btn');
+    for (var i = 0; i < b.length; i++) b[i].classList.remove('active');
+    e.target.classList.add('active');
+  });
+
+  function syncCaffeine() {
+    var v = caffeineSlider.value;
+    caffeineDisplay.textContent = v;
+    var btns = document.querySelectorAll('#caffeinePresets .preset-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('active', btns[i].getAttribute('data-value') === v);
+    }
+  }
+  caffeineSlider.addEventListener('input', syncCaffeine);
+  document.getElementById('caffeinePresets').addEventListener('click', function(e) {
+    if (!e.target.classList.contains('preset-btn')) return;
+    var v = e.target.getAttribute('data-value');
+    caffeineSlider.value = v;
+    caffeineDisplay.textContent = v;
+    var b = this.querySelectorAll('.preset-btn');
+    for (var i = 0; i < b.length; i++) b[i].classList.remove('active');
+    e.target.classList.add('active');
+  });
+
+  syncWeight();
+  syncCaffeine();
+})();
+
+function getCaffeineValue() {
+  var slider = document.getElementById('caffeineSlider');
+  if (!slider) return 0;
+  var v = parseInt(slider.value, 10);
+  return v >= 4 ? 4 : v;
+}
+
+function calculateMag() {
+  var gender = document.getElementById('gender').value;
+  var weight = parseFloat(document.getElementById('weight').value);
+  var exercise = document.getElementById('exercise').value;
+  var caffeine = getCaffeineValue();
+  var sym1 = document.getElementById('sym1').checked;
+  var sym2 = document.getElementById('sym2').checked;
+  var sym3 = document.getElementById('sym3').checked;
+
+  if (!weight || weight < 40 || weight > 120) {
+    alert('체중을 40~120 kg 범위로 입력해 주세요.');
+    return;
+  }
+
+  var base = (gender === 'male') ? 400 : 310;
+  var exBonus = { none: 0, light: 20, moderate: 40, high: 70 };
+  var exerciseBonus = exBonus[exercise];
+  var cafeBonus = caffeine * 10;
+  var symBonus = 0;
+  var typeScores = { glycinate: 0, citrate: 0, malate: 0 };
+
+  if (sym1) { symBonus += 30; typeScores.glycinate += 1; }
+  if (sym2) { symBonus += 40; typeScores.malate += 2; }
+  if (sym3) { symBonus += 30; typeScores.glycinate += 2; }
+
+  var totalMg = Math.round(base + exerciseBonus + cafeBonus + symBonus);
+  totalMg = Math.min(450, Math.max(310, totalMg));
+
+  var minMg = Math.max(310, totalMg - 30);
+  var maxMg = Math.min(450, totalMg + 20);
+
+  typeScores.citrate += 1;
+  var recommendedType = Object.keys(typeScores).sort(function(a, b) {
+    return typeScores[b] - typeScores[a];
+  })[0];
+
+  var typeNames = {
+    glycinate: '글리시네이트',
+    citrate: '시트레이트',
+    malate: '말레이트'
+  };
+  var typeReasons = {
+    glycinate: '수면·긴장 완화에 도움이 될 수 있어요.',
+    citrate: '흡수와 소화에 유리한 형태로 많이 쓰여요.',
+    malate: '근육 피로·에너지 보완에 자주 추천돼요.'
+  };
+
+  var morning = Math.floor(totalMg * 0.4);
+  var evening = totalMg - morning;
+
+  var tips = [];
+  if (sym3) tips.push('저녁 식사 후 섭취하면 수면에 도움이 될 수 있어요.');
+  if (caffeine >= 2) tips.push('카페인과 함께 마그네슘 요구가 늘 수 있으니, 수분 섭취도 함께 해주세요.');
+  if (exercise === 'high') tips.push('운동 후 회복 시기에 나누어 먹는 방법을 고려해 보세요.');
+  tips.push('처음에는 낮은 용량으로 시작해 서서히 늘리는 것이 좋아요.');
+
+  var baseLabel = gender === 'male' ? '남성 기본 400 (NIH RDA)' : '여성 기본 310 (NIH RDA)';
+  var parts = [baseLabel];
+  if (exerciseBonus) parts.push('운동 +' + exerciseBonus);
+  if (cafeBonus) parts.push('카페인 +' + cafeBonus);
+  if (symBonus) parts.push('증상 +' + symBonus);
+  var formula = parts.join(' → ') + ' = ' + totalMg + ' mg';
+  var explanation = '계산식: ' + formula + '. 성별 권장량에 운동·카페인·증상을 반영했고, 상한 450mg으로 제한했습니다.';
+
+  var genderLabel = document.querySelector('#gender option:checked').textContent;
+  var exerciseLabel = document.querySelector('#exercise option:checked').textContent;
+  var appliedItems = ['성별: ' + genderLabel, '체중: ' + weight + ' kg', '운동: ' + exerciseLabel, '카페인: ' + caffeine + ' 잔/일'];
+  if (sym1) appliedItems.push('증상: 눈 떨림');
+  if (sym2) appliedItems.push('증상: 다리 쥐');
+  if (sym3) appliedItems.push('증상: 수면 문제');
+  document.getElementById('appliedList').innerHTML = appliedItems.map(function(t) {
+    return '<li>' + t + '</li>';
+  }).join('');
+
+  var effectParts = [];
+  if (gender === 'male') effectParts.push('남성 기본 400 mg을 적용했어요.');
+  else effectParts.push('여성 기본 310 mg을 적용했어요.');
+  if (exerciseBonus) effectParts.push('운동량을 반영해 가산했어요.');
+  if (cafeBonus) effectParts.push('카페인 섭취를 반영해 가산했어요.');
+  if (symBonus) effectParts.push('선택하신 증상을 반영해 가산했어요.');
+  document.getElementById('appliedEffect').textContent = '→ ' + effectParts.join(' ');
+
+  document.getElementById('resultMain').textContent = totalMg + ' mg';
+  document.getElementById('resultRange').innerHTML =
+    '일반적으로 <strong>' + minMg + '~' + maxMg + ' mg</strong> 범위를 권장합니다.';
+  document.getElementById('resultType').innerHTML =
+    '<strong>' + typeNames[recommendedType] + '</strong> — ' + typeReasons[recommendedType];
+  document.getElementById('resultSplit').innerHTML =
+    '아침 <strong>' + morning + ' mg</strong>, 저녁 <strong>' + evening + ' mg</strong> 정도로 나누어 섭취해 보세요.';
+  document.getElementById('resultTips').innerHTML =
+    tips.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+  document.getElementById('calcExplanation').textContent = explanation;
+
+  var resultSection = document.getElementById('resultSection');
+  resultSection.classList.remove('visible');
+  void resultSection.offsetHeight;
+  resultSection.classList.add('visible');
+  setTimeout(function() {
+    resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+</script>
+

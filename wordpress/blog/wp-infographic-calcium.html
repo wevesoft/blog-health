@@ -1,0 +1,566 @@
+<!--
+  워드프레스 적용: "사용자 정의 HTML" 블록에 이 파일에서 <style> 부터 </script> 까지 통째로 복사해 붙여넣으세요.
+  계산기 링크: data-calc-url 값을 실제 비타민 D/칼슘 계산기·블로그 주소로 바꾸세요.
+  예: https://내블로그.com/vitamin-d-dosage-calculator/
+  템플릿: 마그네슘 인포그래픽과 같은 구조(H2→H3→H4), 검은 배경, -shell 래퍼 없이 사용합니다.
+-->
+<style>
+/* ===== 워드프레스 칼슘(Calcium) 인포그래픽 공통 (모바일·PC 글자 큼) ===== */
+html, body { margin:0; background:#000000; font-size: 18px; }
+#ca-infographic {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 28px 16px 40px;
+  box-sizing: border-box;
+  background: #000000;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #e5e7eb;
+  line-height: 1.65;
+  font-size: 1.0625rem;
+}
+
+/* 헤더 */
+.ca-header {
+  text-align: center;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #333333;
+}
+.ca-header p {
+  font-size: 1.15rem;
+  color: #d1d5db;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* 섹션 공통 · H2 / H3 / H4 계층 */
+.ca-section {
+  border-radius: 16px;
+  padding: 20px 20px 24px;
+  background: #020617;
+  border: 1px solid #1f2937;
+  margin-bottom: 20px;
+}
+.ca-section h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.ca-section h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.ca-section h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.ca-section p {
+  font-size: 1.05rem;
+  color: #cbd5f5;
+  margin: 0 0 8px;
+  line-height: 1.6;
+}
+.ca-section p:last-child { margin-bottom: 0; }
+
+/* 역할 카드 (H4 = 카드 제목) */
+.ca-roles-main { margin-bottom: 20px; }
+.ca-roles-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.ca-role {
+  background: #020617;
+  border-radius: 14px;
+  padding: 14px 12px 16px;
+  text-align: left;
+  border: 1px solid #1f2937;
+}
+.ca-role-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.ca-role-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  background: #4b5563;
+}
+.ca-role-label {
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+.ca-role-desc {
+  font-size: 1rem;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+.ca-roles-note {
+  margin-top: 16px;
+  font-size: 1rem;
+  color: #bfdbfe;
+  line-height: 1.5;
+}
+
+/* RDA 그래프 */
+.ca-rda-main { }
+.ca-rda-nums {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 14px 0 18px;
+}
+.ca-rda-nums .num { text-align:center; }
+.ca-rda-nums .val {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #60a5fa;
+}
+.ca-rda-nums .label {
+  font-size: 1rem;
+  color: #a0a0a0;
+  margin-top: 4px;
+}
+.ca-rda-bar { margin-top: 12px; }
+.ca-rda-row { margin-bottom: 12px; }
+.ca-rda-row-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: #a0a0a0;
+  margin-bottom: 6px;
+}
+.ca-rda-row-bg {
+  height: 22px;
+  background: #0b1120 !important;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.ca-rda-row-fill {
+  height: 100%;
+  background: linear-gradient(90deg,#60a5fa,#22c55e) !important;
+  border-radius: 999px;
+  min-width: 4px;
+}
+
+/* 부족/과다 (H3 사용) */
+.ca-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.ca-two-col ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 1.05rem;
+  color: #e5e7eb;
+  line-height: 1.6;
+}
+.ca-two-col li { margin: 6px 0; }
+.ca-two-col h3.ca-sub { font-size: 1.15rem; margin-bottom: 6px; }
+
+/* 형태별·섭취 가이드 (H4 = 형태명) */
+.ca-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.ca-type-card {
+  background: #020617;
+  border-radius: 14px;
+  padding: 14px 14px 16px;
+  border: 1px solid #1f2937;
+}
+.ca-type-card h4 {
+  font-size: 1.1rem;
+  margin: 0 0 6px;
+}
+.ca-type-card p {
+  font-size: 1rem;
+  color: #cbd5f5;
+  margin: 0;
+}
+.ca-type-tag {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #60a5fa;
+  color: #60a5fa;
+  font-size: 0.9rem;
+}
+
+/* 퀴즈 & 버튼 */
+.ca-quiz-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.ca-quiz-btn {
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid #1f2937;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ca-quiz-btn:hover { background: #0b1120; }
+.ca-quiz-btn.selected {
+  background: #60a5fa;
+  border-color: #60a5fa;
+  color: #020617;
+}
+.ca-quiz-result {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #1f2937;
+  display: none;
+  font-size: 1.05rem;
+}
+.ca-quiz-result.visible { display: block; }
+.ca-quiz-result strong { color: #60a5fa; font-size: 1.1rem; }
+.ca-link-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: #60a5fa;
+  color: #020617;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-decoration: none;
+}
+.ca-link-btn:hover { opacity:0.95; color:#020617; }
+
+/* CTA */
+.ca-cta-main {
+  text-align:center;
+  margin-top:8px;
+}
+.ca-cta-main p {
+  margin:0 0 10px;
+  font-size:1rem;
+  color:#e5e7eb;
+}
+.ca-cta-main .primary {
+  display:inline-block;
+  padding:12px 26px;
+  border-radius:999px;
+  background:#60a5fa;
+  color:#020617;
+  font-weight:700;
+  text-decoration:none;
+  font-size:0.98rem;
+}
+.ca-cta-main .primary:hover { opacity:0.95; color:#020617; }
+
+/* 참고 문헌 */
+.ca-trust-list {
+  margin:4px 0 0;
+  padding-left:18px;
+  font-size:0.9rem;
+  color:#cbd5f5;
+}
+.ca-trust-list li { margin:4px 0; }
+.ca-trust a { color:#60a5fa; text-decoration:none; }
+.ca-trust a:hover { text-decoration:underline; }
+.ca-trust small {
+  display:block;
+  margin-top:10px;
+  font-size:0.86rem;
+  color:#9ca3af;
+  font-style:italic;
+}
+
+/* ? 아이콘 툴팁 */
+.ca-info {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  margin-left:4px;
+  border-radius:999px;
+  background:#0b1120;
+  color:#60a5fa;
+  font-size:0.8rem;
+  cursor:help;
+  position:relative;
+}
+.ca-info::after {
+  content: attr(data-tip);
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:120%;
+  min-width:160px;
+  max-width:230px;
+  padding:8px 10px;
+  border-radius:8px;
+  background:#020617;
+  color:#e5e7eb;
+  font-size:0.78rem;
+  line-height:1.5;
+  border:1px solid #1f2937;
+  box-shadow:0 4px 18px rgba(0,0,0,0.6);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  z-index:5;
+}
+.ca-info::before {
+  content:'';
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:110%;
+  border-width:6px;
+  border-style:solid;
+  border-color:#020617 transparent transparent transparent;
+  opacity:0;
+  visibility:hidden;
+}
+.ca-info:hover::after,
+.ca-info:hover::before {
+  opacity:1;
+  visibility:visible;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 520px) {
+  #ca-infographic {
+    padding: 22px 12px 32px;
+  }
+  .ca-section {
+    padding:18px 14px 20px;
+    border-radius:14px;
+    margin-bottom:16px;
+  }
+  .ca-section h2 { font-size:1.2rem; }
+  .ca-section h3 { font-size:1.08rem; }
+  .ca-section h4 { font-size:1.02rem; }
+  .ca-section p { font-size:0.98rem; }
+  .ca-roles-list { grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); }
+  .ca-two-col { grid-template-columns:1fr; gap:12px; }
+  .ca-types-grid { grid-template-columns:1fr; }
+  .ca-quiz-btn { font-size:0.98rem; padding:11px 14px; }
+  .ca-link-btn { font-size:0.95rem; padding:10px 18px; }
+}
+</style>
+
+<div id="ca-infographic" data-calc-url="https://YOUR-SITE.com/vitamin-d-dosage-calculator/">
+  <header class="ca-header">
+    <p>뼈·치아·근육·신경에 필수적인 칼슘. 권장량·부족·과다·음식·보충제를 한 번에 정리했습니다.</p>
+  </header>
+
+  <section class="ca-section ca-roles-main">
+    <h2>칼슘의 주요 역할과 효능</h2>
+    <div class="ca-roles-list">
+      <div class="ca-role">
+        <div class="ca-role-top">
+          <div class="ca-role-icon">🦴</div>
+          <div class="ca-role-label">뼈·치아 형성</div>
+        </div>
+        <div class="ca-role-desc">칼슘의 대부분은 뼈·치아에 저장되어 골격을 지탱하고, 성장기·폐경기 이후에 특히 중요합니다.</div>
+      </div>
+      <div class="ca-role">
+        <div class="ca-role-top">
+          <div class="ca-role-icon">💪</div>
+          <div class="ca-role-label">근육 수축</div>
+        </div>
+        <div class="ca-role-desc">근육이 수축·이완할 때 칼슘이 신호 역할을 하며, 심장박동에도 관여합니다.</div>
+      </div>
+      <div class="ca-role">
+        <div class="ca-role-top">
+          <div class="ca-role-icon">⚡</div>
+          <div class="ca-role-label">신경 전달</div>
+        </div>
+        <div class="ca-role-desc">신경세포에서 신호를 전달할 때 칼슘 이온이 중요한 역할을 합니다.</div>
+      </div>
+      <div class="ca-role">
+        <div class="ca-role-top">
+          <div class="ca-role-icon">🩺</div>
+          <div class="ca-role-label">혈액응고·호르몬</div>
+        </div>
+        <div class="ca-role-desc">혈액이 굳는 과정과 여러 호르몬 분비에도 관여해, 전신 건강에 폭넓게 영향을 줍니다.</div>
+      </div>
+    </div>
+    <p class="ca-roles-note">※ 칼슘은 비타민 D, 마그네슘, 운동·호르몬 상태와 함께 봐야 하는 영양소입니다. <strong>“칼슘만 많이 먹는 것”이 정답은 아닙니다.</strong></p>
+  </section>
+
+  <section class="ca-section ca-rda-main">
+    <h2>일일 권장량 (NIH RDA 기준)</h2>
+    <div class="ca-rda-nums">
+      <div class="num">
+        <div class="val">1,000</div>
+        <div class="label">19~50세 mg/일</div>
+      </div>
+      <div class="num">
+        <div class="val">1,200</div>
+        <div class="label">여성 51세+, 남성 71세+ mg/일 <span class="ca-info" data-tip="폐경 이후 여성과 고령층에서는 골다공증 위험이 커지기 때문에 더 높은 권장량이 제시됩니다.">?</span></div>
+      </div>
+      <div class="num">
+        <div class="val">2,000~2,500</div>
+        <div class="label">상한 UL mg/일 <span class="ca-info" data-tip="연령대에 따라 약간 다르지만, 성인에서는 보통 2,000~2,500 mg/일 수준을 상한(UL)으로 봅니다. 장기간 초과 시 신장·혈관에 부담이 될 수 있습니다.">?</span></div>
+      </div>
+    </div>
+    <div class="ca-rda-bar">
+      <div class="ca-rda-row">
+        <div class="ca-rda-row-header"><span>19~50세</span><span>1,000 mg</span></div>
+        <div class="ca-rda-row-bg"><div class="ca-rda-row-fill" style="width:40%;"></div></div>
+      </div>
+      <div class="ca-rda-row">
+        <div class="ca-rda-row-header"><span>여 51+, 남 71+</span><span>1,200 mg</span></div>
+        <div class="ca-rda-row-bg"><div class="ca-rda-row-fill" style="width:48%;"></div></div>
+      </div>
+      <div class="ca-rda-row">
+        <div class="ca-rda-row-header"><span>상한선(UL)</span><span>2,000~2,500 mg</span></div>
+        <div class="ca-rda-row-bg"><div class="ca-rda-row-fill" style="width:100%;"></div></div>
+      </div>
+    </div>
+    <p style="margin-top:8px;">우유·유제품·강화 식품 섭취량, 비타민 D 상태, 신장 기능에 따라 적정 섭취량이 달라집니다. <strong>음식으로 얼마를 먹고 있는지</strong>를 먼저 파악한 뒤, 부족한 부분만 보충제로 채우는 것이 기본 전략입니다.</p>
+    <a href="#" class="ca-link-btn ca-calc-link">→ 비타민 D·칼슘 관련 계산/설명 보기</a>
+  </section>
+
+  <section class="ca-section">
+    <h2>부족 시 / 과다 시</h2>
+    <div class="ca-two-col">
+      <div>
+        <h3 class="ca-sub" style="color:#60a5fa;">부족 시</h3>
+        <ul>
+          <li>성인에서는 뚜렷한 증상 없이 서서히 골밀도가 떨어져, 골다공증·골절 위험이 증가합니다.</li>
+          <li>성장기에는 키 성장 지연·뼈 통증 등과 연관될 수 있습니다.</li>
+          <li>칼슘만이 아니라 비타민 D·운동·호르몬까지 함께 고려한 “골건강 패키지”가 중요합니다.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="ca-sub" style="color:#f97316;">과다 시</h3>
+        <ul>
+          <li>보충제를 통해 장기간 과다 섭취 시 신장결석, 변비, 복부 불편감이 늘어날 수 있습니다.</li>
+          <li>혈중 칼슘이 과도하게 올라가면 구역·구토·갈증·부정맥 등 위급한 상황이 생길 수 있습니다.</li>
+          <li>특히 신장 기능이 좋지 않거나 특정 약을 복용 중인 경우, 고용량 칼슘 보충은 <strong>의료진과 상의</strong>가 필요합니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="ca-section">
+    <h2>음식·보충제 선택 가이드</h2>
+    <div class="ca-types-grid">
+      <div class="ca-type-card">
+        <h4>음식으로 섭취</h4>
+        <p>우유·요거트·치즈, 뼈째 먹는 생선, 칼슘 강화 두유·주스 등은 칼슘이 풍부합니다. 식단에서 어느 정도 확보되는지 먼저 확인해 보세요.</p>
+        <span class="ca-type-tag">식단이 좋다면 보충량 ↓</span>
+      </div>
+      <div class="ca-type-card">
+        <h4>탄산칼슘 vs 구연산칼슘</h4>
+        <p>탄산칼슘은 칼슘 함량이 높지만, 공복·위산이 적을 때는 흡수가 떨어질 수 있습니다. 구연산칼슘은 식사와 무관하게 흡수가 더 일정할 수 있지만, 함량·가격에서 차이가 납니다.</p>
+        <span class="ca-type-tag">위장·용량에 따라 선택 <span class="ca-info" data-tip="위가 예민하거나 제산제를 자주 사용하는 경우, 구연산칼슘이 더 편할 수 있습니다. 반대로 위장 문제가 없다면 탄산칼슘도 충분히 좋은 선택입니다.">?</span></span>
+      </div>
+      <div class="ca-type-card">
+        <h4>칼슘·비타민 D·K의 조합</h4>
+        <p>칼슘은 비타민 D와 함께 흡수가 좋아지고, 비타민 K2는 칼슘이 뼈 쪽으로 잘 사용되도록 돕는 역할이 논의되고 있습니다.</p>
+        <span class="ca-type-tag">복합제 사용 시 총량 체크</span>
+      </div>
+      <div class="ca-type-card">
+        <h4>신장·심혈관 질환이 있는 경우</h4>
+        <p>만성 신장질환·심혈관질환 환자에서 칼슘 보충은 혈관 석회화와 관련될 수 있어, 일반 권장량과는 다른 전략이 필요합니다.</p>
+        <span class="ca-type-tag">질환이 있다면 전문 상담 <span class="ca-info" data-tip="신장·심혈관 질환이 있다면, 식이칼슘·보충제·인·비타민 D를 함께 조절해야 하므로 반드시 의료진의 지침을 따라야 합니다.">?</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="ca-section">
+    <h2>간단 체험 — 나는 어느 쪽에 가깝나요?</h2>
+    <p style="margin-bottom:8px;">본인 상황과 가장 가까운 선택지를 하나 골라보세요.</p>
+    <div class="ca-quiz-options">
+      <button type="button" class="ca-quiz-btn"
+        data-type="noDairy"
+        data-name="유제품을 거의 먹지 않음"
+        data-desc="우유·요거트·치즈를 거의 먹지 않고, 칼슘 강화 식품도 드물다면, 음식만으로 권장량을 채우기 어렵습니다. 비타민 D 상태와 함께 칼슘 계산을 해보는 것이 좋습니다.">
+        유제품·강화 식품을 거의 먹지 않는다
+      </button>
+      <button type="button" class="ca-quiz-btn"
+        data-type="osteoporosisRisk"
+        data-name="골다공증 위험이 걱정"
+        data-desc="폐경 이후·가족력·체중이 매우 낮다면 골다공증 위험이 높을 수 있습니다. 칼슘·비타민 D·운동·약물까지 포함한 전체 전략을 전문의와 상의해야 합니다.">
+        폐경 이후이거나 골다공증이 걱정된다
+      </button>
+      <button type="button" class="ca-quiz-btn"
+        data-type="kidneyIssue"
+        data-name="신장·심혈관 질환이 있음"
+        data-desc="신장·심혈관 질환이 있다면, 칼슘 보충은 혈관·신장에 부담이 될 수 있어 일반적인 권장량과 다른 접근이 필요합니다. 자가 보충보다는 의료진 지침이 우선입니다.">
+        신장·심혈관 질환 진단을 받은 적이 있다
+      </button>
+    </div>
+    <div class="ca-quiz-result" id="caQuizResult">
+      <strong id="caQuizType"></strong>
+      <p id="caQuizDesc" style="margin:6px 0 0;"></p>
+      <a href="#" class="ca-link-btn ca-calc-link">→ 비타민 D·칼슘 관련 계산/설명 페이지로 이동</a>
+    </div>
+  </section>
+
+  <section class="ca-section ca-trust">
+    <h2>참고 문헌 및 면책</h2>
+    <ul class="ca-trust-list">
+      <li><a href="https://ods.od.nih.gov/factsheets/Calcium-HealthProfessional/" target="_blank" rel="noopener">NIH ODS, Calcium – Health Professional Fact Sheet</a> — 연령·성별별 RDA, 상한(UL) 및 연구 정리</li>
+      <li><a href="https://www.kns.or.kr/nutrient.asp" target="_blank" rel="noopener">한국영양학회 영양소 섭취기준</a> — 2020 한국인 영양소 섭취기준(칼슘 포함)</li>
+    </ul>
+    <small>본 글과 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 복용 전에는 개인의 질환·복용 약·혈액검사 결과를 함께 고려해 <strong>의료진과 상담</strong>하는 것을 권장합니다.</small>
+  </section>
+
+  <section class="ca-section">
+    <div class="ca-cta-main">
+      <p>식습관·나이·성별·질환 유무를 입력하면, 비타민 D와 함께 칼슘 섭취 전략을 한눈에 정리할 수 있어요.</p>
+      <a href="#" class="primary ca-calc-link">맞춤형 비타민 D·칼슘 계산/설명 페이지 열기</a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function() {
+  var root = document.getElementById('ca-infographic');
+  if (!root) return;
+  var calcUrl = (root.getAttribute('data-calc-url') || '').trim();
+  if (calcUrl) {
+    root.querySelectorAll('.ca-calc-link').forEach(function(a) { a.href = calcUrl; });
+  }
+  var opts = root.querySelectorAll('.ca-quiz-btn');
+  var result = root.querySelector('#caQuizResult');
+  var typeName = root.querySelector('#caQuizType');
+  var quizDesc = root.querySelector('#caQuizDesc');
+  opts.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      opts.forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      typeName.textContent = '선택한 상황: ' + btn.getAttribute('data-name');
+      quizDesc.textContent = btn.getAttribute('data-desc');
+      result.classList.add('visible');
+    });
+  });
+})();
+</script>
+

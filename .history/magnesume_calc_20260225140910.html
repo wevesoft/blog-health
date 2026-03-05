@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>마그네슘 맞춤 계산기</title>
+
+<style>
+/* ---------- reset ---------- */
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Inter', sans-serif; }
+
+html, body { width:100%; height:100%; background:#f4f7fa; }
+
+/* ---------- container ---------- */
+.container {
+  max-width: 480px;
+  margin: 40px auto;
+  padding: 24px;
+  background:#fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ---------- header ---------- */
+h1 {
+  text-align:center;
+  font-size: 1.8rem;
+  margin-bottom: 14px;
+  color:#333;
+}
+
+/* ---------- form ---------- */
+.field {
+  margin:14px 0;
+}
+.label {
+  display:block;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  color:#555;
+}
+input[type=number], select {
+  width:100%;
+  padding:10px 12px;
+  border:1px solid #ccd1d9;
+  border-radius:8px;
+  font-size:1rem;
+  transition:0.2s;
+}
+input[type=number]:focus, select:focus {
+  outline:none;
+  border-color:#4f9aff;
+  box-shadow:0 0 0 3px rgba(79,154,255,0.2);
+}
+
+/* ---------- checkboxes ---------- */
+.checkbox-group {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.checkbox-group label {
+  flex:1;
+  background:#eef3fa;
+  padding:8px;
+  border-radius:8px;
+  cursor:pointer;
+  border:1px solid #ccd1d9;
+  font-size:0.92rem;
+}
+.checkbox-group input[type=checkbox] {
+  margin-right:6px;
+}
+
+/* ---------- button ---------- */
+button {
+  width:100%;
+  padding:12px;
+  font-size:1rem;
+  background:#4f9aff;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  margin-top:18px;
+  transition:0.2s;
+}
+button:hover {
+  background:#3478e5;
+}
+
+/* ---------- 결과 카드 ---------- */
+.result {
+  margin-top:20px;
+  padding:18px;
+  background:#eefaff;
+  border-left:4px solid #4f9aff;
+  border-radius:8px;
+  font-size:1rem;
+  color:#333;
+}
+.result-title {
+  font-weight:600;
+  margin-bottom:6px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>맞춤형 마그네슘 계산기</h1>
+
+  <!-- 입력폼 -->
+  <div class="field">
+    <span class="label">성별</span>
+    <select id="gender">
+      <option value="male">남성</option>
+      <option value="female">여성</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <span class="label">체중 (kg)</span>
+    <input type="number" id="weight" placeholder="예: 70">
+  </div>
+
+  <div class="field">
+    <span class="label">운동 수준</span>
+    <select id="exercise">
+      <option value="none">없음</option>
+      <option value="light">가벼움</option>
+      <option value="moderate">중간</option>
+      <option value="high">높음</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <span class="label">카페인 섭취 (잔/일)</span>
+    <input type="number" id="caffeine" placeholder="예: 2">
+  </div>
+
+  <div class="field">
+    <span class="label">증상 선택 (중복 가능)</span>
+    <div class="checkbox-group">
+      <label><input type="checkbox" id="sym1" value="eye_twitch">눈 떨림</label>
+      <label><input type="checkbox" id="sym2" value="leg_cramp">다리 쥐</label>
+      <label><input type="checkbox" id="sym3" value="poor_sleep">수면 문제</label>
+    </div>
+  </div>
+
+  <!-- 계산 버튼 -->
+  <button onclick="calculateMag()">계산하기</button>
+
+  <!-- 결과 출력 -->
+  <div class="result" id="resultCard" style="display:none;">
+    <div class="result-title">📊 계산 결과</div>
+    <div id="resultText"></div>
+  </div>
+</div>
+
+<script>
+function calculateMag() {
+  const gender = document.getElementById('gender').value;
+  const weight = parseFloat(document.getElementById('weight').value);
+  const exercise = document.getElementById('exercise').value;
+  const caffeine = parseFloat(document.getElementById('caffeine').value) || 0;
+  const sym1 = document.getElementById('sym1').checked;
+  const sym2 = document.getElementById('sym2').checked;
+  const sym3 = document.getElementById('sym3').checked;
+
+  if (!weight || weight <= 0) {
+    alert("체중을 올바르게 입력해주세요.");
+    return;
+  }
+
+  /* ---------- 기본 권장량 ---------- */
+  let base = (gender === 'male') ? 350 : 280;
+
+  /* ---------- 운동 보정 ---------- */
+  const exBonus = { none:0, light:20, moderate:40, high:70 };
+  let exerciseBonus = exBonus[exercise];
+
+  /* ---------- 카페인 보정 ---------- */
+  let cafeBonus = caffeine * 10;
+
+  /* ---------- 증상 보정 ---------- */
+  let symBonus = 0;
+  let typeScores = { glycinate:0, citrate:0, malate:0 };
+
+  if (sym1) { symBonus += 30; typeScores.glycinate += 1; }
+  if (sym2) { symBonus += 40; typeScores.malate += 2; }
+  if (sym3) { symBonus += 30; typeScores.glycinate += 2; }
+
+  /* ---------- 최종 권장량 ---------- */
+  let totalMg = base + exerciseBonus + cafeBonus + symBonus;
+  if (totalMg > 450) totalMg = 450;
+
+  /* ---------- 타입 추천 ---------- */
+  typeScores.citrate += 1; // 기본 약간 가중
+  let recommendedType = Object.keys(typeScores).sort((a,b) => typeScores[b] - typeScores[a])[0];
+
+  /* ---------- 결과 문자열 ---------- */
+  const resultNode = document.getElementById('resultText');
+  resultNode.innerHTML = `
+    💡 권장 섭취량: <strong>${totalMg.toFixed(0)} mg</strong><br><br>
+    📌 추천 마그네슘 타입: <strong>${recommendedType.replace('_',' ')}
+    </strong><br><br>
+    ✍️ 설명:<br>
+    ${totalMg.toFixed(0)}mg 은 당신의 현재 상태를 고려한 
+    맞춤형 권장량입니다.<br>
+    ${recommendedType === 'glycinate' ? '수면/긴장 완화' : ''}
+    ${recommendedType === 'malate' ? '근육 피로/에너지' : ''}
+    ${recommendedType === 'citrate' ? '일반 흡수 및 소화' : ''}
+  `;
+
+  document.getElementById('resultCard').style.display = 'block';
+}
+</script>
+
+</body>
+</html>

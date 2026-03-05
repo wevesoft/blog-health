@@ -1,0 +1,589 @@
+<!--
+  워드프레스 적용: "사용자 정의 HTML" 블록에 이 파일에서 <style> 부터 </script> 까지 통째로 복사해 붙여넣으세요.
+  계산기 링크: data-calc-url 값을 실제 비타민 D 계산기 페이지 주소로 바꾸세요.
+  예: https://내블로그.com/vitamin-d-dosage-calculator/
+  템플릿: 마그네슘 인포그래픽과 같은 구조(H2→H3→H4, .vd-shell)를 사용합니다.
+-->
+<style>
+/* ===== 워드프레스 비타민 D 인포그래픽 공통 (모바일·PC 글자 큼) ===== */
+html, body { margin:0; background:#0f172a; font-size: 18px; }
+#vd-infographic {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 28px 16px 40px;
+  box-sizing: border-box;
+  background: radial-gradient(circle at top, #facc15 0, #0f172a 55%);
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #e5e7eb;
+  line-height: 1.65;
+  font-size: 1.0625rem;
+}
+.vd-shell {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  background: rgba(15,23,42,0.92);
+  border-radius: 0;
+  border: none;
+  border-top: 1px solid #1f2937;
+  border-bottom: 1px solid #1f2937;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  padding: 28px 20px 36px;
+  box-sizing: border-box;
+}
+.vd-shell * { box-sizing: border-box; }
+
+/* 헤더 */
+.vd-header {
+  text-align: center;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #1f2937;
+}
+.vd-header p {
+  font-size: 1.15rem;
+  color: #cbd5f5;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* 섹션 공통 · H2 / H3 / H4 계층 */
+.vd-section {
+  border-radius: 18px;
+  padding: 20px 20px 24px;
+  background: #020617;
+  border: 1px solid #1f2937;
+  margin-bottom: 20px;
+}
+.vd-section h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: #fefce8;
+  line-height: 1.35;
+}
+.vd-section h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.vd-section h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.vd-section p {
+  font-size: 1.05rem;
+  color: #cbd5f5;
+  margin: 0 0 8px;
+  line-height: 1.6;
+}
+.vd-section p:last-child { margin-bottom: 0; }
+
+/* 역할 카드 */
+.vd-roles-main { margin-bottom: 20px; }
+.vd-roles-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.vd-role {
+  background: #020617;
+  border-radius: 16px;
+  padding: 14px 12px 16px;
+  text-align: left;
+  border: 1px solid #1f2937;
+}
+.vd-role-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.vd-role-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  background: #facc15;
+  color:#111827;
+}
+.vd-role-label {
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #fefce8;
+}
+.vd-role-desc {
+  font-size: 1rem;
+  color: #cbd5f5;
+  line-height: 1.5;
+}
+.vd-roles-note {
+  margin-top: 16px;
+  font-size: 0.98rem;
+  color: #a5f3fc;
+  line-height: 1.5;
+}
+
+/* RDA 그래프 */
+.vd-rda-main { }
+.vd-rda-nums {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 14px 0 18px;
+}
+.vd-rda-nums .num { text-align:center; }
+.vd-rda-nums .val {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #facc15;
+}
+.vd-rda-nums .label {
+  font-size: 1rem;
+  color: #e5e7eb;
+  margin-top: 4px;
+}
+.vd-rda-bar { margin-top: 12px; }
+.vd-rda-row { margin-bottom: 12px; }
+.vd-rda-row-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.98rem;
+  color: #cbd5f5;
+  margin-bottom: 6px;
+}
+.vd-rda-row-bg {
+  height: 22px;
+  background: #020617;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.vd-rda-row-fill {
+  height: 100%;
+  background: linear-gradient(90deg,#facc15,#f97316);
+  border-radius: 999px;
+  min-width: 4px;
+}
+
+/* 부족/과다 */
+.vd-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.vd-two-col ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 1.05rem;
+  color: #e5e7eb;
+  line-height: 1.6;
+}
+.vd-two-col li { margin: 6px 0; }
+.vd-two-col h3.vd-sub { font-size: 1.15rem; margin-bottom: 6px; }
+
+/* 형태·섭취 가이드 */
+.vd-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.vd-type-card {
+  background: #020617;
+  border-radius: 16px;
+  padding: 14px 14px 16px;
+  border: 1px solid #1f2937;
+}
+.vd-type-card h4 {
+  font-size: 1.1rem;
+  margin: 0 0 6px;
+}
+.vd-type-card p {
+  font-size: 0.98rem;
+  color: #cbd5f5;
+  margin: 0;
+}
+.vd-type-tag {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #facc15;
+  color: #facc15;
+  font-size: 0.9rem;
+}
+
+/* 퀴즈 & 버튼 */
+.vd-quiz-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.vd-quiz-btn {
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid #1f2937;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 1.02rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.vd-quiz-btn:hover { background: #111827; }
+.vd-quiz-btn.selected {
+  background: #facc15;
+  border-color: #facc15;
+  color: #020617;
+}
+.vd-quiz-result {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #1f2937;
+  display: none;
+  font-size: 1.02rem;
+}
+.vd-quiz-result.visible { display: block; }
+.vd-quiz-result strong { color: #facc15; font-size: 1.08rem; }
+.vd-link-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: #facc15;
+  color: #020617;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-decoration: none;
+}
+.vd-link-btn:hover { opacity:0.95; color:#020617; }
+
+/* CTA */
+.vd-cta-main {
+  text-align:center;
+  margin-top:8px;
+}
+.vd-cta-main p {
+  margin:0 0 10px;
+  font-size:1rem;
+  color:#e5e7eb;
+}
+.vd-cta-main .primary {
+  display:inline-block;
+  padding:12px 26px;
+  border-radius:999px;
+  background:#facc15;
+  color:#020617;
+  font-weight:700;
+  text-decoration:none;
+  font-size:0.98rem;
+}
+.vd-cta-main .primary:hover { opacity:0.95; color:#020617; }
+
+/* 참고 문헌 */
+.vd-trust-list {
+  margin:4px 0 0;
+  padding-left:18px;
+  font-size:0.9rem;
+  color:#cbd5f5;
+}
+.vd-trust-list li { margin:4px 0; }
+.vd-trust a { color:#facc15; text-decoration:none; }
+.vd-trust a:hover { text-decoration:underline; }
+.vd-trust small {
+  display:block;
+  margin-top:10px;
+  font-size:0.86rem;
+  color:#9ca3af;
+  font-style:italic;
+}
+
+/* ? 아이콘 툴팁 */
+.vd-info {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  margin-left:4px;
+  border-radius:999px;
+  background:#1f2937;
+  color:#facc15;
+  font-size:0.8rem;
+  cursor:help;
+  position:relative;
+}
+.vd-info::after {
+  content: attr(data-tip);
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:120%;
+  min-width:160px;
+  max-width:220px;
+  padding:8px 10px;
+  border-radius:8px;
+  background:#020617;
+  color:#e5e7eb;
+  font-size:0.78rem;
+  line-height:1.5;
+  border:1px solid #1f2937;
+  box-shadow:0 4px 18px rgba(0,0,0,0.6);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  z-index:5;
+}
+.vd-info::before {
+  content:'';
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:110%;
+  border-width:6px;
+  border-style:solid;
+  border-color:#020617 transparent transparent transparent;
+  opacity:0;
+  visibility:hidden;
+}
+.vd-info:hover::after,
+.vd-info:hover::before {
+  opacity:1;
+  visibility:visible;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 520px) {
+  #vd-infographic {
+    padding: 22px 12px 32px;
+  }
+  .vd-shell {
+    padding: 22px 16px 30px;
+    border-radius:0;
+    border-left:none;
+    border-right:none;
+  }
+  .vd-section {
+    padding:18px 14px 20px;
+    border-radius:14px;
+    margin-bottom:16px;
+  }
+  .vd-section h2 { font-size:1.2rem; }
+  .vd-section h3 { font-size:1.08rem; }
+  .vd-section h4 { font-size:1.02rem; }
+  .vd-section p { font-size:0.98rem; }
+  .vd-roles-list { grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); }
+  .vd-two-col { grid-template-columns:1fr; gap:12px; }
+  .vd-types-grid { grid-template-columns:1fr; }
+  .vd-quiz-btn { font-size:0.98rem; padding:11px 14px; }
+  .vd-link-btn { font-size:0.95rem; padding:10px 18px; }
+}
+</style>
+
+<div id="vd-infographic" data-calc-url="https://YOUR-SITE.com/vitamin-d-dosage-calculator/">
+  <div class="vd-shell">
+    <header class="vd-header">
+      <p>뼈·면역·근육·기분에 관여하는 비타민 D. 부족·과다·권장량·햇빛·보충제를 한 번에 정리했습니다.</p>
+    </header>
+
+    <section class="vd-section vd-roles-main">
+      <h2>비타민 D의 역할과 효능</h2>
+      <div class="vd-roles-list">
+        <div class="vd-role">
+          <div class="vd-role-top">
+            <div class="vd-role-icon">🦴</div>
+            <div class="vd-role-label">뼈·칼슘 대사</div>
+          </div>
+          <div class="vd-role-desc">칼슘·인 흡수를 도와 뼈와 치아를 단단하게 유지하는 데 필요합니다.</div>
+        </div>
+        <div class="vd-role">
+          <div class="vd-role-top">
+            <div class="vd-role-icon">🛡️</div>
+            <div class="vd-role-label">면역·염증</div>
+          </div>
+          <div class="vd-role-desc">면역세포 기능과 염증 조절에 관여해 감염·자기면역과의 관련성이 연구되고 있습니다.</div>
+        </div>
+        <div class="vd-role">
+          <div class="vd-role-top">
+            <div class="vd-role-icon">💪</div>
+            <div class="vd-role-label">근육·균형</div>
+          </div>
+          <div class="vd-role-desc">근육 기능과 낙상 위험 감소와의 연관성이 보고되어, 고령층에서 특히 중요합니다.</div>
+        </div>
+        <div class="vd-role">
+          <div class="vd-role-top">
+            <div class="vd-role-icon">🙂</div>
+            <div class="vd-role-label">기분·호르몬</div>
+          </div>
+          <div class="vd-role-desc">우울·수면·호르몬과의 관련성도 연구 중이지만, 아직 명확한 인과는 아닙니다.</div>
+        </div>
+      </div>
+      <p class="vd-roles-note">※ “도움을 줄 수 있다” 수준의 연구들이 많으며, 확정적 치료 효과로 보기보다는 <strong>부족을 막는 기초 영양</strong> 정도로 이해해 주세요.</p>
+    </section>
+
+    <section class="vd-section vd-rda-main">
+      <h2>일일 권장량 (NIH RDA 기준)</h2>
+      <div class="vd-rda-nums">
+        <div class="num">
+          <div class="val">600</div>
+          <div class="label">19~70세 IU/일 <span class="vd-info" data-tip="성인 19~70세 대부분에게 권장되는 기본 비타민 D 섭취량입니다.">?</span></div>
+        </div>
+        <div class="num">
+          <div class="val">800</div>
+          <div class="label">71세 이상 IU/일</div>
+        </div>
+        <div class="num">
+          <div class="val">4,000</div>
+          <div class="label">상한 UL IU/일 <span class="vd-info" data-tip="일반 성인이 넘어가지 않기를 권장하는 하루 상한선(UL)입니다. 질환·치료 목적 고용량은 예외로 의료진 판단이 필요합니다.">?</span></div>
+        </div>
+      </div>
+      <div class="vd-rda-bar">
+        <div class="vd-rda-row">
+          <div class="vd-rda-row-header"><span>성인 19~70세</span><span>600 IU</span></div>
+          <div class="vd-rda-row-bg"><div class="vd-rda-row-fill" style="width:40%;"></div></div>
+        </div>
+        <div class="vd-rda-row">
+          <div class="vd-rda-row-header"><span>71세 이상</span><span>800 IU</span></div>
+          <div class="vd-rda-row-bg"><div class="vd-rda-row-fill" style="width:53%;"></div></div>
+        </div>
+        <div class="vd-rda-row">
+          <div class="vd-rda-row-header"><span>상한선(UL)</span><span>4,000 IU</span></div>
+          <div class="vd-rda-row-bg"><div class="vd-rda-row-fill" style="width:100%;"></div></div>
+        </div>
+      </div>
+      <p style="margin-top:8px;">혈중 농도·일조량·질환에 따라 개인별 적정량이 달라질 수 있어요. 기본 가이드는 600~800 IU, 혈액검사·질환 치료는 <strong>의료진 안내</strong>를 따르는 것이 안전합니다.</p>
+      <a href="#" class="vd-link-btn vd-calc-link">→ 내 비타민 D 권장량 계산하기</a>
+    </section>
+
+    <section class="vd-section">
+      <h2>부족 시 / 과다 시</h2>
+      <div class="vd-two-col">
+        <div>
+          <h3 class="vd-sub" style="color:#f97316;">부족 시</h3>
+          <ul>
+            <li>근육 약화, 쉽게 피로함, 골다공증·골연화증 위험 증가</li>
+            <li>감염(호흡기 등) 위험 증가와의 연관성이 보고됨</li>
+            <li>우울·기분 저하와의 관련성이 제시되지만 확정적 인과는 아님</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="vd-sub" style="color:#22c55e;">과다 시</h3>
+          <ul>
+            <li>장기간 고용량(보통 수천~수만 IU) 복용 시 고칼슘혈증 위험</li>
+            <li>식욕 부진, 메스꺼움, 구역·구토, 신장손상 등이 보고된 바 있음</li>
+            <li>혈중 수치와 증상을 함께 보며 <strong>의료진 모니터링</strong> 하에 용량 조절이 필요합니다.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section">
+      <h2>섭취 형태·햇빛·음식 가이드</h2>
+      <div class="vd-types-grid">
+        <div class="vd-type-card">
+          <h4>비타민 D3 (콜레칼시페롤)</h4>
+          <p>D2보다 체내 이용률이 더 좋다는 연구들이 많아, 보충제에서는 보통 D3를 선택합니다.</p>
+          <span class="vd-type-tag">일반 보충 시 1순위</span>
+        </div>
+        <div class="vd-type-card">
+          <h4>햇빛(일조)</h4>
+          <p>팔·다리를 노출해 주 2~3회, 10~20분 정도 햇빛을 쬐면 합성에 도움이 됩니다. 다만 <strong>피부암·기미·주름</strong> 리스크도 함께 고려해야 합니다.</p>
+          <span class="vd-type-tag">자외선·피부 노화 주의 <span class="vd-info" data-tip="비타민 D 합성을 위해 일부러 화상이 생길 정도로 햇빛을 쬐는 것은 권장되지 않습니다. 자외선 차단·피부암 위험을 함께 고려해야 합니다.">?</span></span>
+        </div>
+        <div class="vd-type-card">
+          <h4>음식으로 섭취</h4>
+          <p>등푸른 생선·간·강화 우유·계란 노른자 등에 비타민 D가 포함되어 있지만, <strong>음식만으로 이상적인 수치를 유지하기는 쉽지 않은 편</strong>입니다.</p>
+          <span class="vd-type-tag">식습관이 좋다면 보충량 ↓</span>
+        </div>
+        <div class="vd-type-card">
+          <h4>고용량 요법</h4>
+          <p>혈중 수치가 매우 낮거나 특정 질환이 있는 경우, 기간 한정 고용량(예: 주 1회 고용량 캡슐)을 사용하는 프로토콜이 있습니다. 이는 <strong>반드시 의사 처방</strong>이 필요합니다.</p>
+          <span class="vd-type-tag">자가 시도 금지 <span class="vd-info" data-tip="고용량 또는 주사제 비타민 D는 혈중 농도와 신장 기능 등을 함께 보면서 의료진이 조절해야 합니다.">?</span></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="vd-section">
+      <h2>간단 체험 — 나는 어느 쪽에 가깝나요?</h2>
+      <p style="margin-bottom:8px;">본인 상황과 가장 가까운 선택지를 하나 골라보세요.</p>
+      <div class="vd-quiz-options">
+        <button type="button" class="vd-quiz-btn"
+          data-type="lowSun"
+          data-name="실내 위주·일조 적음"
+          data-desc="실내 근무·마스크·자외선 차단제를 자주 사용하는 경우, 음식만으로 비타민 D를 충분히 채우기 어렵습니다. 혈중 수치를 모른다면 기본 600~800 IU 가이드를 따르되, 계산기로 내 상황을 한 번 정리해 보세요.">
+          실내 생활·햇빛 거의 없음
+        </button>
+        <button type="button" class="vd-quiz-btn"
+          data-type="elderly"
+          data-name="고령·낙상·골다공증 걱정"
+          data-desc="71세 이상·골다공증 위험이 높다면 800 IU 이상이 권장되는 경우가 많습니다. 칼슘·운동·약물과 함께 전체 뼈 건강 플랜 안에서 비타민 D를 고려해야 합니다.">
+          71세 이상·뼈 건강 걱정
+        </button>
+        <button type="button" class="vd-quiz-btn"
+          data-type="labs"
+          data-name="혈액검사 상 부족 진단"
+          data-desc="이미 비타민 D 부족 진단을 받았다면, 용량·기간·재검사 시점은 반드시 의료진과 상의해야 합니다. 계산기는 참고용으로만 활용해 주세요.">
+          혈중 수치가 낮다고 들음
+        </button>
+      </div>
+      <div class="vd-quiz-result" id="vdQuizResult">
+        <strong id="vdQuizType"></strong>
+        <p id="vdQuizDesc" style="margin:6px 0 0;"></p>
+        <a href="#" class="vd-link-btn vd-calc-link">→ 내 비타민 D 권장량 계산기로 이동</a>
+      </div>
+    </section>
+
+    <section class="vd-section vd-trust">
+      <h2>참고 문헌 및 면책</h2>
+      <ul class="vd-trust-list">
+        <li><a href="https://ods.od.nih.gov/factsheets/VitaminD-HealthProfessional/" target="_blank" rel="noopener">NIH ODS, Vitamin D – Health Professional Fact Sheet</a> — 연령별 RDA(600~800 IU), 상한(UL 4,000 IU), 혈중 농도 범위</li>
+        <li><a href="https://www.kns.or.kr/nutrient.asp" target="_blank" rel="noopener">한국영양학회 영양소 섭취기준</a> — 2020 한국인 영양소 섭취기준(비타민 D 포함)</li>
+      </ul>
+      <small>본 글과 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 복용 전에는 개인의 질환·복용 약·혈액검사 결과를 함께 고려해 <strong>의료진과 상담</strong>하는 것을 권장합니다.</small>
+    </section>
+
+    <section class="vd-section">
+      <div class="vd-cta-main">
+        <p>연령·일조량·목적·임신·비만 여부를 입력하면, 하루 비타민 D IU와 참고 범위를 한 번에 볼 수 있어요.</p>
+        <a href="#" class="primary vd-calc-link">맞춤형 비타민 D 계산기 열기</a>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+(function() {
+  var root = document.getElementById('vd-infographic');
+  if (!root) return;
+  var calcUrl = (root.getAttribute('data-calc-url') || '').trim();
+  if (calcUrl) {
+    root.querySelectorAll('.vd-calc-link').forEach(function(a) { a.href = calcUrl; });
+  }
+  var opts = root.querySelectorAll('.vd-quiz-btn');
+  var result = root.querySelector('#vdQuizResult');
+  var typeName = root.querySelector('#vdQuizType');
+  var quizDesc = root.querySelector('#vdQuizDesc');
+  opts.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      opts.forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      typeName.textContent = '선택한 상황: ' + btn.getAttribute('data-name');
+      quizDesc.textContent = btn.getAttribute('data-desc');
+      result.classList.add('visible');
+    });
+  });
+})();
+</script>
+

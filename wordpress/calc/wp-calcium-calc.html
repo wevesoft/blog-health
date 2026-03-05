@@ -1,0 +1,516 @@
+<!--
+  워드프레스 적용: "사용자 정의 HTML" 블록에
+  이 파일의 <style> 부터 </script> 까지 통째로 복사해 붙여넣으세요.
+  (페이지 H1 제목은 워드프레스 글 제목에서 입력하는 것을 권장합니다.)
+-->
+<style>
+/* ===== 맞춤형 칼슘 계산기 — 워드프레스용 (다크, 마그네슘 계산기와 동일 포맷) ===== */
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  width:100%;
+  min-height:100%;
+  background:#1a1a1a;
+  font-family:'Noto Sans KR',sans-serif;
+  color:#e0e0e0;
+  line-height:1.55;
+  font-size:18px;
+}
+
+.ca-calc-wrap {
+  max-width:560px;
+  margin:0 auto;
+  padding:28px 20px 48px;
+  background:#252525;
+  border-radius:20px;
+  border:1px solid #333;
+  box-shadow:0 4px 24px rgba(0,0,0,0.4);
+}
+.ca-calc-wrap * { box-sizing:border-box; }
+
+/* 헤더 (요약 설명만) */
+.ca-calc-wrap .header {
+  text-align:center;
+  margin-bottom:28px;
+  padding-bottom:20px;
+  border-bottom:1px solid #333;
+}
+.ca-calc-wrap .header p {
+  font-size:1.1rem;
+  color:#b0b0b0;
+  line-height:1.6;
+}
+
+/* 섹션 제목 H2/H3/H4 */
+.ca-calc-wrap .section-title {
+  font-size:1.25rem;
+  font-weight:700;
+  color:#e5e7eb;
+  margin-bottom:16px;
+  line-height:1.35;
+}
+.ca-calc-wrap h3 {
+  font-size:1.1rem;
+  font-weight:600;
+  color:#d1d5db;
+  margin-bottom:8px;
+}
+.ca-calc-wrap h4 {
+  font-size:1.05rem;
+  font-weight:600;
+  color:#e5e7eb;
+  margin-bottom:8px;
+}
+
+/* 폼 필드 */
+.ca-calc-wrap .field { margin:20px 0; }
+.ca-calc-wrap .label {
+  display:block;
+  font-size:1.05rem;
+  font-weight:500;
+  margin-bottom:10px;
+  color:#c0c0c0;
+}
+.ca-calc-wrap .label .hint {
+  font-weight:400;
+  color:#909090;
+  font-size:0.95rem;
+}
+
+/* 셀렉트 (글자 잘림 방지) */
+.ca-calc-wrap select {
+  width:100%;
+  min-height:52px;
+  padding:14px 44px 14px 18px;
+  border:1px solid #404040;
+  border-radius:12px;
+  font-size:1.05rem;
+  line-height:1.5;
+  background-color:#2c2c2c;
+  color:#ffffff;
+  transition:border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance:none;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0a0a0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 16px center;
+}
+.ca-calc-wrap select option {
+  padding:10px 8px;
+  font-size:1.02rem;
+  background:#2c2c2c;
+  color:#ffffff;
+}
+.ca-calc-wrap select:focus {
+  outline:none;
+  border-color:#ff7043;
+  box-shadow:0 0 0 2px rgba(255,112,67,0.25);
+}
+
+/* 체크박스 그룹 */
+.ca-calc-wrap .checkbox-group {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.ca-calc-wrap .checkbox-group label {
+  flex:1;
+  min-width:110px;
+  background:#2c2c2c;
+  padding:14px 16px;
+  border-radius:12px;
+  cursor:pointer;
+  border:1px solid #404040;
+  font-size:1rem;
+  transition:all 0.2s;
+  color:#b0b0b0;
+}
+.ca-calc-wrap .checkbox-group label.disabled {
+  opacity:0.6;
+  cursor:not-allowed;
+}
+.ca-calc-wrap .checkbox-group label:hover {
+  background:#353535;
+  border-color:#505050;
+  color:#e0e0e0;
+}
+.ca-calc-wrap .checkbox-group input[type=checkbox] { margin-right:10px; }
+.ca-calc-wrap .checkbox-group input:checked + span {
+  font-weight:600;
+  color:#66bb6a;
+}
+
+/* 계산 버튼 */
+.ca-calc-wrap button.calc-btn {
+  width:100%;
+  padding:16px;
+  font-size:1.1rem;
+  font-weight:600;
+  background:#64748b;
+  color:#ffffff;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  margin-top:28px;
+  transition:transform 0.15s, box-shadow 0.2s;
+  box-shadow:0 2px 12px rgba(100,116,139,0.35);
+}
+.ca-calc-wrap button.calc-btn:hover {
+  transform:translateY(-1px);
+  box-shadow:0 4px 16px rgba(100,116,139,0.45);
+}
+.ca-calc-wrap button.calc-btn:active {
+  transform:scale(0.98);
+  transition-duration:0.05s;
+}
+
+/* 결과 영역 애니메이션 */
+@keyframes caFadeInUp {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@keyframes caFadeIn {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+.ca-calc-wrap .result-section {
+  margin-top:32px;
+  display:none;
+}
+.ca-calc-wrap .result-section.visible {
+  display:block;
+  animation:caFadeIn 0.35s ease;
+}
+.ca-calc-wrap .result-section.visible .result-applied {
+  animation:caFadeInUp 0.45s ease 0.05s both;
+}
+.ca-calc-wrap .result-section.visible .result-card.primary {
+  animation:caFadeInUp 0.45s ease 0.15s both;
+}
+.ca-calc-wrap .result-section.visible .result-card.secondary {
+  animation:caFadeInUp 0.45s ease both;
+}
+
+.ca-calc-wrap .result-applied {
+  background:rgba(26,61,26,0.6);
+  border:1px solid #388e3c;
+  border-radius:14px;
+  padding:18px 20px;
+  margin-bottom:18px;
+  font-size:1.02rem;
+  color:#81c784;
+}
+.ca-calc-wrap .result-applied ul { margin:0; padding-left:20px; }
+.ca-calc-wrap .result-applied li { margin:6px 0; }
+.ca-calc-wrap .result-applied .effect {
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid #388e3c;
+  font-size:0.98rem;
+  color:#81c784;
+}
+
+.ca-calc-wrap .result-card {
+  margin-bottom:16px;
+  padding:20px;
+  border-radius:14px;
+  font-size:1.02rem;
+  border:1px solid #333;
+}
+.ca-calc-wrap .result-card.primary {
+  background:#2c2c2c;
+  border-color:#404040;
+}
+.ca-calc-wrap .result-card.primary .value {
+  font-size:1.65rem;
+  font-weight:700;
+  color:#a5b4fc;
+}
+.ca-calc-wrap .result-card.secondary {
+  background:#252525;
+  border:1px solid #333;
+}
+.ca-calc-wrap .result-card h3 {
+  font-size:1.05rem;
+  font-weight:600;
+  color:#b0b0b0;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.ca-calc-wrap .result-card ul {
+  margin:10px 0 0 20px;
+  color:#b0b0b0;
+  font-size:1.02rem;
+}
+.ca-calc-wrap .result-card li { margin:6px 0; }
+
+.ca-calc-wrap .calc-basis {
+  margin-top:16px;
+  border:1px solid #333;
+  border-radius:12px;
+  overflow:hidden;
+  background:#2c2c2c;
+}
+.ca-calc-wrap .calc-basis summary {
+  padding:14px 18px;
+  background:#252525;
+  font-size:1rem;
+  font-weight:500;
+  color:#a0a0a0;
+  cursor:pointer;
+  list-style:none;
+}
+.ca-calc-wrap .calc-basis summary::-webkit-details-marker { display:none; }
+.ca-calc-wrap .calc-basis summary::after { content:' 펼치기'; }
+.ca-calc-wrap .calc-basis[open] summary::after { content:' 접기'; }
+.ca-calc-wrap .calc-basis .content {
+  padding:16px;
+  font-size:0.96rem;
+  color:#a0a0a0;
+  line-height:1.6;
+  border-top:1px solid #333;
+}
+
+.ca-calc-wrap .trust-block {
+  margin-top:28px;
+  padding:20px;
+  background:#252525;
+  border-radius:14px;
+  border:1px solid #333;
+  font-size:0.96rem;
+  color:#a0a0a0;
+}
+.ca-calc-wrap .trust-block h4 {
+  font-size:1.05rem;
+  font-weight:600;
+  color:#b0b0b0;
+  margin-bottom:10px;
+}
+.ca-calc-wrap .trust-block ul { margin-left:18px; }
+.ca-calc-wrap .trust-block li { margin:6px 0; }
+.ca-calc-wrap .trust-block .disclaimer {
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid #333;
+  font-style:italic;
+  color:#808080;
+  font-size:0.9rem;
+}
+.ca-calc-wrap .trust-block a { color:#a5b4fc; text-decoration:none; }
+.ca-calc-wrap .trust-block a:hover { text-decoration:underline; }
+
+/* 모바일: 화면 꽉 차게 + 글자 유지 */
+@media (max-width:520px) {
+  html, body { font-size:17px; }
+  .ca-calc-wrap {
+    max-width:100%;
+    width:100%;
+    margin:0;
+    padding:22px 16px 40px;
+    border-radius:0;
+    border-left:none;
+    border-right:none;
+  }
+  .ca-calc-wrap .section-title { font-size:1.2rem; }
+  .ca-calc-wrap .label { font-size:1rem; }
+  .ca-calc-wrap select {
+    font-size:1rem;
+    min-height:50px;
+    padding:13px 42px 13px 14px;
+  }
+  .ca-calc-wrap button.calc-btn { font-size:1.05rem; padding:15px; margin-top:24px; }
+}
+</style>
+
+<div class="ca-calc-wrap">
+  <header class="header">
+    <p>연령·성별·임신·수유·유제품 섭취를 반영한 참고용 칼슘 권장량입니다.</p>
+  </header>
+
+  <h2 class="section-title">나의 정보 입력</h2>
+
+  <div class="field">
+    <span class="label">연령</span>
+    <select id="age">
+      <option value="19-50">19~50세</option>
+      <option value="51-70">51~70세</option>
+      <option value="71">71세 이상</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <span class="label">성별</span>
+    <select id="gender">
+      <option value="male">남성</option>
+      <option value="female">여성</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <span class="label">유제품·칼슘 섭취 (우유·요거트 등)</span>
+    <select id="dairy">
+      <option value="rare">거의 안 먹음</option>
+      <option value="sometimes">가끔</option>
+      <option value="often" selected>자주 먹음</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <span class="label">해당 시 선택</span>
+    <div class="checkbox-group">
+      <label><input type="checkbox" id="pregnant" value="pregnancy"><span>임신 중</span></label>
+      <label><input type="checkbox" id="lactation" value="lactation"><span>수유 중</span></label>
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calculateCalcium()">권장량 계산하기</button>
+
+  <section class="result-section" id="resultSection">
+    <h2 class="section-title">계산 결과</h2>
+
+    <div class="result-applied" id="resultApplied">
+      <h3>✅ 적용된 조건 (이 권장량에 반영된 입력이에요)</h3>
+      <ul id="appliedList"></ul>
+      <div class="effect" id="appliedEffect"></div>
+    </div>
+
+    <div class="result-card primary">
+      <h3>📊 일일 칼슘 권장량</h3>
+      <div class="value" id="resultMain"></div>
+      <p style="margin:6px 0 0;color:#d1d5db;font-size:0.98rem;">입력하신 조건에 따라 계산된 맞춤 권장량이에요.</p>
+      <div id="resultRange" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="result-card secondary">
+      <h3>💊 추천 형태</h3>
+      <div id="resultType"></div>
+    </div>
+
+    <div class="result-card secondary">
+      <h3>⏰ 섭취 방법 제안</h3>
+      <div id="resultSplit"></div>
+    </div>
+
+    <div class="result-card secondary">
+      <h3>💡 참고 팁</h3>
+      <ul id="resultTips"></ul>
+    </div>
+
+    <details class="calc-basis">
+      <summary>이 결과는 어떻게 계산되었나요?</summary>
+      <div class="content" id="calcExplanation"></div>
+    </details>
+  </section>
+
+  <div class="trust-block">
+    <h4>📚 참고 문헌 및 근거</h4>
+    <p style="margin-bottom:8px;">본 계산기의 <strong>기본 권장량</strong>은 NIH ODS 칼슘 RDA를 참고했고, 유제품 섭취 보정은 문헌에 명시된 공식이 아니라 <strong>단순화된 참고 모델</strong>입니다.</p>
+    <ul>
+      <li><a href="https://ods.od.nih.gov/factsheets/Calcium-HealthProfessional/" target="_blank" rel="noopener">NIH ODS, Calcium – Health Professional Fact Sheet</a> — 연령·성별별 RDA(1,000~1,300 mg)</li>
+      <li><a href="https://www.kns.or.kr/nutrient.asp" target="_blank" rel="noopener">한국영양학회 영양소 섭취기준</a> — 2020 한국인 영양소 섭취기준</li>
+    </ul>
+    <p class="disclaimer">본 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 복용 전 의료진 상담을 권장합니다.</p>
+  </div>
+</div>
+
+<script>
+function calculateCalcium() {
+  var age = document.getElementById('age').value;
+  var gender = document.getElementById('gender').value;
+  var dairy = document.getElementById('dairy').value;
+  var pregnant = document.getElementById('pregnant').checked;
+  var lactation = document.getElementById('lactation').checked;
+
+  /* NIH: 19-50 1000, 51-70 M 1000 F 1200, 71+ 1200. Pregnancy/Lactation 19-50: 1000 */
+  var base = 1000;
+  if (pregnant || lactation) base = 1000;
+  else if (age === '71') base = 1200;
+  else if (age === '51-70' && gender === 'female') base = 1200;
+  else if (age === '51-70') base = 1000;
+
+  var dairyAdj = { rare: 200, sometimes: 0, often: -100 };
+  base += dairyAdj[dairy];
+
+  base = Math.max(800, Math.min(1300, base));
+  base = Math.round(base / 50) * 50;
+
+  var minMg = Math.max(800, base - 100);
+  var maxMg = Math.min(1300, base + 100);
+
+  var ageLabel = document.querySelector('#age option:checked').textContent;
+  var genderLabel = document.querySelector('#gender option:checked').textContent;
+  var dairyLabel = document.querySelector('#dairy option:checked').textContent;
+  var appliedItems = ['연령: ' + ageLabel, '성별: ' + genderLabel, '유제품 섭취: ' + dairyLabel];
+  if (pregnant) appliedItems.push('해당: 임신 중');
+  if (lactation) appliedItems.push('해당: 수유 중');
+  document.getElementById('appliedList').innerHTML =
+    appliedItems.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+
+  var effectParts = [];
+  if (age === '71') effectParts.push('71세 이상이라 1,200 mg 기준을 적용했어요.');
+  else if (age === '51-70' && gender === 'female') effectParts.push('여성 51~70세라 1,200 mg 기준을 적용했어요.');
+  if (dairy === 'rare') effectParts.push('유제품을 거의 안 드셔서 보충량을 올렸어요.');
+  if (dairy === 'often') effectParts.push('유제품을 자주 드셔서 보충 필요량을 조금 낮췄어요.');
+  if (effectParts.length === 0) effectParts.push('입력하신 연령·성별에 맞춘 권장량이에요.');
+  document.getElementById('appliedEffect').textContent =
+    '→ ' + effectParts.join(' ');
+
+  document.getElementById('resultMain').textContent = base + ' mg';
+  document.getElementById('resultRange').innerHTML =
+    '참고 범위 <strong>' + minMg + '~' + maxMg +
+    ' mg</strong> (상한 2,500 mg 참고).';
+  document.getElementById('resultType').innerHTML =
+    '<strong>시트레이트·탄산염</strong> — 시트레이트는 위산 부족 시에도 흡수가 양호해요. 식사와 함께 나누어 먹으면 좋아요.';
+  document.getElementById('resultSplit').innerHTML =
+    '한 번에 500 mg 이하로 나누어 섭취하면 흡수에 유리해요. 비타민 D와 함께 보충하는 경우가 많아요.';
+
+  var tips = ['칼슘은 철분·아연 흡수를 방해할 수 있어요. 같은 시간대 고용량 복용은 피하세요.'];
+  if (age === '71') tips.push('71세 이상은 뼈 건강을 위해 1,200 mg 기준을 맞추는 것이 좋아요.');
+  document.getElementById('resultTips').innerHTML =
+    tips.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+
+  var parts = [];
+  if (age === '71') parts.push('71세 이상 기본 1,200 mg');
+  else if (age === '51-70' && gender === 'female') parts.push('여성 51~70세 기본 1,200 mg');
+  else parts.push('기본 1,000 mg');
+  if (dairyAdj[dairy] !== 0)
+    parts.push('유제품 ' + (dairyAdj[dairy] > 0 ? '+' : '') + dairyAdj[dairy]);
+  document.getElementById('calcExplanation').textContent =
+    '계산식: ' + parts.join(' → ') + ' = ' + base +
+    ' mg. NIH RDA와 유제품 섭취를 반영했습니다.';
+
+  var resultSection = document.getElementById('resultSection');
+  resultSection.classList.remove('visible');
+  void resultSection.offsetHeight;
+  resultSection.classList.add('visible');
+  setTimeout(function() {
+    resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+
+function syncCalciumPregnancyLactation() {
+  var gender = document.getElementById('gender').value;
+  var preg = document.getElementById('pregnant');
+  var lact = document.getElementById('lactation');
+  if (gender === 'male') {
+    preg.checked = false;
+    lact.checked = false;
+    preg.disabled = true;
+    lact.disabled = true;
+    preg.parentElement.classList.add('disabled');
+    lact.parentElement.classList.add('disabled');
+  } else {
+    preg.disabled = false;
+    lact.disabled = false;
+    preg.parentElement.classList.remove('disabled');
+    lact.parentElement.classList.remove('disabled');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  syncCalciumPregnancyLactation();
+  document.getElementById('gender').addEventListener('change', syncCalciumPregnancyLactation);
+});
+</script>
+

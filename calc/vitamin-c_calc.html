@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>맞춤형 비타민 C 계산기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; min-height:100%; background: linear-gradient(160deg, #f0f4f8 0%, #e2e8f0 100%); font-family: 'Noto Sans KR', sans-serif; color: #334155; line-height: 1.5; }
+.container { max-width: 520px; margin: 32px auto 48px; padding: 28px 24px; background: #fff; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04); }
+.header { text-align: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+.header h1 { font-size: 1.35rem; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+.header p { font-size: 0.875rem; color: #64748b; }
+.section-title { font-size: 0.8rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
+.field { margin: 16px 0; }
+.label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: #475569; }
+select { width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 1rem; transition: border-color 0.2s, box-shadow 0.2s; }
+select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
+.checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
+.checkbox-group label { flex: 1; min-width: 100px; background: #f8fafc; padding: 12px 14px; border-radius: 10px; cursor: pointer; border: 1px solid #e2e8f0; font-size: 0.9rem; transition: all 0.2s; }
+.checkbox-group label:hover { background: #f1f5f9; }
+.checkbox-group label.disabled { opacity: 0.6; cursor: not-allowed; pointer-events: none; }
+.checkbox-group input[type=checkbox] { margin-right: 8px; }
+.checkbox-group input:checked + span { font-weight: 600; color: #1e293b; }
+.checkbox-group input:disabled { cursor: not-allowed; }
+button.calc-btn { width: 100%; padding: 14px; font-size: 1rem; font-weight: 600; background: linear-gradient(180deg, #059669 0%, #047857 100%); color: #fff; border: none; border-radius: 12px; cursor: pointer; margin-top: 24px; transition: transform 0.15s, box-shadow 0.2s; }
+button.calc-btn:hover { transform: translateY(-1px); }
+button.calc-btn:active { transform: scale(0.98); transition-duration: 0.05s; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.result-section { margin-top: 28px; display: none; }
+.result-section.visible { display: block; animation: fadeIn 0.35s ease; }
+.result-section.visible .result-applied { animation: fadeInUp 0.45s ease 0.05s both; }
+.result-section.visible .result-card.primary { animation: fadeInUp 0.45s ease 0.15s both; }
+.result-section.visible .result-card.secondary { animation: fadeInUp 0.45s ease both; }
+.result-section.visible .result-card:nth-of-type(2) { animation-delay: 0.28s; }
+.result-section.visible .result-card:nth-of-type(3) { animation-delay: 0.4s; }
+.result-section.visible .result-card:nth-of-type(4) { animation-delay: 0.52s; }
+.result-section.visible .calc-basis { animation: fadeInUp 0.45s ease 0.64s both; }
+.result-section .result-applied, .result-section .result-card, .result-section .calc-basis { opacity: 0; }
+.result-card { margin-bottom: 14px; padding: 18px; border-radius: 12px; font-size: 0.95rem; }
+.result-card.primary { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; }
+.result-card.secondary { background: #f8fafc; border: 1px solid #e2e8f0; }
+.result-card h3 { font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 10px; }
+.result-card .value { font-size: 1.5rem; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+.result-card ul { margin: 8px 0 0 18px; color: #475569; }
+.result-card li { margin: 4px 0; }
+.result-applied { background: #f0fdf4; border: 1px solid #86efac; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; font-size: 0.9rem; color: #166534; }
+.result-applied h3 { font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; color: #15803d; }
+.result-applied ul { margin: 0; padding-left: 18px; }
+.result-applied li { margin: 4px 0; }
+.result-applied .effect { margin-top: 10px; padding-top: 10px; border-top: 1px solid #86efac; font-size: 0.85rem; color: #166534; }
+.calc-basis { margin-top: 14px; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
+.calc-basis summary { padding: 12px 14px; background: #f8fafc; font-size: 0.9rem; font-weight: 500; color: #64748b; cursor: pointer; list-style: none; }
+.calc-basis summary::-webkit-details-marker { display: none; }
+.calc-basis summary::after { content: ' 펼치기'; }
+.calc-basis[open] summary::after { content: ' 접기'; }
+.calc-basis .content { padding: 14px; font-size: 0.85rem; color: #64748b; line-height: 1.6; border-top: 1px solid #e2e8f0; }
+.trust-block { margin-top: 24px; padding: 18px; background: #f1f5f9; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 0.8rem; color: #64748b; }
+.trust-block h4 { font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 8px; }
+.trust-block ul { margin-left: 16px; }
+.trust-block li { margin: 4px 0; }
+.trust-block .disclaimer { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e2e8f0; font-style: italic; }
+.trust-block a { color: #2563eb; text-decoration: none; }
+.trust-block a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1>맞춤형 비타민 C 계산기</h1>
+    <p>성별·흡연·임신·수유를 반영한 참고용 권장량입니다.</p>
+  </header>
+  <p class="section-title">나의 정보 입력</p>
+  <div class="field">
+    <span class="label">성별</span>
+    <select id="gender">
+      <option value="male">남성</option>
+      <option value="female">여성</option>
+    </select>
+  </div>
+  <div class="field">
+    <span class="label">해당 시 선택</span>
+    <div class="checkbox-group">
+      <label><input type="checkbox" id="smoker" value="smoker"><span>흡연 (NIH: +35 mg)</span></label>
+      <label><input type="checkbox" id="pregnant" value="pregnancy"><span>임신 중</span></label>
+      <label><input type="checkbox" id="lactation" value="lactation"><span>수유 중</span></label>
+    </div>
+  </div>
+  <button class="calc-btn" onclick="calculateVitC()">권장량 계산하기</button>
+  <section class="result-section" id="resultSection">
+    <p class="section-title">계산 결과</p>
+    <div class="result-applied" id="resultApplied">
+      <h3>✅ 적용된 조건 (이 권장량에 반영된 입력이에요)</h3>
+      <ul id="appliedList"></ul>
+      <div class="effect" id="appliedEffect"></div>
+    </div>
+    <div class="result-card primary">
+      <h3>📊 일일 비타민 C 권장량</h3>
+      <div class="value" id="resultMain"></div>
+      <p style="font-size:0.85rem;color:#64748b;margin:4px 0 0;">입력하신 조건에 따라 계산된 맞춤 권장량이에요.</p>
+      <div id="resultRange" style="margin-top:8px;"></div>
+    </div>
+    <div class="result-card secondary">
+      <h3>💊 추천 형태</h3>
+      <div id="resultType"></div>
+    </div>
+    <div class="result-card secondary">
+      <h3>⏰ 섭취 방법 제안</h3>
+      <div id="resultSplit"></div>
+    </div>
+    <div class="result-card secondary">
+      <h3>💡 참고 팁</h3>
+      <ul id="resultTips"></ul>
+    </div>
+    <details class="calc-basis">
+      <summary>이 결과는 어떻게 계산되었나요?</summary>
+      <div class="content" id="calcExplanation"></div>
+    </details>
+  </section>
+  <div class="trust-block">
+    <h4>📚 참고 문헌 및 근거</h4>
+    <p style="margin-bottom:8px;">본 계산기의 <strong>기본 권장량</strong>은 NIH ODS 비타민 C RDA를 참고했고, 흡연 가산은 NIH 권장(+35 mg)을 반영했습니다.</p>
+    <ul>
+      <li><a href="https://ods.od.nih.gov/factsheets/VitaminC-HealthProfessional/" target="_blank" rel="noopener">NIH ODS, Vitamin C – Health Professional Fact Sheet</a> — 성인 RDA(남 90 mg, 여 75 mg), 흡연 시 +35 mg, 임신·수유</li>
+      <li><a href="https://www.kns.or.kr/nutrient.asp" target="_blank" rel="noopener">한국영양학회 영양소 섭취기준</a> — 2020 한국인 영양소 섭취기준</li>
+    </ul>
+    <p class="disclaimer">본 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 복용 전 의료진 상담을 권장합니다.</p>
+  </div>
+</div>
+<script>
+function calculateVitC() {
+  var gender = document.getElementById('gender').value;
+  var smoker = document.getElementById('smoker').checked;
+  var pregnant = document.getElementById('pregnant').checked;
+  var lactation = document.getElementById('lactation').checked;
+  /* NIH: 남 90 mg, 여 75 mg. 흡연 +35 mg. 임신 85 mg, 수유 120 mg */
+  var base = (gender === 'male') ? 90 : 75;
+  if (pregnant) base = 85;
+  if (lactation) base = 120;
+  if (smoker) base += 35;
+  base = Math.min(2000, Math.max(base, 75));
+  var minMg = Math.max(75, base - 25);
+  var maxMg = Math.min(2000, base + 25);
+  var genderLabel = document.querySelector('#gender option:checked').textContent;
+  var appliedItems = ['성별: ' + genderLabel];
+  if (smoker) appliedItems.push('해당: 흡연 (+35 mg)');
+  if (pregnant) appliedItems.push('해당: 임신 중');
+  if (lactation) appliedItems.push('해당: 수유 중');
+  document.getElementById('appliedList').innerHTML = appliedItems.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+  var effectParts = [];
+  if (pregnant) effectParts.push('임신이라 85 mg 기준을 적용했어요.');
+  else if (lactation) effectParts.push('수유라 120 mg 기준을 적용했어요.');
+  else if (gender === 'male') effectParts.push('남성 기본 90 mg을 적용했어요.');
+  else effectParts.push('여성 기본 75 mg을 적용했어요.');
+  if (smoker) effectParts.push('흡연 시 NIH 권장대로 35 mg을 더했어요.');
+  document.getElementById('appliedEffect').textContent = '→ ' + effectParts.join(' ');
+  document.getElementById('resultMain').textContent = base + ' mg';
+  document.getElementById('resultRange').innerHTML = '참고 범위 <strong>' + minMg + '~' + maxMg + ' mg</strong> (상한 2,000 mg 참고).';
+  document.getElementById('resultType').innerHTML = '<strong>아스코르빈산·리포소말</strong> — 아스코르빈산이 가장 흔해요. 리포소말은 위 자극이 적다는 보고가 있어요.';
+  document.getElementById('resultSplit').innerHTML = '나누어 먹으면 흡수에 유리해요. 식사와 함께 섭취해 보세요.';
+  var tips = ['비타민 C는 수용성이어서 과다 분은 소변으로 배설돼요. 고용량은 위 자극이 있을 수 있어요.'];
+  if (smoker) tips.push('흡연 시 비타민 C 요구량이 늘어난다는 NIH 권장을 반영했어요.');
+  document.getElementById('resultTips').innerHTML = tips.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+  var parts = [];
+  if (pregnant) parts.push('임신 기본 85 mg');
+  else if (lactation) parts.push('수유 기본 120 mg');
+  else parts.push((gender === 'male' ? '남성 기본 90' : '여성 기본 75') + ' mg');
+  if (smoker) parts.push('흡연 +35 mg');
+  document.getElementById('calcExplanation').textContent = '계산식: ' + parts.join(' → ') + ' = ' + base + ' mg. NIH RDA와 흡연·임신·수유를 반영했습니다.';
+  var resultSection = document.getElementById('resultSection');
+  resultSection.classList.remove('visible');
+  void resultSection.offsetHeight;
+  resultSection.classList.add('visible');
+  setTimeout(function() { resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+}
+function syncVitCPregnancyLactation() {
+  var gender = document.getElementById('gender').value;
+  var preg = document.getElementById('pregnant');
+  var lact = document.getElementById('lactation');
+  if (gender === 'male') {
+    preg.checked = false;
+    lact.checked = false;
+    preg.disabled = true;
+    lact.disabled = true;
+    preg.parentElement.classList.add('disabled');
+    lact.parentElement.classList.add('disabled');
+  } else {
+    preg.disabled = false;
+    lact.disabled = false;
+    preg.parentElement.classList.remove('disabled');
+    lact.parentElement.classList.remove('disabled');
+  }
+}
+document.getElementById('gender').addEventListener('change', syncVitCPregnancyLactation);
+syncVitCPregnancyLactation();
+</script>
+</body>
+</html>

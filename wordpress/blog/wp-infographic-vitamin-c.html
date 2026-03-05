@@ -1,0 +1,566 @@
+<!--
+  워드프레스 적용: "사용자 정의 HTML" 블록에 이 파일에서 <style> 부터 </script> 까지 통째로 복사해 붙여넣으세요.
+  계산기 링크: data-calc-url 값을 실제 비타민 C/비타민 D 계산기·블로그 주소로 바꾸세요.
+  예: https://내블로그.com/vitamin-dosage-calculator/
+  템플릿: 마그네슘 인포그래픽과 같은 구조(H2→H3→H4), 검은 배경, -shell 래퍼 없이 사용합니다.
+-->
+<style>
+/* ===== 워드프레스 비타민 C 인포그래픽 공통 (모바일·PC 글자 큼) ===== */
+html, body { margin:0; background:#000000; font-size: 18px; }
+#vc-infographic {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 28px 16px 40px;
+  box-sizing: border-box;
+  background: #000000;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #e5e7eb;
+  line-height: 1.65;
+  font-size: 1.0625rem;
+}
+
+/* 헤더 */
+.vc-header {
+  text-align: center;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #333333;
+}
+.vc-header p {
+  font-size: 1.15rem;
+  color: #d1d5db;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* 섹션 공통 · H2 / H3 / H4 계층 */
+.vc-section {
+  border-radius: 16px;
+  padding: 20px 20px 24px;
+  background: #020617;
+  border: 1px solid #1f2937;
+  margin-bottom: 20px;
+}
+.vc-section h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.vc-section h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.vc-section h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.vc-section p {
+  font-size: 1.05rem;
+  color: #f9fafb;
+  margin: 0 0 8px;
+  line-height: 1.6;
+}
+.vc-section p:last-child { margin-bottom: 0; }
+
+/* 역할 카드 (H4 = 카드 제목) */
+.vc-roles-main { margin-bottom: 20px; }
+.vc-roles-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.vc-role {
+  background: #020617;
+  border-radius: 14px;
+  padding: 14px 12px 16px;
+  text-align: left;
+  border: 1px solid #1f2937;
+}
+.vc-role-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.vc-role-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  background: #f97316;
+}
+.vc-role-label {
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+.vc-role-desc {
+  font-size: 1rem;
+  color: #e5e7eb;
+  line-height: 1.5;
+}
+.vc-roles-note {
+  margin-top: 16px;
+  font-size: 1rem;
+  color: #facc15;
+  line-height: 1.5;
+}
+
+/* RDA/상황별 가이드 느낌 */
+.vc-rda-main { }
+.vc-rda-nums {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 14px 0 18px;
+}
+.vc-rda-nums .num { text-align:center; }
+.vc-rda-nums .val {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #facc15;
+}
+.vc-rda-nums .label {
+  font-size: 1rem;
+  color: #a0a0a0;
+  margin-top: 4px;
+}
+.vc-rda-bar { margin-top: 12px; }
+.vc-rda-row { margin-bottom: 12px; }
+.vc-rda-row-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.98rem;
+  color: #a0a0a0;
+  margin-bottom: 6px;
+}
+.vc-rda-row-bg {
+  height: 22px;
+  background: #0b1120 !important;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.vc-rda-row-fill {
+  height: 100%;
+  background: linear-gradient(90deg,#f97316,#22c55e) !important;
+  border-radius: 999px;
+  min-width: 4px;
+}
+
+/* 부족/과다 (H3 사용) */
+.vc-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.vc-two-col ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 1.05rem;
+  color: #e5e7eb;
+  line-height: 1.6;
+}
+.vc-two-col li { margin: 6px 0; }
+.vc-two-col h3.vc-sub { font-size: 1.15rem; margin-bottom: 6px; }
+
+/* 형태별·섭취 가이드 (H4 = 형태명) */
+.vc-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.vc-type-card {
+  background: #020617;
+  border-radius: 14px;
+  padding: 14px 14px 16px;
+  border: 1px solid #1f2937;
+}
+.vc-type-card h4 {
+  font-size: 1.1rem;
+  margin: 0 0 6px;
+}
+.vc-type-card p {
+  font-size: 1rem;
+  color: #f9fafb;
+  margin: 0;
+}
+.vc-type-tag {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #f97316;
+  color: #f97316;
+  font-size: 0.9rem;
+}
+
+/* 퀴즈 & 버튼 */
+.vc-quiz-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.vc-quiz-btn {
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid #1f2937;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.vc-quiz-btn:hover { background: #0b1120; }
+.vc-quiz-btn.selected {
+  background: #f97316;
+  border-color: #f97316;
+  color: #020617;
+}
+.vc-quiz-result {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #1f2937;
+  display: none;
+  font-size: 1.05rem;
+}
+.vc-quiz-result.visible { display: block; }
+.vc-quiz-result strong { color: #f97316; font-size: 1.1rem; }
+.vc-link-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: #f97316;
+  color: #020617;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-decoration: none;
+}
+.vc-link-btn:hover { opacity:0.95; color:#020617; }
+
+/* CTA */
+.vc-cta-main {
+  text-align:center;
+  margin-top:8px;
+}
+.vc-cta-main p {
+  margin:0 0 10px;
+  font-size:1rem;
+  color:#e5e7eb;
+}
+.vc-cta-main .primary {
+  display:inline-block;
+  padding:12px 26px;
+  border-radius:999px;
+  background:#f97316;
+  color:#020617;
+  font-weight:700;
+  text-decoration:none;
+  font-size:0.98rem;
+}
+.vc-cta-main .primary:hover { opacity:0.95; color:#020617; }
+
+/* 참고 문헌 */
+.vc-trust-list {
+  margin:4px 0 0;
+  padding-left:18px;
+  font-size:0.9rem;
+  color:#e5e7eb;
+}
+.vc-trust-list li { margin:4px 0; }
+.vc-trust a { color:#facc15; text-decoration:none; }
+.vc-trust a:hover { text-decoration:underline; }
+.vc-trust small {
+  display:block;
+  margin-top:10px;
+  font-size:0.86rem;
+  color:#9ca3af;
+  font-style:italic;
+}
+
+/* ? 아이콘 툴팁 */
+.vc-info {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  margin-left:4px;
+  border-radius:999px;
+  background:#0b1120;
+  color:#facc15;
+  font-size:0.8rem;
+  cursor:help;
+  position:relative;
+}
+.vc-info::after {
+  content: attr(data-tip);
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:120%;
+  min-width:160px;
+  max-width:230px;
+  padding:8px 10px;
+  border-radius:8px;
+  background:#020617;
+  color:#e5e7eb;
+  font-size:0.78rem;
+  line-height:1.5;
+  border:1px solid #1f2937;
+  box-shadow:0 4px 18px rgba(0,0,0,0.6);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  z-index:5;
+}
+.vc-info::before {
+  content:'';
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:110%;
+  border-width:6px;
+  border-style:solid;
+  border-color:#020617 transparent transparent transparent;
+  opacity:0;
+  visibility:hidden;
+}
+.vc-info:hover::after,
+.vc-info:hover::before {
+  opacity:1;
+  visibility:visible;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 520px) {
+  #vc-infographic {
+    padding: 22px 12px 32px;
+  }
+  .vc-section {
+    padding:18px 14px 20px;
+    border-radius:14px;
+    margin-bottom:16px;
+  }
+  .vc-section h2 { font-size:1.2rem; }
+  .vc-section h3 { font-size:1.08rem; }
+  .vc-section h4 { font-size:1.02rem; }
+  .vc-section p { font-size:0.98rem; }
+  .vc-roles-list { grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); }
+  .vc-two-col { grid-template-columns:1fr; gap:12px; }
+  .vc-types-grid { grid-template-columns:1fr; }
+  .vc-quiz-btn { font-size:0.98rem; padding:11px 14px; }
+  .vc-link-btn { font-size:0.95rem; padding:10px 18px; }
+}
+</style>
+
+<div id="vc-infographic" data-calc-url="https://YOUR-SITE.com/vitamin-c-calculator/">
+  <header class="vc-header">
+    <p>항산화·면역·콜라겐 합성에 중요한 비타민 C. 권장량·부족·과다·음식·보충제를 한 번에 정리했습니다.</p>
+  </header>
+
+  <section class="vc-section vc-roles-main">
+    <h2>비타민 C의 주요 역할과 효능</h2>
+    <div class="vc-roles-list">
+      <div class="vc-role">
+        <div class="vc-role-top">
+          <div class="vc-role-icon">🛡️</div>
+          <div class="vc-role-label">항산화·면역</div>
+        </div>
+        <div class="vc-role-desc">활성산소로부터 세포를 보호하고, 면역세포 기능을 돕는 항산화 비타민입니다.</div>
+      </div>
+      <div class="vc-role">
+        <div class="vc-role-top">
+          <div class="vc-role-icon">🧵</div>
+          <div class="vc-role-label">콜라겐 합성</div>
+        </div>
+        <div class="vc-role-desc">피부·혈관·뼈·잇몸을 구성하는 콜라겐 합성에 필수적이라, 상처 회복·잇몸 건강과도 관련됩니다.</div>
+      </div>
+      <div class="vc-role">
+        <div class="vc-role-top">
+          <div class="vc-role-icon">🥬</div>
+          <div class="vc-role-label">철 흡수 촉진</div>
+        </div>
+        <div class="vc-role-desc">식물성(non-heme) 철의 흡수를 도와, 채식 위주 식단에서 특히 중요합니다.</div>
+      </div>
+      <div class="vc-role">
+        <div class="vc-role-top">
+          <div class="vc-role-icon">🧠</div>
+          <div class="vc-role-label">피로·기분</div>
+        </div>
+        <div class="vc-role-desc">스트레스·피로·기분과의 관련성이 연구되고 있지만, 만능 피로 해결제는 아닙니다.</div>
+      </div>
+    </div>
+    <p class="vc-roles-note">※ 적정량에서는 도움이 되지만, <strong>고용량 비타민 C가 모든 질환을 해결해 주는 것은 아니라는 점</strong>을 함께 기억해 주세요.</p>
+  </section>
+
+  <section class="vc-section vc-rda-main">
+    <h2>일일 권장량과 상황별 가이드</h2>
+    <div class="vc-rda-nums">
+      <div class="num">
+        <div class="val">75~90</div>
+        <div class="label">성인 RDA mg/일</div>
+      </div>
+      <div class="num">
+        <div class="val">+35</div>
+        <div class="label">흡연 시 추가 mg/일 <span class="vc-info" data-tip="흡연자는 산화 스트레스가 커서, 비흡연자보다 하루 약 35 mg 더 섭취할 것을 권장합니다.">?</span></div>
+      </div>
+      <div class="num">
+        <div class="val">2,000</div>
+        <div class="label">상한 UL mg/일 <span class="vc-info" data-tip="성인에서 장기간 넘어가지 않기를 권장하는 상한선입니다. 그 이상 고용량은 위장장애·신장결석 위험을 높일 수 있습니다.">?</span></div>
+      </div>
+    </div>
+    <div class="vc-rda-bar">
+      <div class="vc-rda-row">
+        <div class="vc-rda-row-header"><span>성인 기본</span><span>75~90 mg</span></div>
+        <div class="vc-rda-row-bg"><div class="vc-rda-row-fill" style="width:25%;"></div></div>
+      </div>
+      <div class="vc-rda-row">
+        <div class="vc-rda-row-header"><span>흡연자</span><span>+35 mg</span></div>
+        <div class="vc-rda-row-bg"><div class="vc-rda-row-fill" style="width:35%;"></div></div>
+      </div>
+      <div class="vc-rda-row">
+        <div class="vc-rda-row-header"><span>상한선(UL)</span><span>2,000 mg</span></div>
+        <div class="vc-rda-row-bg"><div class="vc-rda-row-fill" style="width:100%;"></div></div>
+      </div>
+    </div>
+    <p style="margin-top:8px;">과일·채소를 넉넉히 먹는다면 권장량을 쉽게 채울 수 있습니다. 다만 흡연·감염·스트레스·임신·수유 등 상황에 따라 필요량이 변할 수 있어, <strong>개인별 상황</strong>을 계산기로 한 번 정리해 보는 것이 좋습니다.</p>
+    <a href="#" class="vc-link-btn vc-calc-link">→ 비타민 C·비타민 D 관련 계산/설명 보기</a>
+  </section>
+
+  <section class="vc-section">
+    <h2>부족 시 / 과다 시</h2>
+    <div class="vc-two-col">
+      <div>
+        <h3 class="vc-sub" style="color:#facc15;">부족 시</h3>
+        <ul>
+          <li>심한 부족에서는 옛날에 말하던 괴혈병(잇몸 출혈, 멍, 상처 회복 지연)이 나타날 수 있습니다.</li>
+          <li>가벼운 부족은 잦은 피로·집중력 저하·면역 약화 등과 연관성이 논의됩니다.</li>
+          <li>평소 과일·채소 섭취가 적다면, 식단과 함께 비타민 C 섭취를 점검해 볼 필요가 있습니다.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="vc-sub" style="color:#f97316;">과다 시</h3>
+        <ul>
+          <li>2,000 mg 이상 고용량을 장기간 복용하면, 복통·설사·속쓰림 등 위장 장애가 흔하게 나타날 수 있습니다.</li>
+          <li>일부에서는 신장결석(특히 옥살산칼슘 결석) 위험 증가가 논의됩니다. <span class="vc-info" data-tip="신장결석 병력이 있다면, 고용량 비타민 C는 반드시 의료진과 상의 후 복용하는 것이 안전합니다.">?</span></li>
+          <li>감기 예방·치료 목적의 매우 고용량 요법은 아직 논쟁이 많고, 일반인에게 일상적으로 권장되지는 않습니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="vc-section">
+    <h2>음식·보충제 선택 가이드</h2>
+    <div class="vc-types-grid">
+      <div class="vc-type-card">
+        <h4>음식으로 섭취</h4>
+        <p>귤·오렌지·키위·딸기, 피망·브로콜리·양배추 등 다양한 과일·채소에 비타민 C가 풍부합니다. 하루 2~3회 색깔 있는 채소·과일을 먹는 것이 기본입니다.</p>
+        <span class="vc-type-tag">식단이 좋다면 보충량 ↓</span>
+      </div>
+      <div class="vc-type-card">
+        <h4>일반 정제 vs 서방형</h4>
+        <p>일반 정제는 흡수가 빠르고, 서방형은 천천히 방출되도록 설계된 제형입니다. 실제 체감 차이는 개인마다 다르며, 중요한 것은 <strong>하루 총량과 위장 편안함</strong>입니다.</p>
+        <span class="vc-type-tag">위장 상태·편의성 기준 선택</span>
+      </div>
+      <div class="vc-type-card">
+        <h4>리포좀·고가 제형</h4>
+        <p>리포좀 등 고가 제형은 흡수율을 강조하지만, 모든 사람에게 필수적인 것은 아닙니다. 예산·복용 편의성과 함께 비교해 보세요.</p>
+        <span class="vc-type-tag">가성비 vs 프리미엄 <span class="vc-info" data-tip="만성질환이 없고, 기본 섭취가 부족한 정도라면 일반 정제만으로도 충분한 경우가 많습니다.">?</span></span>
+      </div>
+      <div class="vc-type-card">
+        <h4>다른 영양소와의 조합</h4>
+        <p>비타민 C는 아연·비타민 D·철과 함께 “면역 패키지”로 들어가는 경우가 많습니다. 각각의 상한·부작용을 고려해 <strong>총 섭취량</strong>을 계산하는 것이 중요합니다.</p>
+        <span class="vc-type-tag">복합제 사용 시 라벨 확인</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="vc-section">
+    <h2>간단 체험 — 나는 어느 쪽에 가깝나요?</h2>
+    <p style="margin-bottom:8px;">본인 상황과 가장 가까운 선택지를 하나 골라보세요.</p>
+    <div class="vc-quiz-options">
+      <button type="button" class="vc-quiz-btn"
+        data-type="lowFruitVeg"
+        data-name="과일·채소를 거의 먹지 않음"
+        data-desc="과일·채소 섭취가 적다면, 비타민 C 부족 가능성이 높습니다. 식단을 먼저 보완하고, 부족한 부분만 보충제로 채우는 전략을 계산기로 정리해 보세요.">
+        과일·채소를 거의 먹지 않는다
+      </button>
+      <button type="button" class="vc-quiz-btn"
+        data-type="smoker"
+        data-name="흡연 또는 간접흡연이 많음"
+        data-desc="흡연·간접흡연이 잦다면 산화 스트레스와 비타민 C 소모가 늘어납니다. 하루 추가 35 mg 이상이 필요할 수 있어, 계산기를 통해 내 상황을 정리해보는 것이 좋습니다.">
+        흡연/간접흡연에 자주 노출된다
+      </button>
+      <button type="button" class="vc-quiz-btn"
+        data-type="highDose"
+        data-name="고용량 비타민 C를 자주 복용"
+        data-desc="수 g 단위 고용량을 자주 복용한다면, 위장장애·신장결석 위험을 함께 살펴야 합니다. 질환 치료 목적이 아니라면 상한(2,000 mg) 안에서 조절하는 것이 안전합니다.">
+        수 g 단위 고용량 비타민 C를 자주 먹는다
+      </button>
+    </div>
+    <div class="vc-quiz-result" id="vcQuizResult">
+      <strong id="vcQuizType"></strong>
+      <p id="vcQuizDesc" style="margin:6px 0 0;"></p>
+      <a href="#" class="vc-link-btn vc-calc-link">→ 비타민 C·비타민 D 관련 계산/설명 페이지로 이동</a>
+    </div>
+  </section>
+
+  <section class="vc-section vc-trust">
+    <h2>참고 문헌 및 면책</h2>
+    <ul class="vc-trust-list">
+      <li><a href="https://ods.od.nih.gov/factsheets/VitaminC-HealthProfessional/" target="_blank" rel="noopener">NIH ODS, Vitamin C – Health Professional Fact Sheet</a> — RDA(75~90 mg), 흡연자 추가 35 mg, 상한(UL 2,000 mg) 및 연구 정리</li>
+      <li><a href="https://www.kns.or.kr/nutrient.asp" target="_blank" rel="noopener">한국영양학회 영양소 섭취기준</a> — 2020 한국인 영양소 섭취기준(비타민 C 포함)</li>
+    </ul>
+    <small>본 글과 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 복용 전에는 개인의 질환·복용 약·혈액검사 결과를 함께 고려해 <strong>의료진과 상담</strong>하는 것을 권장합니다.</small>
+  </section>
+
+  <section class="vc-section">
+    <div class="vc-cta-main">
+      <p>식습관·흡연·스트레스·다른 영양제 복용 여부를 입력하면, 비타민 C와 비타민 D 섭취 전략을 한눈에 정리할 수 있어요.</p>
+      <a href="#" class="primary vc-calc-link">맞춤형 비타민 C·비타민 D 계산/설명 페이지 열기</a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function() {
+  var root = document.getElementById('vc-infographic');
+  if (!root) return;
+  var calcUrl = (root.getAttribute('data-calc-url') || '').trim();
+  if (calcUrl) {
+    root.querySelectorAll('.vc-calc-link').forEach(function(a) { a.href = calcUrl; });
+  }
+  var opts = root.querySelectorAll('.vc-quiz-btn');
+  var result = root.querySelector('#vcQuizResult');
+  var typeName = root.querySelector('#vcQuizType');
+  var quizDesc = root.querySelector('#vcQuizDesc');
+  opts.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      opts.forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      typeName.textContent = '선택한 상황: ' + btn.getAttribute('data-name');
+      quizDesc.textContent = btn.getAttribute('data-desc');
+      result.classList.add('visible');
+    });
+  });
+})();
+</script>
+

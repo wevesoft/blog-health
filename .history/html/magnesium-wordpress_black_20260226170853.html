@@ -1,0 +1,235 @@
+<!--
+  워드프레스 적용: "사용자 정의 HTML" 블록에 이 전체 내용을 붙여넣으세요.
+  계산기 링크: 아래 data-calc-url 값을 실제 계산기 페이지 주소로 바꾸세요.
+  예: https://내블로그.com/magnesume_calc_black.html
+-->
+<div id="mg-infographic" class="mg-guide mg-dark" data-calc-url="https://YOUR-SITE.com/magnesume_calc_black.html" style="font-family:'Noto Sans KR',sans-serif;color:#e5e7eb;line-height:1.6;max-width:720px;margin:0 auto;padding:0 16px 40px;box-sizing:border-box;background:#050505;">
+<style>
+.mg-guide * { box-sizing: border-box; }
+.mg-guide.mg-dark { background:#050505; border-radius:24px; padding-top:28px; padding-bottom:32px; }
+.mg-guide .mg-card { border-radius: 16px; padding: 20px; margin-bottom: 20px; background:#111827; border:1px solid #1f2937; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.mg-guide .mg-card h2 { font-size: 1.15rem; font-weight: 700; margin: 0 0 12px; color: #f9fafb; }
+.mg-hero { text-align: center; padding: 32px 20px 28px; background: radial-gradient(circle at top left,#f97316 0%,#ef4444 35%,#111827 100%); border-radius: 20px; margin-bottom: 24px; color: #f9fafb; border:1px solid #f97316; box-shadow:0 18px 40px rgba(0,0,0,0.6); }
+.mg-hero h1 { font-size: 1.6rem; font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; }
+.mg-hero .en { font-size: 0.9rem; opacity: 0.9; margin-bottom: 12px; }
+.mg-hero p { font-size: 0.95rem; margin: 0; opacity: 0.95; line-height: 1.5; }
+.mg-roles { background: #020617; border: 1px solid #1e293b; }
+.mg-roles .list { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 12px; }
+.mg-roles .item { background: #111827; border-radius: 12px; padding: 14px; text-align: center; box-shadow: 0 1px 10px rgba(0,0,0,0.45); }
+.mg-roles .item .icon { width: 40px; height: 40px; margin: 0 auto 8px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+.mg-roles .item .icon.energy { background: rgba(250,204,21,0.12); color: #facc15; }
+.mg-roles .item .icon.muscle { background: rgba(56,189,248,0.14); color: #38bdf8; }
+.mg-roles .item .icon.bone { background: rgba(129,140,248,0.16); color: #a5b4fc; }
+.mg-roles .item .icon.sleep { background: rgba(147,51,234,0.16); color: #c4b5fd; }
+.mg-roles .item strong { font-size: 0.85rem; display: block; color: #e5e7eb; }
+.mg-roles .item span { font-size: 0.75rem; color: #9ca3af; }
+.mg-rda { background: #020617; border: 1px solid #1d4ed8; }
+.mg-rda .big-nums { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 16px 0; }
+.mg-rda .big-nums .num { text-align: center; }
+.mg-rda .big-nums .val { font-size: 1.8rem; font-weight: 800; color: #f97316; line-height: 1.2; }
+.mg-rda .big-nums .label { font-size: 0.8rem; color: #9ca3af; margin-top: 4px; }
+.mg-rda .chart { margin: 20px 0 16px; }
+.mg-rda .bar-wrap { margin-bottom: 12px; }
+.mg-rda .bar-wrap .label-row { display: flex; justify-content: space-between; font-size: 0.8rem; color: #9ca3af; margin-bottom: 4px; }
+.mg-rda .bar-wrap .bar-bg { height: 28px; background: #111827; border-radius: 8px; overflow: hidden; }
+.mg-rda .bar-wrap .bar-fill { height: 100%; border-radius: 8px; transition: width 0.5s ease; }
+.mg-rda .bar-wrap .bar-fill.female { background: linear-gradient(90deg, #6366f1, #a855f7); width: 69%; }
+.mg-rda .bar-wrap .bar-fill.male { background: linear-gradient(90deg, #0ea5e9, #22c55e); width: 93%; }
+.mg-rda .bar-wrap .bar-fill.upper { background: linear-gradient(90deg, #f97316, #facc15); width: 100%; }
+.mg-rda .mg-cta { display: inline-block; margin-top: 12px; padding: 12px 20px; background: #f97316; color: #020617; font-weight: 600; border-radius: 999px; text-decoration: none; font-size: 0.95rem; }
+.mg-rda .mg-cta:hover { opacity: 0.95; color: #020617; }
+.mg-symptoms { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.mg-symptoms .mg-card { margin-bottom: 0; }
+.mg-low { background: rgba(153,27,27,0.15); border: 1px solid #b91c1c; }
+.mg-low h2 { color: #fecaca; }
+.mg-high { background: rgba(180,83,9,0.18); border: 1px solid #ea580c; }
+.mg-high h2 { color: #fed7aa; }
+.mg-symptoms ul { margin: 0; padding-left: 18px; font-size: 0.9rem; color: #e5e7eb; }
+.mg-symptoms li { margin: 6px 0; }
+@media (max-width: 520px) { .mg-symptoms { grid-template-columns: 1fr; } }
+.mg-types { background: #020617; border: 1px solid #1f2937; }
+.mg-types .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 12px; }
+.mg-types .type-card { border-radius: 12px; padding: 16px; color: #e5e7eb; position: relative; overflow: hidden; background: #111827; border:1px solid #1f2937; }
+.mg-types .type-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.mg-types .type-card.glycinate::before { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+.mg-types .type-card.citrate::before { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
+.mg-types .type-card.malate::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.mg-types .type-card.oxide::before { background: linear-gradient(90deg, #9ca3af, #e5e7eb); }
+.mg-types .type-card strong { font-size: 0.95rem; display: block; margin-bottom: 6px; }
+.mg-types .type-card p { font-size: 0.8rem; color: #9ca3af; margin: 0; line-height: 1.45; }
+.mg-quiz { background: #020617; border: 1px solid #4c1d95; }
+.mg-quiz .prompt { font-size: 0.95rem; color: #e5e7eb; font-weight: 500; margin-bottom: 12px; }
+.mg-quiz .options { display: flex; flex-wrap: wrap; gap: 10px; }
+.mg-quiz .opt { padding: 12px 16px; border: 1px solid #4c1d95; border-radius: 12px; background: #111827; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; color:#e5e7eb; }
+.mg-quiz .opt:hover { background: #1f2937; border-color: #7c3aed; }
+.mg-quiz .opt.selected { background: #7c3aed; color: #fff; border-color: #7c3aed; }
+.mg-quiz .result { margin-top: 16px; padding: 16px; border-radius: 12px; background: #020617; border: 1px solid #7c3aed; display: none; }
+.mg-quiz .result.visible { display: block; }
+.mg-quiz .result strong { color: #c4b5fd; font-size: 1rem; }
+.mg-quiz .result .go-calc { display: inline-block; margin-top: 10px; padding: 10px 18px; background: #f97316; color: #020617; font-weight: 600; border-radius: 999px; text-decoration: none; font-size: 0.9rem; }
+.mg-quiz .result .go-calc:hover { opacity: 0.95; color: #020617; }
+.mg-caution { background: rgba(250,204,21,0.08); border: 1px solid #eab308; }
+.mg-caution h2 { color: #fde68a; }
+.mg-caution ul { margin: 0; padding-left: 20px; font-size: 0.9rem; color: #eab308; }
+.mg-caution li { margin: 8px 0; }
+.mg-trust { background: #020617; border: 1px solid #1f2937; font-size: 0.85rem; color: #9ca3af; }
+.mg-trust h2 { font-size: 1rem; color: #e5e7eb; }
+.mg-trust a { color: #f97316; text-decoration: none; }
+.mg-trust a:hover { text-decoration: underline; }
+.mg-trust .disclaimer { margin-top: 12px; padding-top: 12px; border-top: 1px solid #1f2937; font-style: italic; color:#6b7280; }
+.mg-cta-box { text-align: center; padding: 24px 20px; background: #020617; border-radius: 16px; color: #f9fafb; border:1px solid #1f2937; }
+.mg-cta-box p { margin: 0 0 14px; font-size: 0.95rem; opacity: 0.95; }
+.mg-cta-box .btn { display: inline-block; padding: 14px 28px; background: #f97316; color: #020617; font-weight: 700; border-radius: 999px; text-decoration: none; font-size: 1rem; }
+.mg-cta-box .btn:hover { opacity: 0.95; color: #020617; }
+</style>
+
+  <section class="mg-hero mg-card">
+    <h1>마그네슘 완벽 가이드</h1>
+    <p class="en">Magnesium</p>
+    <p>수면·근육·에너지 대사에 관여하는 필수 미네랄. 권장량·형태·주의사항을 한눈에 보세요.</p>
+  </section>
+
+  <section class="mg-card mg-roles">
+    <h2>마그네슘의 역할과 효능</h2>
+    <div class="list">
+      <div class="item"><div class="icon energy">⚡</div><strong>에너지 대사</strong><span>ATP·300+ 효소</span></div>
+      <div class="item"><div class="icon muscle">💪</div><strong>근육·신경</strong><span>수축·이완·전달</span></div>
+      <div class="item"><div class="icon bone">🦴</div><strong>뼈 건강</strong><span>골 밀도 유지</span></div>
+      <div class="item"><div class="icon sleep">🌙</div><strong>수면·긴장</strong><span>완화에 도움 가능</span></div>
+    </div>
+    <p style="margin:12px 0 0;font-size:0.85rem;color:#6ee7b7;">※ 효능은 “도움이 될 수 있다” 수준으로 이해해 주세요.</p>
+  </section>
+
+  <section class="mg-card mg-rda">
+    <h2>일일 권장량 (NIH RDA 기준)</h2>
+    <div class="big-nums">
+      <div class="num"><div class="val">310~320</div><div class="label">여성 mg/일</div></div>
+      <div class="num"><div class="val">400~420</div><div class="label">남성 mg/일</div></div>
+      <div class="num"><div class="val">~450</div><div class="label">보충 상한 참고</div></div>
+    </div>
+    <div class="chart">
+      <div class="bar-wrap">
+        <div class="label-row"><span>여성 권장</span><span>310 mg</span></div>
+        <div class="bar-bg"><div class="bar-fill female"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="label-row"><span>남성 권장</span><span>420 mg</span></div>
+        <div class="bar-bg"><div class="bar-fill male"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="label-row"><span>상한 참고</span><span>450 mg</span></div>
+        <div class="bar-bg"><div class="bar-fill upper"></div></div>
+      </div>
+    </div>
+    <p style="margin:0;font-size:0.85rem;color:#9ca3af;">운동·카페인·증상에 따라 개인별 적정량이 달라질 수 있어요.</p>
+    <a href="#" class="mg-cta mg-calc-link">→ 내 맞춤 권장량 계산하기</a>
+  </section>
+
+  <section class="mg-symptoms">
+    <div class="mg-card mg-low">
+      <h2>⚠️ 부족 시</h2>
+      <ul>
+        <li>식욕 저하, 피로</li>
+        <li>눈 떨림, 근육 경련(쥐)</li>
+        <li>불면, 불안감</li>
+      </ul>
+    </div>
+    <div class="mg-card mg-high">
+      <h2>⚠️ 과다 시</h2>
+      <ul>
+        <li>보충제 과다 → 설사, 복통</li>
+        <li>음식만으로 과다는 드묾</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mg-card mg-types">
+    <h2>형태별 선택 가이드</h2>
+    <div class="grid">
+      <div class="type-card glycinate">
+        <strong>글리시네이트</strong>
+        <p>흡수 좋음. 수면·긴장 완화에 자주 추천.</p>
+        <p style="margin-top:6px;color:#c4b5fd;font-weight:500;">수면 문제, 긴장</p>
+      </div>
+      <div class="type-card citrate">
+        <strong>시트레이트</strong>
+        <p>흡수 양호, 변 비침 적음. 일반 보충에 적합.</p>
+        <p style="margin-top:6px;color:#22d3ee;font-weight:500;">일반·소화 고려</p>
+      </div>
+      <div class="type-card malate">
+        <strong>말레이트</strong>
+        <p>근육 에너지 대사와 연관 소개됨.</p>
+        <p style="margin-top:6px;color:#f97316;font-weight:500;">근육 피로, 다리 쥐</p>
+      </div>
+      <div class="type-card oxide">
+        <strong>산화물</strong>
+        <p>함량 대비 흡수는 낮은 편. 저렴한 보충용.</p>
+        <p style="margin-top:6px;color:#9ca3af;font-weight:500;">저렴한 보충</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mg-card mg-quiz">
+    <h2>체험 — 나에게 맞는 형태는?</h2>
+    <p class="prompt">가장 신경 쓰이는 목적을 하나 골라보세요.</p>
+    <div class="options">
+      <button type="button" class="opt" data-type="glycinate" data-name="글리시네이트" data-desc="수면·긴장 완화에 자주 추천돼요. 정확한 권장량은 계산기에서 확인하세요.">수면·긴장 완화</button>
+      <button type="button" class="opt" data-type="malate" data-name="말레이트" data-desc="근육 피로·다리 쥐에 자주 소개돼요. 권장량은 계산기로 맞춤 확인하세요.">근육 피로·다리 쥐</button>
+      <button type="button" class="opt" data-type="citrate" data-name="시트레이트" data-desc="일반적인 보충·소화 고려에 적합해요. 내 일일 권장량은 계산기에서.">일반 보충·소화</button>
+    </div>
+    <div class="result" id="quizResult">
+      <strong id="quizTypeName"></strong>
+      <p id="quizDesc" style="margin:8px 0 0;"></p>
+      <a href="#" class="go-calc mg-calc-link">→ 맞춤 권장량 계산기로 이동</a>
+    </div>
+  </section>
+
+  <section class="mg-card mg-caution">
+    <h2>주의사항·상호작용</h2>
+    <ul>
+      <li><strong>약물</strong>: 항생제, 이뇨제, 비스포스포네이트 등과 상호작용 가능 → 복용 중이면 의사·약사에게 문의하세요.</li>
+      <li><strong>신장</strong>: 신장 기능이 좋지 않을 때는 보충 제한될 수 있음 → 의료진 상담 필요.</li>
+      <li><strong>다른 미네랄</strong>: 매우 높은 용량의 아연 보충은 마그네슘 흡수를 방해할 수 있음 (NIH ODS).</li>
+    </ul>
+  </section>
+
+  <section class="mg-card mg-trust">
+    <h2>참고 문헌 및 면책</h2>
+    <ul>
+      <li><a href="https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/" target="_blank" rel="noopener">NIH ODS - Magnesium (Health Professional)</a> — 권장량·형태별 흡수</li>
+      <li><a href="https://www.kns.or.kr/nutrient.asp" target="_blank" rel="noopener">한국영양학회 영양소 섭취기준</a> — 2020 한국인 영양소 섭취기준</li>
+    </ul>
+    <p class="disclaimer">본 글과 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 복용 전 의료진과 상담하세요.</p>
+  </section>
+
+  <section class="mg-cta-box">
+    <p>성별·체중·운동·카페인·증상을 입력하면 일일 권장량과 추천 형태를 한 번에 볼 수 있어요.</p>
+    <a href="#" class="btn mg-calc-link">맞춤형 마그네슘 계산기 열기</a>
+  </section>
+
+</div>
+
+<script>
+(function() {
+  var root = document.getElementById('mg-infographic');
+  if (!root) return;
+  var calcUrl = (root.getAttribute('data-calc-url') || '').trim();
+  if (calcUrl) {
+    root.querySelectorAll('.mg-calc-link').forEach(function(a) { a.href = calcUrl; });
+  }
+  var opts = root.querySelectorAll('.mg-quiz .opt');
+  var result = root.querySelector('#quizResult');
+  var typeName = root.querySelector('#quizTypeName');
+  var quizDesc = root.querySelector('#quizDesc');
+  opts.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      opts.forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      typeName.textContent = '추천: ' + btn.getAttribute('data-name');
+      quizDesc.textContent = btn.getAttribute('data-desc');
+      result.classList.add('visible');
+    });
+  });
+})();
+</script>
+

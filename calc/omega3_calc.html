@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>맞춤형 오메가3 (EPA/DHA) 계산기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; min-height:100%; background: linear-gradient(160deg, #f0f4f8 0%, #e2e8f0 100%); font-family: 'Noto Sans KR', sans-serif; color: #334155; line-height: 1.5; }
+.container { max-width: 520px; margin: 32px auto 48px; padding: 28px 24px; background: #fff; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04); }
+.header { text-align: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+.header h1 { font-size: 1.35rem; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+.header p { font-size: 0.875rem; color: #64748b; }
+.section-title { font-size: 0.8rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
+.field { margin: 16px 0; }
+.label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: #475569; }
+select { width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 1rem; transition: border-color 0.2s, box-shadow 0.2s; }
+select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
+.slider-wrap { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+.slider-wrap input[type=range] { flex: 1; height: 8px; -webkit-appearance: none; appearance: none; background: #e2e8f0; border-radius: 4px; }
+.slider-wrap input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #0d9488; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.slider-value { min-width: 48px; font-weight: 600; color: #1e293b; font-size: 0.95rem; }
+.presets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.preset-btn { padding: 8px 14px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; font-size: 0.875rem; color: #475569; cursor: pointer; transition: all 0.2s; }
+.preset-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
+.preset-btn.active { background: #ccfbf1; border-color: #0d9488; color: #0f766e; }
+button.calc-btn { width: 100%; padding: 14px; font-size: 1rem; font-weight: 600; background: linear-gradient(180deg, #0d9488 0%, #0f766e 100%); color: #fff; border: none; border-radius: 12px; cursor: pointer; margin-top: 24px; transition: transform 0.15s, box-shadow 0.2s; box-shadow: 0 2px 8px rgba(13, 148, 136, 0.35); }
+button.calc-btn:hover { transform: translateY(-1px); }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.result-section { margin-top: 28px; display: none; }
+.result-section.visible { display: block; animation: fadeIn 0.35s ease; }
+.result-section.visible .result-applied { animation: fadeInUp 0.45s ease 0.05s both; }
+.result-section.visible .result-card.primary { animation: fadeInUp 0.45s ease 0.15s both; }
+.result-section.visible .result-card.secondary { animation: fadeInUp 0.45s ease both; }
+.result-section.visible .result-card:nth-of-type(2) { animation-delay: 0.28s; }
+.result-section.visible .result-card:nth-of-type(3) { animation-delay: 0.4s; }
+.result-section.visible .result-card:nth-of-type(4) { animation-delay: 0.52s; }
+.result-section.visible .calc-basis { animation: fadeInUp 0.45s ease 0.64s both; }
+.result-section .result-applied, .result-section .result-card, .result-section .calc-basis { opacity: 0; }
+.result-applied { background: #f0fdf4; border: 1px solid #86efac; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; font-size: 0.9rem; color: #166534; }
+.result-applied h3 { font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; color: #15803d; }
+.result-applied ul { margin: 0; padding-left: 18px; }
+.result-applied li { margin: 4px 0; }
+.result-applied .effect { margin-top: 10px; padding-top: 10px; border-top: 1px solid #86efac; font-size: 0.85rem; color: #166534; }
+.result-card { margin-bottom: 14px; padding: 18px; border-radius: 12px; font-size: 0.95rem; }
+.result-card.primary { background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); border: 1px solid #99f6e4; }
+.result-card.secondary { background: #f8fafc; border: 1px solid #e2e8f0; }
+.result-card h3 { font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 10px; }
+.result-card .value { font-size: 1.5rem; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+.result-card ul { margin: 8px 0 0 18px; color: #475569; }
+.result-card li { margin: 4px 0; }
+.calc-basis { margin-top: 14px; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
+.calc-basis summary { padding: 12px 14px; background: #f8fafc; font-size: 0.9rem; font-weight: 500; color: #64748b; cursor: pointer; list-style: none; }
+.calc-basis summary::-webkit-details-marker { display: none; }
+.calc-basis summary::after { content: ' 펼치기'; }
+.calc-basis[open] summary::after { content: ' 접기'; }
+.calc-basis .content { padding: 14px; font-size: 0.85rem; color: #64748b; line-height: 1.6; border-top: 1px solid #e2e8f0; }
+.trust-block { margin-top: 24px; padding: 18px; background: #f1f5f9; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 0.8rem; color: #64748b; }
+.trust-block h4 { font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 8px; }
+.trust-block ul { margin-left: 16px; }
+.trust-block li { margin: 4px 0; }
+.trust-block .disclaimer { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e2e8f0; font-style: italic; }
+.trust-block a { color: #2563eb; text-decoration: none; }
+.trust-block a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header class="header">
+    <h1>맞춤형 오메가3 (EPA/DHA) 계산기</h1>
+    <p>목적·생선 섭취·체중을 반영한 EPA+DHA 참고용 권장량입니다.</p>
+  </header>
+
+  <p class="section-title">나의 정보 입력</p>
+
+  <div class="field">
+    <span class="label">체중 (kg) <span class="hint" style="color:#94a3b8;font-size:0.85rem;">— 빠른 선택</span></span>
+    <div class="slider-wrap">
+      <input type="range" id="weightSlider" min="40" max="120" value="70" step="1">
+      <span class="slider-value" id="weightDisplay">70</span> kg
+    </div>
+    <input type="number" id="weight" min="40" max="120" value="70" placeholder="70" style="margin-top:8px;width:100%;padding:12px 14px;border:1px solid #cbd5e1;border-radius:10px;font-size:1rem;">
+    <div class="presets" id="weightPresets">
+      <button type="button" class="preset-btn" data-value="50">50</button>
+      <button type="button" class="preset-btn" data-value="60">60</button>
+      <button type="button" class="preset-btn active" data-value="70">70</button>
+      <button type="button" class="preset-btn" data-value="80">80</button>
+      <button type="button" class="preset-btn" data-value="90">90</button>
+    </div>
+  </div>
+
+  <div class="field">
+    <span class="label">목적 (가장 해당하는 것)</span>
+    <select id="purpose">
+      <option value="general">일반 유지·건강</option>
+      <option value="heart">심혈관·혈행</option>
+      <option value="brain">두뇌·인지</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <span class="label">생선 섭취 (등푸른생선·연어 등)</span>
+    <select id="fish">
+      <option value="rare">거의 안 먹음</option>
+      <option value="sometimes">가끔 (주 1~2회)</option>
+      <option value="often" selected>자주 (주 3회 이상)</option>
+    </select>
+  </div>
+
+  <button class="calc-btn" onclick="calculateOmega3()">권장량 계산하기</button>
+
+  <section class="result-section" id="resultSection">
+    <p class="section-title">계산 결과</p>
+    <div class="result-applied" id="resultApplied">
+      <h3>✅ 적용된 조건 (이 권장량에 반영된 입력이에요)</h3>
+      <ul id="appliedList"></ul>
+      <div class="effect" id="appliedEffect"></div>
+    </div>
+    <div class="result-card primary">
+      <h3>📊 일일 EPA+DHA 권장량</h3>
+      <div class="value" id="resultMain"></div>
+      <p style="font-size:0.85rem;color:#64748b;margin:4px 0 0;">입력하신 조건에 따라 계산된 맞춤 권장량이에요.</p>
+      <div id="resultRange" style="margin-top:8px;"></div>
+    </div>
+    <div class="result-card secondary">
+      <h3>💊 추천 형태</h3>
+      <div id="resultType"></div>
+    </div>
+    <div class="result-card secondary">
+      <h3>⏰ 섭취 방법 제안</h3>
+      <div id="resultSplit"></div>
+    </div>
+    <div class="result-card secondary">
+      <h3>💡 참고 팁</h3>
+      <ul id="resultTips"></ul>
+    </div>
+    <details class="calc-basis">
+      <summary>이 결과는 어떻게 계산되었나요?</summary>
+      <div class="content" id="calcExplanation"></div>
+    </details>
+  </section>
+
+  <div class="trust-block">
+    <h4>📚 참고 문헌 및 근거</h4>
+    <p style="margin-bottom:8px;">본 계산기의 <strong>기본 권장량</strong>은 AHA·일반 가이드라인을 참고했고, 목적·생선 섭취·체중 보정은 문헌에 명시된 공식이 아니라 <strong>단순화된 참고 모델</strong>입니다.</p>
+    <ul>
+      <li><a href="https://www.ahajournals.org/doi/10.1161/CIR.0000000000000574" target="_blank" rel="noopener">AHA Science Advisory – Omega-3 and Cardiovascular Disease</a> — 일반 500 mg/일, 심혈관 질환 1,000 mg/일 등</li>
+      <li>일반 성인 EPA+DHA 250~500 mg/일, 심혈관 목적 시 850~1,000 mg/일 권장 (의료진 지도 하에)</li>
+    </ul>
+    <p class="disclaimer">본 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 고용량·질환 시 의료진 상담을 권장합니다.</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  var weightSlider = document.getElementById('weightSlider');
+  var weightInput = document.getElementById('weight');
+  var weightDisplay = document.getElementById('weightDisplay');
+  function sync() {
+    var v = weightSlider.value;
+    weightInput.value = v;
+    weightDisplay.textContent = v;
+    document.querySelectorAll('#weightPresets .preset-btn').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.value === v);
+    });
+  }
+  weightSlider.addEventListener('input', sync);
+  weightInput.addEventListener('change', function() {
+    var v = Math.min(120, Math.max(40, parseInt(weightInput.value, 10) || 70));
+    weightInput.value = v;
+    weightSlider.value = v;
+    weightDisplay.textContent = v;
+    document.querySelectorAll('#weightPresets .preset-btn').forEach(function(btn) {
+      btn.classList.toggle('active', parseInt(btn.dataset.value, 10) === v);
+    });
+  });
+  document.getElementById('weightPresets').addEventListener('click', function(e) {
+    if (!e.target.classList.contains('preset-btn')) return;
+    var v = e.target.dataset.value;
+    weightSlider.value = v;
+    weightInput.value = v;
+    weightDisplay.textContent = v;
+    this.querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('active'); });
+    e.target.classList.add('active');
+  });
+  sync();
+})();
+
+function calculateOmega3() {
+  var weight = parseFloat(document.getElementById('weight').value) || 70;
+  var purpose = document.getElementById('purpose').value;
+  var fish = document.getElementById('fish').value;
+
+  if (weight < 40 || weight > 120) {
+    alert('체중을 40~120 kg 범위로 입력해 주세요.');
+    return;
+  }
+
+  /* AHA: 일반 500 mg, 심혈관 850~1000 mg. 생선 자주 먹으면 보충 필요 감소 */
+  var base = 500;
+  if (purpose === 'heart') base = 1000;
+  if (purpose === 'brain') base = 600;
+
+  var fishAdj = { rare: 100, sometimes: 0, often: -100 };
+  base += fishAdj[fish];
+
+  /* 체중 보정: 가벼우면 약간 감소, 무거우면 약간 증가 (단순화) */
+  if (weight < 55) base -= 50;
+  else if (weight > 85) base += 100;
+  base = Math.max(250, Math.min(2000, base));
+  base = Math.round(base / 50) * 50;
+
+  var minMg = Math.max(250, base - 150);
+  var maxMg = Math.min(2000, base + 150);
+
+  var weight = document.getElementById('weight').value;
+  var purposeLabel = document.querySelector('#purpose option:checked').textContent;
+  var fishLabel = document.querySelector('#fish option:checked').textContent;
+  var appliedItems = ['체중: ' + weight + ' kg', '목적: ' + purposeLabel, '생선 섭취: ' + fishLabel];
+  document.getElementById('appliedList').innerHTML = appliedItems.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+
+  var effectParts = [];
+  if (purpose === 'heart') effectParts.push('심혈관 목적이라 기본 1,000 mg을 적용했어요.');
+  else if (purpose === 'brain') effectParts.push('두뇌·인지 목적이라 600 mg 기준으로 적용했어요.');
+  if (fish === 'rare') effectParts.push('생선을 거의 안 드셔서 보충량을 올렸어요.');
+  if (fish === 'often') effectParts.push('생선을 자주 드셔서 보충량을 낮췄어요.');
+  if (weight > 85) effectParts.push('체중을 반영해 권장량을 조정했어요.');
+  if (weight < 55) effectParts.push('체중을 반영해 권장량을 조정했어요.');
+  if (effectParts.length === 0) effectParts.push('입력하신 목적·생선 섭취에 맞춘 권장량이에요.');
+  document.getElementById('appliedEffect').textContent = '→ ' + effectParts.join(' ');
+
+  document.getElementById('resultMain').textContent = base + ' mg';
+  document.getElementById('resultRange').innerHTML = 'EPA+DHA 합계 참고 범위 <strong>' + minMg + '~' + maxMg + ' mg</strong> (고용량은 의사 상담 권장).';
+  document.getElementById('resultType').innerHTML = '<strong>생선기름·알갈 오일</strong> — EPA+DHA 함량을 제품 라벨에서 확인하세요. 트리글리세라이드(TG)형이 흡수가 좋다는 보고가 있어요. 채식이면 알갈(해조류) 오일을 선택할 수 있어요.';
+  document.getElementById('resultSplit').innerHTML = '식사와 함께 하루 1~2회 나누어 먹으면 소화에 무리가 덜 할 수 있어요.';
+  var tips = ['제품마다 EPA·DHA 비율이 다르니, 합계 mg을 기준으로 선택하세요.'];
+  if (fish === 'often') tips.push('생선을 자주 드시면 보충 필요량이 적을 수 있어요.');
+  if (purpose === 'heart') tips.push('심혈관 목적 시 1,000 mg 근처를 목표로 하는 가이드가 많아요. 의사와 상담하세요.');
+  document.getElementById('resultTips').innerHTML = tips.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+
+  var parts = [];
+  if (purpose === 'heart') parts.push('심혈관 기본 1,000 mg');
+  else if (purpose === 'brain') parts.push('두뇌 기본 600 mg');
+  else parts.push('일반 기본 500 mg');
+  if (fishAdj[fish] !== 0) parts.push('생선 ' + (fishAdj[fish] > 0 ? '+' : '') + fishAdj[fish]);
+  if (weight > 85) parts.push('체중 +100');
+  if (weight < 55) parts.push('체중 -50');
+  document.getElementById('calcExplanation').textContent = '계산식: ' + parts.join(' → ') + ' = ' + base + ' mg. AHA·일반 가이드와 목적·생선 섭취·체중을 반영했습니다.';
+
+  var resultSection = document.getElementById('resultSection');
+  resultSection.classList.remove('visible');
+  void resultSection.offsetHeight;
+  resultSection.classList.add('visible');
+  setTimeout(function() { resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+}
+</script>
+
+</body>
+</html>

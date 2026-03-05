@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>맞춤형 아연 계산기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; min-height:100%; background: linear-gradient(160deg, #f0f4f8 0%, #e2e8f0 100%); font-family: 'Noto Sans KR', sans-serif; color: #334155; line-height: 1.5; }
+.container { max-width: 520px; margin: 32px auto 48px; padding: 28px 24px; background: #fff; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04); }
+.header { text-align: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+.header h1 { font-size: 1.35rem; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+.header p { font-size: 0.875rem; color: #64748b; }
+.section-title { font-size: 0.8rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
+.field { margin: 16px 0; }
+.label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: #475569; }
+select { width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 1rem; transition: border-color 0.2s, box-shadow 0.2s; }
+select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
+button.calc-btn { width: 100%; padding: 14px; font-size: 1rem; font-weight: 600; background: linear-gradient(180deg, #eab308 0%, #ca8a04 100%); color: #fff; border: none; border-radius: 12px; cursor: pointer; margin-top: 24px; transition: transform 0.15s, box-shadow 0.2s; }
+button.calc-btn:hover { transform: translateY(-1px); }
+button.calc-btn:active { transform: scale(0.98); transition-duration: 0.05s; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.result-section { margin-top: 28px; display: none; }
+.result-section.visible { display: block; animation: fadeIn 0.35s ease; }
+.result-section.visible .result-applied { animation: fadeInUp 0.45s ease 0.05s both; }
+.result-section.visible .result-card.primary { animation: fadeInUp 0.45s ease 0.15s both; }
+.result-section.visible .result-card.secondary { animation: fadeInUp 0.45s ease both; }
+.result-section.visible .result-card:nth-of-type(2) { animation-delay: 0.28s; }
+.result-section.visible .result-card:nth-of-type(3) { animation-delay: 0.4s; }
+.result-section.visible .result-card:nth-of-type(4) { animation-delay: 0.52s; }
+.result-section.visible .calc-basis { animation: fadeInUp 0.45s ease 0.64s both; }
+.result-section .result-applied, .result-section .result-card, .result-section .calc-basis { opacity: 0; }
+.result-card { margin-bottom: 14px; padding: 18px; border-radius: 12px; font-size: 0.95rem; }
+.result-card.primary { background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%); border: 1px solid #fde047; }
+.result-card.secondary { background: #f8fafc; border: 1px solid #e2e8f0; }
+.result-card h3 { font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 10px; }
+.result-card .value { font-size: 1.5rem; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+.result-card ul { margin: 8px 0 0 18px; color: #475569; }
+.result-card li { margin: 4px 0; }
+.result-applied { background: #f0fdf4; border: 1px solid #86efac; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; font-size: 0.9rem; color: #166534; }
+.result-applied h3 { font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; color: #15803d; }
+.result-applied ul { margin: 0; padding-left: 18px; }
+.result-applied li { margin: 4px 0; }
+.result-applied .effect { margin-top: 10px; padding-top: 10px; border-top: 1px solid #86efac; font-size: 0.85rem; color: #166534; }
+.calc-basis { margin-top: 14px; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
+.calc-basis summary { padding: 12px 14px; background: #f8fafc; font-size: 0.9rem; font-weight: 500; color: #64748b; cursor: pointer; list-style: none; }
+.calc-basis summary::-webkit-details-marker { display: none; }
+.calc-basis summary::after { content: ' 펼치기'; }
+.calc-basis[open] summary::after { content: ' 접기'; }
+.calc-basis .content { padding: 14px; font-size: 0.85rem; color: #64748b; line-height: 1.6; border-top: 1px solid #e2e8f0; }
+.trust-block { margin-top: 24px; padding: 18px; background: #f1f5f9; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 0.8rem; color: #64748b; }
+.trust-block h4 { font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 8px; }
+.trust-block ul { margin-left: 16px; }
+.trust-block li { margin: 4px 0; }
+.trust-block .disclaimer { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e2e8f0; font-style: italic; }
+.trust-block a { color: #2563eb; text-decoration: none; }
+.trust-block a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1>맞춤형 아연 계산기</h1>
+    <p>성별·연령·목적을 반영한 참고용 권장량입니다.</p>
+  </header>
+  <p class="section-title">나의 정보 입력</p>
+  <div class="field">
+    <span class="label">성별</span>
+    <select id="gender">
+      <option value="male">남성</option>
+      <option value="female">여성</option>
+    </select>
+  </div>
+  <div class="field">
+    <span class="label">목적 (가장 해당하는 것)</span>
+    <select id="purpose">
+      <option value="general">일반 유지</option>
+      <option value="immunity">면역</option>
+      <option value="skin">피부·모발</option>
+    </select>
+  </div>
+  <button class="calc-btn" onclick="calculateZinc()">권장량 계산하기</button>
+  <section class="result-section" id="resultSection">
+    <p class="section-title">계산 결과</p>
+    <div class="result-applied" id="resultApplied">
+      <h3>✅ 적용된 조건 (이 권장량에 반영된 입력이에요)</h3>
+      <ul id="appliedList"></ul>
+      <div class="effect" id="appliedEffect"></div>
+    </div>
+    <div class="result-card primary">
+      <h3>📊 일일 아연 권장량</h3>
+      <div class="value" id="resultMain"></div>
+      <p style="font-size:0.85rem;color:#64748b;margin:4px 0 0;">입력하신 조건에 따라 계산된 맞춤 권장량이에요.</p>
+      <div id="resultRange" style="margin-top:8px;"></div>
+    </div>
+    <div class="result-card secondary">
+      <h3>💊 추천 형태</h3>
+      <div id="resultType"></div>
+    </div>
+    <div class="result-card secondary">
+      <h3>⏰ 섭취 방법 제안</h3>
+      <div id="resultSplit"></div>
+    </div>
+    <div class="result-card secondary">
+      <h3>💡 참고 팁</h3>
+      <ul id="resultTips"></ul>
+    </div>
+    <details class="calc-basis">
+      <summary>이 결과는 어떻게 계산되었나요?</summary>
+      <div class="content" id="calcExplanation"></div>
+    </details>
+  </section>
+  <div class="trust-block">
+    <h4>📚 참고 문헌 및 근거</h4>
+    <p style="margin-bottom:8px;">본 계산기의 <strong>기본 권장량</strong>은 NIH ODS 아연 RDA를 참고했고, 목적 보정은 문헌에 명시된 공식이 아니라 <strong>단순화된 참고 모델</strong>입니다.</p>
+    <ul>
+      <li><a href="https://ods.od.nih.gov/factsheets/Zinc-HealthProfessional/" target="_blank" rel="noopener">NIH ODS, Zinc – Health Professional Fact Sheet</a> — 성인 RDA(남 11 mg, 여 8 mg), 상한(UL 40 mg)</li>
+      <li><a href="https://www.kns.or.kr/nutrient.asp" target="_blank" rel="noopener">한국영양학회 영양소 섭취기준</a> — 2020 한국인 영양소 섭취기준</li>
+    </ul>
+    <p class="disclaimer">본 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 복용 전 의료진 상담을 권장합니다.</p>
+  </div>
+</div>
+<script>
+function calculateZinc() {
+  var gender = document.getElementById('gender').value;
+  var purpose = document.getElementById('purpose').value;
+  /* NIH: 남 11 mg, 여 8 mg. UL 40 mg */
+  var base = (gender === 'male') ? 11 : 8;
+  var purposeAdj = { general: 0, immunity: 2, skin: 2 };
+  base += purposeAdj[purpose];
+  base = Math.min(40, Math.max(base, 8));
+  var minMg = Math.max(8, base - 2);
+  var maxMg = Math.min(40, base + 2);
+  var genderLabel = document.querySelector('#gender option:checked').textContent;
+  var purposeLabel = document.querySelector('#purpose option:checked').textContent;
+  var appliedItems = ['성별: ' + genderLabel, '목적: ' + purposeLabel];
+  document.getElementById('appliedList').innerHTML = appliedItems.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+  var effectParts = [];
+  if (gender === 'male') effectParts.push('남성 기본 11 mg을 적용했어요.');
+  else effectParts.push('여성 기본 8 mg을 적용했어요.');
+  if (purposeAdj[purpose] > 0) effectParts.push('목적(' + purposeLabel + ')을 반영해 참고용 가산을 더했어요.');
+  document.getElementById('appliedEffect').textContent = '→ ' + effectParts.join(' ');
+  document.getElementById('resultMain').textContent = base + ' mg';
+  document.getElementById('resultRange').innerHTML = '참고 범위 <strong>' + minMg + '~' + maxMg + ' mg</strong> (상한 40 mg).';
+  document.getElementById('resultType').innerHTML = '<strong>아연 피콜린산·글루코네이트</strong> — 흡수가 좋은 형태로 많이 쓰여요. 구리와 장기 고용량 복용 시 균형을 고려하세요.';
+  document.getElementById('resultSplit').innerHTML = '식사와 함께 하루 1회 섭취해 보세요. 공복 시 구역감이 날 수 있어요.';
+  var tips = ['아연을 장기간 고용량 복용하면 구리 흡수가 줄어들 수 있어요. 의사와 상담하세요.'];
+  document.getElementById('resultTips').innerHTML = tips.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+  var parts = [(gender === 'male' ? '남성 기본 11' : '여성 기본 8') + ' mg'];
+  if (purposeAdj[purpose] > 0) parts.push('목적 +' + purposeAdj[purpose]);
+  document.getElementById('calcExplanation').textContent = '계산식: ' + parts.join(' → ') + ' = ' + base + ' mg. NIH RDA와 목적 보정을 반영했고, 상한 40 mg으로 제한했습니다.';
+  var resultSection = document.getElementById('resultSection');
+  resultSection.classList.remove('visible');
+  void resultSection.offsetHeight;
+  resultSection.classList.add('visible');
+  setTimeout(function() { resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>맞춤형 비타민 D 계산기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; min-height:100%; background: linear-gradient(160deg, #f0f4f8 0%, #e2e8f0 100%); font-family: 'Noto Sans KR', sans-serif; color: #334155; line-height: 1.5; }
+.container { max-width: 520px; margin: 32px auto 48px; padding: 28px 24px; background: #fff; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04); }
+.header { text-align: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+.header h1 { font-size: 1.35rem; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+.header p { font-size: 0.875rem; color: #64748b; }
+.section-title { font-size: 0.8rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
+.field { margin: 16px 0; }
+.label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: #475569; }
+input[type=number], select { width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 1rem; transition: border-color 0.2s, box-shadow 0.2s; }
+input:focus, select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
+.checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
+.checkbox-group label { flex: 1; min-width: 100px; background: #f8fafc; padding: 12px 14px; border-radius: 10px; cursor: pointer; border: 1px solid #e2e8f0; font-size: 0.9rem; transition: all 0.2s; }
+.checkbox-group label:hover { background: #f1f5f9; }
+.checkbox-group input[type=checkbox] { margin-right: 8px; }
+.checkbox-group input:checked + span { font-weight: 600; color: #1e293b; }
+button.calc-btn { width: 100%; padding: 14px; font-size: 1rem; font-weight: 600; background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%); color: #fff; border: none; border-radius: 12px; cursor: pointer; margin-top: 24px; transition: transform 0.15s, box-shadow 0.2s; box-shadow: 0 2px 8px rgba(234, 88, 12, 0.35); }
+button.calc-btn:hover { transform: translateY(-1px); }
+button.calc-btn:active { transform: scale(0.98); transition-duration: 0.05s; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.result-section { margin-top: 28px; display: none; }
+.result-section.visible { display: block; animation: fadeIn 0.35s ease; }
+.result-section.visible .result-applied { animation: fadeInUp 0.45s ease 0.05s both; }
+.result-section.visible .result-card.primary { animation: fadeInUp 0.45s ease 0.15s both; }
+.result-section.visible .result-card.secondary { animation: fadeInUp 0.45s ease both; }
+.result-section.visible .result-card:nth-of-type(2) { animation-delay: 0.28s; }
+.result-section.visible .result-card:nth-of-type(3) { animation-delay: 0.4s; }
+.result-section.visible .result-card:nth-of-type(4) { animation-delay: 0.52s; }
+.result-section.visible .calc-basis { animation: fadeInUp 0.45s ease 0.64s both; }
+.result-section .result-applied,
+.result-section .result-card,
+.result-section .calc-basis { opacity: 0; }
+.result-card { margin-bottom: 14px; padding: 18px; border-radius: 12px; font-size: 0.95rem; }
+.result-card.primary { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border: 1px solid #fed7aa; }
+.result-card.secondary { background: #f8fafc; border: 1px solid #e2e8f0; }
+.result-card h3 { font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 10px; }
+.result-card .value { font-size: 1.5rem; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+.result-card ul { margin: 8px 0 0 18px; color: #475569; }
+.result-card li { margin: 4px 0; }
+.result-applied { background: #f0fdf4; border: 1px solid #86efac; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; font-size: 0.9rem; color: #166534; }
+.result-applied h3 { font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; color: #15803d; }
+.result-applied ul { margin: 0; padding-left: 18px; }
+.result-applied li { margin: 4px 0; }
+.result-applied .effect { margin-top: 10px; padding-top: 10px; border-top: 1px solid #86efac; font-size: 0.85rem; color: #166534; }
+.calc-basis { margin-top: 14px; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
+.calc-basis summary { padding: 12px 14px; background: #f8fafc; font-size: 0.9rem; font-weight: 500; color: #64748b; cursor: pointer; list-style: none; }
+.calc-basis summary::-webkit-details-marker { display: none; }
+.calc-basis summary::after { content: ' 펼치기'; }
+.calc-basis[open] summary::after { content: ' 접기'; }
+.calc-basis .content { padding: 14px; font-size: 0.85rem; color: #64748b; line-height: 1.6; border-top: 1px solid #e2e8f0; }
+.trust-block { margin-top: 24px; padding: 18px; background: #f1f5f9; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 0.8rem; color: #64748b; }
+.trust-block h4 { font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 8px; }
+.trust-block ul { margin-left: 16px; }
+.trust-block li { margin: 4px 0; }
+.trust-block .disclaimer { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e2e8f0; font-style: italic; }
+.trust-block a { color: #2563eb; text-decoration: none; }
+.trust-block a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header class="header">
+    <h1>맞춤형 비타민 D 계산기</h1>
+    <p>연령·일조량·목적을 반영한 참고용 권장량입니다.</p>
+  </header>
+
+  <p class="section-title">나의 정보 입력</p>
+
+  <div class="field">
+    <span class="label">연령</span>
+    <select id="age">
+      <option value="19-50">19~50세</option>
+      <option value="51-70">51~70세</option>
+      <option value="71">71세 이상</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <span class="label">일조량 (밖에서 햇빛)</span>
+    <select id="sun">
+      <option value="none">거의 없음 (실내 위주)</option>
+      <option value="little">가끔 (주 1~2회)</option>
+      <option value="moderate" selected>보통 (주 3~4회)</option>
+      <option value="high">많음 (거의 매일)</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <span class="label">목적 (가장 해당하는 것)</span>
+    <select id="purpose">
+      <option value="general">일반 유지</option>
+      <option value="bone">뼈·골 건강</option>
+      <option value="immunity">면역·전반</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <span class="label">해당 시 선택</span>
+    <div class="checkbox-group">
+      <label><input type="checkbox" id="pregnant" value="pregnancy"><span>임신·수유 중</span></label>
+      <label><input type="checkbox" id="obese" value="obese"><span>비만(BMI 30 이상)</span></label>
+    </div>
+  </div>
+
+  <button class="calc-btn" onclick="calculateVitD()">권장량 계산하기</button>
+
+  <section class="result-section" id="resultSection">
+    <p class="section-title">계산 결과</p>
+    <div class="result-applied" id="resultApplied">
+      <h3>✅ 적용된 조건 (이 권장량에 반영된 입력이에요)</h3>
+      <ul id="appliedList"></ul>
+      <div class="effect" id="appliedEffect"></div>
+    </div>
+    <div class="result-card primary">
+      <h3>📊 일일 비타민 D 권장량</h3>
+      <div class="value" id="resultMain"></div>
+      <p style="font-size:0.85rem;color:#64748b;margin:4px 0 0;">입력하신 조건에 따라 계산된 맞춤 권장량이에요.</p>
+      <div id="resultRange" style="margin-top:8px;"></div>
+    </div>
+    <div class="result-card secondary">
+      <h3>💊 추천 형태</h3>
+      <div id="resultType"></div>
+    </div>
+    <div class="result-card secondary">
+      <h3>⏰ 섭취 방법 제안</h3>
+      <div id="resultSplit"></div>
+    </div>
+    <div class="result-card secondary">
+      <h3>💡 참고 팁</h3>
+      <ul id="resultTips"></ul>
+    </div>
+    <details class="calc-basis">
+      <summary>이 결과는 어떻게 계산되었나요?</summary>
+      <div class="content" id="calcExplanation"></div>
+    </details>
+  </section>
+
+  <div class="trust-block">
+    <h4>📚 참고 문헌 및 근거</h4>
+    <p style="margin-bottom:8px;">본 계산기의 <strong>기본 권장량</strong>은 NIH ODS 비타민 D RDA를 참고했고, 일조량·목적·비만 보정은 문헌에 명시된 공식이 아니라 <strong>단순화된 참고 모델</strong>입니다.</p>
+    <ul>
+      <li><a href="https://ods.od.nih.gov/factsheets/VitaminD-HealthProfessional/" target="_blank" rel="noopener">NIH ODS, Vitamin D – Health Professional Fact Sheet</a> — 연령별 RDA(600~800 IU), 상한(UL 4,000 IU)</li>
+      <li><a href="https://www.kns.or.kr/nutrient.asp" target="_blank" rel="noopener">한국영양학회 영양소 섭취기준</a> — 2020 한국인 영양소 섭취기준</li>
+    </ul>
+    <p class="disclaimer">본 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 복용 전 의료진 상담을 권장합니다.</p>
+  </div>
+</div>
+
+<script>
+function calculateVitD() {
+  var age = document.getElementById('age').value;
+  var sun = document.getElementById('sun').value;
+  var purpose = document.getElementById('purpose').value;
+  var pregnant = document.getElementById('pregnant').checked;
+  var obese = document.getElementById('obese').checked;
+
+  /* NIH: 19-70세 600 IU(15μg), 71+ 800 IU(20μg). 임신·수유 600 IU */
+  var baseIU = (age === '71') ? 800 : 600;
+  if (pregnant) baseIU = 600;
+
+  /* 일조량: 거의 없으면 보충 필요 높음 +200, 많으면 -100 */
+  var sunAdj = { none: 200, little: 100, moderate: 0, high: -100 };
+  baseIU += sunAdj[sun];
+
+  /* 목적: 뼈/면역 시 약간 상향 */
+  var purposeAdj = { general: 0, bone: 100, immunity: 100 };
+  baseIU += purposeAdj[purpose];
+
+  /* 비만 시 흡수·혈중 농도 낮을 수 있어 가산 */
+  if (obese) baseIU += 200;
+
+  baseIU = Math.max(400, Math.min(4000, baseIU));
+  baseIU = Math.round(baseIU / 100) * 100;
+  var mcg = (baseIU / 40).toFixed(1);
+
+  var minIU = Math.max(400, baseIU - 200);
+  var maxIU = Math.min(4000, baseIU + 200);
+
+  /* 적용된 조건 표시 (선택한 값 라벨) */
+  var ageLabel = document.querySelector('#age option:checked').textContent;
+  var sunLabel = document.querySelector('#sun option:checked').textContent;
+  var purposeLabel = document.querySelector('#purpose option:checked').textContent;
+  var appliedItems = ['연령: ' + ageLabel, '일조량: ' + sunLabel, '목적: ' + purposeLabel];
+  if (pregnant) appliedItems.push('해당: 임신·수유 중');
+  if (obese) appliedItems.push('해당: 비만(BMI 30 이상)');
+  document.getElementById('appliedList').innerHTML = appliedItems.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+
+  /* 이 조건이 권장량에 미친 효과 문장 */
+  var effectParts = [];
+  if (age === '71') effectParts.push('71세 이상이라 기본 권장량을 800 IU로 적용했어요.');
+  if (sun === 'none') effectParts.push('일조가 거의 없어 보충 필요가 커서 권장량을 올렸어요.');
+  if (sun === 'little') effectParts.push('일조가 적어 권장량을 조금 올렸어요.');
+  if (sun === 'high') effectParts.push('일조가 많아 기본보다 권장량을 낮췄어요.');
+  if (purpose === 'bone' || purpose === 'immunity') effectParts.push('목적(' + purposeLabel + ')을 반영해 권장량을 조정했어요.');
+  if (obese) effectParts.push('비만 시 흡수·혈중 농도가 낮을 수 있어 가산했어요.');
+  if (effectParts.length === 0) effectParts.push('입력하신 연령·일조량·목적에 맞춘 권장량이에요.');
+  document.getElementById('appliedEffect').textContent = '→ ' + effectParts.join(' ');
+
+  document.getElementById('resultMain').textContent = baseIU + ' IU (' + mcg + ' μg)';
+  document.getElementById('resultRange').innerHTML = '참고 범위 <strong>' + minIU + '~' + maxIU + ' IU</strong> (상한 4,000 IU).';
+  document.getElementById('resultType').innerHTML = '<strong>비타민 D3</strong> — 체내 이용률이 D2보다 좋아 대부분 D3 보충을 권장합니다. 액상·캡슐 모두 괜찮아요.';
+  document.getElementById('resultSplit').innerHTML = '식사와 함께 하루 1회 섭취해 보세요. 고용량이면 아침·저녁 나누어도 됩니다.';
+  var tips = ['지방이 있는 식사와 함께 먹으면 흡수에 도움이 돼요.'];
+  if (sun === 'none') tips.push('일조가 부족하시다면 보충이 특히 도움이 될 수 있어요.');
+  if (age === '71') tips.push('71세 이상은 800 IU 기준으로 맞추는 것이 좋아요.');
+  document.getElementById('resultTips').innerHTML = tips.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+
+  var parts = [(age === '71' ? '71세 이상 기본 800' : '성인 기본 600') + ' IU'];
+  if (sunAdj[sun] !== 0) parts.push('일조 ' + (sunAdj[sun] > 0 ? '+' : '') + sunAdj[sun]);
+  if (purposeAdj[purpose] !== 0) parts.push('목적 +' + purposeAdj[purpose]);
+  if (obese) parts.push('비만 가산 +200');
+  document.getElementById('calcExplanation').textContent = '계산식: ' + parts.join(' → ') + ' = ' + baseIU + ' IU. NIH RDA와 일조·목적을 반영했고, 상한 4,000 IU로 제한했습니다.';
+
+  var resultSection = document.getElementById('resultSection');
+  resultSection.classList.remove('visible');
+  void resultSection.offsetHeight;
+  resultSection.classList.add('visible');
+  setTimeout(function() { resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+}
+</script>
+
+</body>
+</html>

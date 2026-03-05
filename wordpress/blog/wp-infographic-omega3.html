@@ -1,0 +1,558 @@
+<!--
+  워드프레스 적용: "사용자 정의 HTML" 블록에 이 파일에서 <style> 부터 </script> 까지 통째로 복사해 붙여넣으세요.
+  계산기 링크: data-calc-url 값을 실제 비타민 D/오메가3 계산기·블로그 주소로 바꾸세요.
+  예: https://내블로그.com/vitamin-d-dosage-calculator/
+  템플릿: 마그네슘 인포그래픽과 같은 구조(H2→H3→H4), 검은 배경, -shell 래퍼 없이 사용합니다.
+-->
+<style>
+/* ===== 워드프레스 오메가-3 인포그래픽 공통 (모바일·PC 글자 큼) ===== */
+html, body { margin:0; background:#000000; font-size: 18px; }
+#om3-infographic {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 28px 16px 40px;
+  box-sizing: border-box;
+  background: #000000;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #e5e7eb;
+  line-height: 1.65;
+  font-size: 1.0625rem;
+}
+
+/* 헤더 */
+.om3-header {
+  text-align: center;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #333333;
+}
+.om3-header p {
+  font-size: 1.15rem;
+  color: #d1d5db;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* 섹션 공통 · H2 / H3 / H4 계층 */
+.om3-section {
+  border-radius: 16px;
+  padding: 20px 20px 24px;
+  background: #020617;
+  border: 1px solid #1f2937;
+  margin-bottom: 20px;
+}
+.om3-section h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.om3-section h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.om3-section h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.om3-section p {
+  font-size: 1.05rem;
+  color: #cbd5f5;
+  margin: 0 0 8px;
+  line-height: 1.6;
+}
+.om3-section p:last-child { margin-bottom: 0; }
+
+/* 역할 카드 (H4 = 카드 제목) */
+.om3-roles-main { margin-bottom: 20px; }
+.om3-roles-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.om3-role {
+  background: #020617;
+  border-radius: 14px;
+  padding: 14px 12px 16px;
+  text-align: left;
+  border: 1px solid #1f2937;
+}
+.om3-role-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.om3-role-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  background: #0f766e;
+}
+.om3-role-label {
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+.om3-role-desc {
+  font-size: 1rem;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+.om3-roles-note {
+  margin-top: 16px;
+  font-size: 1rem;
+  color: #67e8f9;
+  line-height: 1.5;
+}
+
+/* 권장 섭취량·EPA+DHA 그래프 느낌 */
+.om3-rda-main { }
+.om3-rda-nums {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 14px 0 18px;
+}
+.om3-rda-nums .num { text-align:center; }
+.om3-rda-nums .val {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #22c55e;
+}
+.om3-rda-nums .label {
+  font-size: 1rem;
+  color: #a0a0a0;
+  margin-top: 4px;
+}
+.om3-rda-bar { margin-top: 12px; }
+.om3-rda-row { margin-bottom: 12px; }
+.om3-rda-row-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.98rem;
+  color: #a0a0a0;
+  margin-bottom: 6px;
+}
+.om3-rda-row-bg {
+  height: 22px;
+  background: #0b1120 !important;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.om3-rda-row-fill {
+  height: 100%;
+  background: linear-gradient(90deg,#22c55e,#0ea5e9) !important;
+  border-radius: 999px;
+  min-width: 4px;
+}
+
+/* 부족/과다 (H3 사용) */
+.om3-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.om3-two-col ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 1.05rem;
+  color: #e5e7eb;
+  line-height: 1.6;
+}
+.om3-two-col li { margin: 6px 0; }
+.om3-two-col h3.om3-sub { font-size: 1.15rem; margin-bottom: 6px; }
+
+/* 형태별·섭취 가이드 (H4 = 형태명) */
+.om3-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.om3-type-card {
+  background: #020617;
+  border-radius: 14px;
+  padding: 14px 14px 16px;
+  border: 1px solid #1f2937;
+}
+.om3-type-card h4 {
+  font-size: 1.1rem;
+  margin: 0 0 6px;
+}
+.om3-type-card p {
+  font-size: 1rem;
+  color: #cbd5f5;
+  margin: 0;
+}
+.om3-type-tag {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #22c55e;
+  color: #22c55e;
+  font-size: 0.9rem;
+}
+
+/* 퀴즈 & 버튼 */
+.om3-quiz-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.om3-quiz-btn {
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid #1f2937;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.om3-quiz-btn:hover { background: #0b1120; }
+.om3-quiz-btn.selected {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: #020617;
+}
+.om3-quiz-result {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #1f2937;
+  display: none;
+  font-size: 1.05rem;
+}
+.om3-quiz-result.visible { display: block; }
+.om3-quiz-result strong { color: #22c55e; font-size: 1.1rem; }
+.om3-link-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #020617;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-decoration: none;
+}
+.om3-link-btn:hover { opacity:0.95; color:#020617; }
+
+/* CTA */
+.om3-cta-main {
+  text-align:center;
+  margin-top:8px;
+}
+.om3-cta-main p {
+  margin:0 0 10px;
+  font-size:1rem;
+  color:#e5e7eb;
+}
+.om3-cta-main .primary {
+  display:inline-block;
+  padding:12px 26px;
+  border-radius:999px;
+  background:#22c55e;
+  color:#020617;
+  font-weight:700;
+  text-decoration:none;
+  font-size:0.98rem;
+}
+.om3-cta-main .primary:hover { opacity:0.95; color:#020617; }
+
+/* 참고 문헌 */
+.om3-trust-list {
+  margin:4px 0 0;
+  padding-left:18px;
+  font-size:0.9rem;
+  color:#cbd5f5;
+}
+.om3-trust-list li { margin:4px 0; }
+.om3-trust a { color:#22c55e; text-decoration:none; }
+.om3-trust a:hover { text-decoration:underline; }
+.om3-trust small {
+  display:block;
+  margin-top:10px;
+  font-size:0.86rem;
+  color:#9ca3af;
+  font-style:italic;
+}
+
+/* ? 아이콘 툴팁 */
+.om3-info {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  margin-left:4px;
+  border-radius:999px;
+  background:#0b1120;
+  color:#22c55e;
+  font-size:0.8rem;
+  cursor:help;
+  position:relative;
+}
+.om3-info::after {
+  content: attr(data-tip);
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:120%;
+  min-width:160px;
+  max-width:230px;
+  padding:8px 10px;
+  border-radius:8px;
+  background:#020617;
+  color:#e5e7eb;
+  font-size:0.78rem;
+  line-height:1.5;
+  border:1px solid #1f2937;
+  box-shadow:0 4px 18px rgba(0,0,0,0.6);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  z-index:5;
+}
+.om3-info::before {
+  content:'';
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:110%;
+  border-width:6px;
+  border-style:solid;
+  border-color:#020617 transparent transparent transparent;
+  opacity:0;
+  visibility:hidden;
+}
+.om3-info:hover::after,
+.om3-info:hover::before {
+  opacity:1;
+  visibility:visible;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 520px) {
+  #om3-infographic {
+    padding: 22px 12px 32px;
+  }
+  .om3-section {
+    padding:18px 14px 20px;
+    border-radius:14px;
+    margin-bottom:16px;
+  }
+  .om3-section h2 { font-size:1.2rem; }
+  .om3-section h3 { font-size:1.08rem; }
+  .om3-section h4 { font-size:1.02rem; }
+  .om3-section p { font-size:0.98rem; }
+  .om3-roles-list { grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); }
+  .om3-two-col { grid-template-columns:1fr; gap:12px; }
+  .om3-types-grid { grid-template-columns:1fr; }
+  .om3-quiz-btn { font-size:0.98rem; padding:11px 14px; }
+  .om3-link-btn { font-size:0.95rem; padding:10px 18px; }
+}
+</style>
+
+<div id="om3-infographic" data-calc-url="https://YOUR-SITE.com/vitamin-d-dosage-calculator/">
+  <header class="om3-header">
+    <p>심장·뇌·염증 균형에 관여하는 오메가-3. EPA·DHA 권장량, 음식·보충제·주의점을 한 번에 정리했습니다.</p>
+  </header>
+
+  <section class="om3-section om3-roles-main">
+    <h2>오메가-3 (EPA·DHA)의 주요 역할</h2>
+    <div class="om3-roles-list">
+      <div class="om3-role">
+        <div class="om3-role-top">
+          <div class="om3-role-icon">❤️</div>
+          <div class="om3-role-label">심혈관 건강</div>
+        </div>
+        <div class="om3-role-desc">중성지방 감소, 혈소판 응집 조절 등을 통해 심혈관계 위험을 낮추는 데 도움을 줄 수 있다는 연구들이 있습니다.</div>
+      </div>
+      <div class="om3-role">
+        <div class="om3-role-top">
+          <div class="om3-role-icon">🧠</div>
+          <div class="om3-role-label">뇌·신경</div>
+        </div>
+        <div class="om3-role-desc">DHA는 뇌와 망막 구성 성분으로, 인지 기능·기분·시력과의 관련성이 연구되고 있습니다.</div>
+      </div>
+      <div class="om3-role">
+        <div class="om3-role-top">
+          <div class="om3-role-icon">🔥</div>
+          <div class="om3-role-label">염증 균형</div>
+        </div>
+        <div class="om3-role-desc">염증·항염증 매개체 균형에 관여해, 만성 염증성 질환에서 보조적 역할이 논의됩니다.</div>
+      </div>
+      <div class="om3-role">
+        <div class="om3-role-top">
+          <div class="om3-role-icon">👁️</div>
+          <div class="om3-role-label">눈·피부·관절</div>
+        </div>
+        <div class="om3-role-desc">건조한 눈·피부, 관절 뻣뻣함 등에 대한 보조적인 도움이 보고되지만, 개인차가 큽니다.</div>
+      </div>
+    </div>
+    <p class="om3-roles-note">※ 오메가-3는 “균형 잡힌 식단 + 생활습관”을 보완하는 용도로, <strong>만능 치료제는 아니라는 점</strong>을 함께 기억해 주세요.</p>
+  </section>
+
+  <section class="om3-section om3-rda-main">
+    <h2>얼마나 먹어야 할까요? (일반 가이드)</h2>
+    <div class="om3-rda-nums">
+      <div class="num">
+        <div class="val">250~500</div>
+        <div class="label">EPA+DHA mg/일 <span class="om3-info" data-tip="여러 학회에서 성인 일반인을 위한 심혈관·건강 유지용으로 제시하는 범위(약 250~500 mg/일)입니다.">?</span></div>
+      </div>
+      <div class="num">
+        <div class="val">1,000+</div>
+        <div class="label">특수 상황 mg/일 <span class="om3-info" data-tip="높은 중성지방 등 특정 질환에서는 1,000 mg 이상 고용량을 쓰기도 하지만, 이는 반드시 의료진 처방·모니터링이 필요합니다.">?</span></div>
+      </div>
+    </div>
+    <div class="om3-rda-bar">
+      <div class="om3-rda-row">
+        <div class="om3-rda-row-header"><span>일반 건강 유지</span><span>250~500 mg</span></div>
+        <div class="om3-rda-row-bg"><div class="om3-rda-row-fill" style="width:45%;"></div></div>
+      </div>
+      <div class="om3-rda-row">
+        <div class="om3-rda-row-header"><span>고위험·치료 목적</span><span>1,000 mg 이상</span></div>
+        <div class="om3-rda-row-bg"><div class="om3-rda-row-fill" style="width:100%;"></div></div>
+      </div>
+    </div>
+    <p style="margin-top:8px;">혈중 중성지방·심혈관 위험도·질환 유무에 따라 적정 용량이 크게 달라집니다. <strong>자가로 고용량 장기 복용</strong>하기보다는, 기본 가이드는 250~500 mg, 치료·고위험군은 의료진과 상의가 필요합니다.</p>
+    <a href="#" class="om3-link-btn om3-calc-link">→ 비타민 D·오메가-3 관련 계산/설명 보기</a>
+  </section>
+
+  <section class="om3-section">
+    <h2>부족 시 / 과다 시</h2>
+    <div class="om3-two-col">
+      <div>
+        <h3 class="om3-sub" style="color:#22c55e;">부족 시</h3>
+        <ul>
+          <li>등푸른 생선 섭취가 거의 없다면, 혈중 오메가-3 지수가 낮을 가능성이 큽니다.</li>
+          <li>심혈관 위험, 건조한 눈·피부, 염증 질환에서 보조적 도움이 될 수 있다는 연구들이 있습니다.</li>
+          <li>다만 “부족 증상”이 명확히 드러나는 영양소는 아니라, 생활습관·혈액검사와 함께 보는 것이 좋습니다.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="om3-sub" style="color:#f97316;">과다 시</h3>
+        <ul>
+          <li>고용량 장기 복용 시 일부에서 출혈 위험(코피·멍·수술 전후) 증가가 논의됩니다. <span class="om3-info" data-tip="특히 항응고제·항혈소판제(와파린, 아스피린 등)를 복용 중이라면, 고용량 오메가-3 추가 전 반드시 담당 의사와 상의해야 합니다.">?</span></li>
+          <li>생선 기름 특유의 역류·속 불편함, 비린내 트림이 생길 수 있습니다.</li>
+          <li>혈액검사·복용 약을 함께 보며 용량·제품을 조정하는 것이 안전합니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="om3-section">
+    <h2>음식·보충제 선택 가이드</h2>
+    <div class="om3-types-grid">
+      <div class="om3-type-card">
+        <h4>음식으로 섭취</h4>
+        <p>연어·고등어·정어리·청어 같은 등푸른 생선은 오메가-3가 풍부합니다. 주 2회 이상 적당량 섭취하면, 보충제 필요성이 줄어들 수 있습니다.</p>
+        <span class="om3-type-tag">식단이 좋다면 보충량 ↓</span>
+      </div>
+      <div class="om3-type-card">
+        <h4>EPA·DHA 함량 확인</h4>
+        <p>“오메가-3 1,000 mg” 이라고 쓰여 있어도, 실제 EPA+DHA 합은 그보다 훨씬 적을 수 있습니다. <strong>라벨에서 EPA·DHA mg를 직접 확인</strong>하는 것이 핵심입니다.</p>
+        <span class="om3-type-tag">캡슐 개수 vs 실제 mg <span class="om3-info" data-tip="예: 1캡슐 1,000 mg 중 EPA 180 mg, DHA 120 mg이라면 실제 유효량은 300 mg입니다. 필요한 EPA+DHA 양을 기준으로 캡슐 개수를 계산하세요.">?</span></span>
+      </div>
+      <div class="om3-type-card">
+        <h4>트리글리세라이드형 / EE형</h4>
+        <p>일부 제품은 흡수율·안정성을 이유로 TG형, EE형(에틸에스터) 등을 강조합니다. 실제 차이는 개인·식사 패턴에 따라 달라, “무조건 어느 쪽이 좋다”라고 보긴 어렵습니다.</p>
+        <span class="om3-type-tag">형태 차이는 부가 요소 <span class="om3-info" data-tip="일반인에게 가장 중요한 것은 형태(TG/EE)보다는 EPA+DHA 총량, 가격, 복용 편의성, 믿을 만한 브랜드인지 여부입니다.">?</span></span>
+      </div>
+      <div class="om3-type-card">
+        <h4>비타민 D·혈액응고 약과의 관계</h4>
+        <p>오메가-3와 비타민 D는 함께 복용하는 경우가 많지만, 항응고제·혈소판억제제와의 상호작용은 항상 염두에 두어야 합니다.</p>
+        <span class="om3-type-tag">약 복용 중이면 상담 필수</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="om3-section">
+    <h2>간단 체험 — 나는 어느 쪽에 가깝나요?</h2>
+    <p style="margin-bottom:8px;">본인 상황과 가장 가까운 선택지를 하나 골라보세요.</p>
+    <div class="om3-quiz-options">
+      <button type="button" class="om3-quiz-btn"
+        data-type="noFish"
+        data-name="등푸른 생선을 거의 먹지 않음"
+        data-desc="등푸른 생선을 거의 먹지 않는다면, 오메가-3 보충을 고려해볼 만합니다. 다만 심혈관 위험도·복용 약을 함께 보고 용량을 정하는 것이 좋습니다.">
+        등푸른 생선을 거의 먹지 않는다
+      </button>
+      <button type="button" class="om3-quiz-btn"
+        data-type="cvRisk"
+        data-name="심혈관 위험 요인이 있음"
+        data-desc="중성지방이 높거나 심혈관 위험 요인이 있다면, 식단·운동·체중 조절과 함께 오메가-3 활용이 논의됩니다. 치료 용량은 반드시 의료진과 상의해야 합니다.">
+        중성지방·심혈관이 걱정된다
+      </button>
+      <button type="button" class="om3-quiz-btn"
+        data-type="onMeds"
+        data-name="혈액응고 관련 약 복용 중"
+        data-desc="와파린·아스피린 등 혈액응고에 영향을 주는 약을 복용 중이라면, 고용량 오메가-3 추가는 반드시 담당 의사와 상의해야 합니다. 계산기는 참고용으로만 활용하세요.">
+        아스피린·와파린 등 혈액응고 약을 복용 중이다
+      </button>
+    </div>
+    <div class="om3-quiz-result" id="om3QuizResult">
+      <strong id="om3QuizType"></strong>
+      <p id="om3QuizDesc" style="margin:6px 0 0;"></p>
+      <a href="#" class="om3-link-btn om3-calc-link">→ 비타민 D·오메가-3 관련 계산/설명 페이지로 이동</a>
+    </div>
+  </section>
+
+  <section class="om3-section om3-trust">
+    <h2>참고 문헌 및 면책</h2>
+    <ul class="om3-trust-list">
+      <li><a href="https://www.efsa.europa.eu/en/efsajournal/pub/125" target="_blank" rel="noopener">EFSA, Scientific opinion on health benefits of omega-3 fatty acids</a> — EPA·DHA 섭취와 심혈관 건강 관련 근거 정리</li>
+      <li><a href="https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/" target="_blank" rel="noopener">NIH ODS, Omega-3 Fatty Acids – Health Professional Fact Sheet</a> — 권장량, 안전성, 상호작용 등 요약</li>
+    </ul>
+    <small>본 글과 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 복용 전에는 개인의 질환·복용 약·혈액검사 결과를 함께 고려해 <strong>의료진과 상담</strong>하는 것을 권장합니다.</small>
+  </section>
+
+  <section class="om3-section">
+    <div class="om3-cta-main">
+      <p>식습관·심혈관 위험·복용 약을 입력하면, 비타민 D와 함께 오메가-3 섭취 전략을 한눈에 정리할 수 있어요.</p>
+      <a href="#" class="primary om3-calc-link">맞춤형 비타민 D·오메가-3 계산/설명 페이지 열기</a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function() {
+  var root = document.getElementById('om3-infographic');
+  if (!root) return;
+  var calcUrl = (root.getAttribute('data-calc-url') || '').trim();
+  if (calcUrl) {
+    root.querySelectorAll('.om3-calc-link').forEach(function(a) { a.href = calcUrl; });
+  }
+  var opts = root.querySelectorAll('.om3-quiz-btn');
+  var result = root.querySelector('#om3QuizResult');
+  var typeName = root.querySelector('#om3QuizType');
+  var quizDesc = root.querySelector('#om3QuizDesc');
+  opts.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      opts.forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      typeName.textContent = '선택한 상황: ' + btn.getAttribute('data-name');
+      quizDesc.textContent = btn.getAttribute('data-desc');
+      result.classList.add('visible');
+    });
+  });
+})();
+</script>
+

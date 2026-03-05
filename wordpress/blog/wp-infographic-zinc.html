@@ -1,0 +1,566 @@
+<!--
+  워드프레스 적용: "사용자 정의 HTML" 블록에 이 파일에서 <style> 부터 </script> 까지 통째로 복사해 붙여넣으세요.
+  계산기 링크: data-calc-url 값을 실제 아연(또는 비타민 D) 계산기/블로그 주소로 바꾸세요.
+  예: https://내블로그.com/zinc-dosage-calculator/
+  템플릿: 마그네슘 인포그래픽과 같은 구조(H2→H3→H4), 검은 배경, -shell 래퍼 없이 사용합니다.
+-->
+<style>
+/* ===== 워드프레스 아연(Zinc) 인포그래픽 공통 (모바일·PC 글자 큼) ===== */
+html, body { margin:0; background:#000000; font-size: 18px; }
+#zn-infographic {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 28px 16px 40px;
+  box-sizing: border-box;
+  background: #000000;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #e5e7eb;
+  line-height: 1.65;
+  font-size: 1.0625rem;
+}
+
+/* 헤더 */
+.zn-header {
+  text-align: center;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #333333;
+}
+.zn-header p {
+  font-size: 1.15rem;
+  color: #d1d5db;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* 섹션 공통 · H2 / H3 / H4 계층 */
+.zn-section {
+  border-radius: 16px;
+  padding: 20px 20px 24px;
+  background: #111827;
+  border: 1px solid #333333;
+  margin-bottom: 20px;
+}
+.zn-section h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.zn-section h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.zn-section h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: #e5e7eb;
+  line-height: 1.35;
+}
+.zn-section p {
+  font-size: 1.05rem;
+  color: #d1d5db;
+  margin: 0 0 8px;
+  line-height: 1.6;
+}
+.zn-section p:last-child { margin-bottom: 0; }
+
+/* 역할 카드 (H4 = 카드 제목) */
+.zn-roles-main { margin-bottom: 20px; }
+.zn-roles-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.zn-role {
+  background: #020617;
+  border-radius: 14px;
+  padding: 14px 12px 16px;
+  text-align: left;
+  border: 1px solid #333333;
+}
+.zn-role-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.zn-role-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  background: #333333;
+}
+.zn-role-label {
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+.zn-role-desc {
+  font-size: 1rem;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+.zn-roles-note {
+  margin-top: 16px;
+  font-size: 1rem;
+  color: #a5f3fc;
+  line-height: 1.5;
+}
+
+/* RDA 그래프 */
+.zn-rda-main { }
+.zn-rda-nums {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 14px 0 18px;
+}
+.zn-rda-nums .num { text-align:center; }
+.zn-rda-nums .val {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #facc15;
+}
+.zn-rda-nums .label {
+  font-size: 1rem;
+  color: #a0a0a0;
+  margin-top: 4px;
+}
+.zn-rda-bar { margin-top: 12px; }
+.zn-rda-row { margin-bottom: 12px; }
+.zn-rda-row-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: #a0a0a0;
+  margin-bottom: 6px;
+}
+.zn-rda-row-bg {
+  height: 22px;
+  background: #1f2937 !important;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.zn-rda-row-fill {
+  height: 100%;
+  background: linear-gradient(90deg,#facc15,#fbbf24) !important;
+  border-radius: 999px;
+  min-width: 4px;
+}
+
+/* 부족/과다 (H3 사용) */
+.zn-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.zn-two-col ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 1.05rem;
+  color: #e5e7eb;
+  line-height: 1.6;
+}
+.zn-two-col li { margin: 6px 0; }
+.zn-two-col h3.zn-sub { font-size: 1.15rem; margin-bottom: 6px; }
+
+/* 형태별·섭취 가이드 (H4 = 형태명) */
+.zn-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.zn-type-card {
+  background: #020617;
+  border-radius: 14px;
+  padding: 14px 14px 16px;
+  border: 1px solid #333333;
+}
+.zn-type-card h4 {
+  font-size: 1.1rem;
+  margin: 0 0 6px;
+}
+.zn-type-card p {
+  font-size: 1rem;
+  color: #d1d5db;
+  margin: 0;
+}
+.zn-type-tag {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #facc15;
+  color: #facc15;
+  font-size: 0.9rem;
+}
+
+/* 퀴즈 & 버튼 */
+.zn-quiz-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.zn-quiz-btn {
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid #333333;
+  background: #111827;
+  color: #e5e7eb;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.zn-quiz-btn:hover { background: #1f2937; }
+.zn-quiz-btn.selected {
+  background: #facc15;
+  border-color: #facc15;
+  color: #020617;
+}
+.zn-quiz-result {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #333333;
+  display: none;
+  font-size: 1.05rem;
+}
+.zn-quiz-result.visible { display: block; }
+.zn-quiz-result strong { color: #facc15; font-size: 1.1rem; }
+.zn-link-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: #facc15;
+  color: #020617;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-decoration: none;
+}
+.zn-link-btn:hover { opacity:0.95; color:#020617; }
+
+/* CTA */
+.zn-cta-main {
+  text-align:center;
+  margin-top:8px;
+}
+.zn-cta-main p {
+  margin:0 0 10px;
+  font-size:1rem;
+  color:#e5e7eb;
+}
+.zn-cta-main .primary {
+  display:inline-block;
+  padding:12px 26px;
+  border-radius:999px;
+  background:#facc15;
+  color:#020617;
+  font-weight:700;
+  text-decoration:none;
+  font-size:0.98rem;
+}
+.zn-cta-main .primary:hover { opacity:0.95; color:#020617; }
+
+/* 참고 문헌 */
+.zn-trust-list {
+  margin:4px 0 0;
+  padding-left:18px;
+  font-size:0.9rem;
+  color:#d1d5db;
+}
+.zn-trust-list li { margin:4px 0; }
+.zn-trust a { color:#facc15; text-decoration:none; }
+.zn-trust a:hover { text-decoration:underline; }
+.zn-trust small {
+  display:block;
+  margin-top:10px;
+  font-size:0.86rem;
+  color:#9ca3af;
+  font-style:italic;
+}
+
+/* ? 아이콘 툴팁 */
+.zn-info {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  margin-left:4px;
+  border-radius:999px;
+  background:#1f2937;
+  color:#facc15;
+  font-size:0.8rem;
+  cursor:help;
+  position:relative;
+}
+.zn-info::after {
+  content: attr(data-tip);
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:120%;
+  min-width:160px;
+  max-width:220px;
+  padding:8px 10px;
+  border-radius:8px;
+  background:#020617;
+  color:#e5e7eb;
+  font-size:0.78rem;
+  line-height:1.5;
+  border:1px solid #1f2937;
+  box-shadow:0 4px 18px rgba(0,0,0,0.6);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  z-index:5;
+}
+.zn-info::before {
+  content:'';
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:110%;
+  border-width:6px;
+  border-style:solid;
+  border-color:#020617 transparent transparent transparent;
+  opacity:0;
+  visibility:hidden;
+}
+.zn-info:hover::after,
+.zn-info:hover::before {
+  opacity:1;
+  visibility:visible;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 520px) {
+  #zn-infographic {
+    padding: 22px 12px 32px;
+  }
+  .zn-section {
+    padding:18px 14px 20px;
+    border-radius:14px;
+    margin-bottom:16px;
+  }
+  .zn-section h2 { font-size:1.2rem; }
+  .zn-section h3 { font-size:1.08rem; }
+  .zn-section h4 { font-size:1.02rem; }
+  .zn-section p { font-size:0.98rem; }
+  .zn-roles-list { grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); }
+  .zn-two-col { grid-template-columns:1fr; gap:12px; }
+  .zn-types-grid { grid-template-columns:1fr; }
+  .zn-quiz-btn { font-size:0.98rem; padding:11px 14px; }
+  .zn-link-btn { font-size:0.95rem; padding:10px 18px; }
+}
+</style>
+
+<div id="zn-infographic" data-calc-url="https://YOUR-SITE.com/zinc-dosage-calculator/">
+  <header class="zn-header">
+    <p>면역·피부·상처 회복과 관련 깊은 아연. 부족·과다·권장량·음식·보충제를 한 번에 정리했습니다.</p>
+  </header>
+
+  <section class="zn-section zn-roles-main">
+    <h2>아연의 주요 역할과 효능</h2>
+    <div class="zn-roles-list">
+      <div class="zn-role">
+        <div class="zn-role-top">
+          <div class="zn-role-icon">🛡️</div>
+          <div class="zn-role-label">면역 기능</div>
+        </div>
+        <div class="zn-role-desc">면역세포 분화와 기능에 필수적인 미네랄로, 감염 방어와 관련성이 큽니다.</div>
+      </div>
+      <div class="zn-role">
+        <div class="zn-role-top">
+          <div class="zn-role-icon">🩹</div>
+          <div class="zn-role-label">상처 회복</div>
+        </div>
+        <div class="zn-role-desc">세포 분열과 단백질 합성에 관여해 상처 치유 속도와 피부 재생에 도움을 줄 수 있습니다.</div>
+      </div>
+      <div class="zn-role">
+        <div class="zn-role-top">
+          <div class="zn-role-icon">🧠</div>
+          <div class="zn-role-label">맛·후각·신경</div>
+        </div>
+        <div class="zn-role-desc">맛·후각 수용체와 뇌 기능에도 관여해, 심한 부족 시 미각 이상이 나타날 수 있습니다.</div>
+      </div>
+      <div class="zn-role">
+        <div class="zn-role-top">
+          <div class="zn-role-icon">🧬</div>
+          <div class="zn-role-label">효소·호르몬</div>
+        </div>
+        <div class="zn-role-desc">300개 이상 효소의 보조인자로 작용하고, 인슐린 등 호르몬 기능과도 관련이 있습니다.</div>
+      </div>
+    </div>
+    <p class="zn-roles-note">※ 대부분의 효과는 “부족을 막는 수준”에서 기대하는 것이 안전합니다. 특정 질환 치료용 고용량은 <strong>의료진 판단</strong>이 필요합니다.</p>
+  </section>
+
+  <section class="zn-section zn-rda-main">
+    <h2>일일 권장량 (NIH RDA 기준)</h2>
+    <div class="zn-rda-nums">
+      <div class="num">
+        <div class="val">11</div>
+        <div class="label">성인 남성 mg/일 <span class="zn-info" data-tip="만 19세 이상 성인 남성에게 권장되는 아연 섭취량입니다. 식사 패턴·흡수율에 따라 필요량은 달라질 수 있습니다.">?</span></div>
+      </div>
+      <div class="num">
+        <div class="val">8</div>
+        <div class="label">성인 여성 mg/일</div>
+      </div>
+      <div class="num">
+        <div class="val">40</div>
+        <div class="label">상한 UL mg/일 <span class="zn-info" data-tip="일반 성인이 장기간 넘기지 않기를 권장하는 하루 상한선(UL)입니다. 질환·치료 목적 고용량은 예외로 의료진 판단이 필요합니다.">?</span></div>
+      </div>
+    </div>
+    <div class="zn-rda-bar">
+      <div class="zn-rda-row">
+        <div class="zn-rda-row-header"><span>성인 남성</span><span>11 mg</span></div>
+        <div class="zn-rda-row-bg"><div class="zn-rda-row-fill" style="width:55%;"></div></div>
+      </div>
+      <div class="zn-rda-row">
+        <div class="zn-rda-row-header"><span>성인 여성</span><span>8 mg</span></div>
+        <div class="zn-rda-row-bg"><div class="zn-rda-row-fill" style="width:40%;"></div></div>
+      </div>
+      <div class="zn-rda-row">
+        <div class="zn-rda-row-header"><span>상한선(UL)</span><span>40 mg</span></div>
+        <div class="zn-rda-row-bg"><div class="zn-rda-row-fill" style="width:100%;"></div></div>
+      </div>
+    </div>
+    <p style="margin-top:8px;">단백질·곡류·가공식품 섭취 패턴, 위장 질환 여부에 따라 실제 필요량이 달라질 수 있습니다. 기본 가이드는 8~11 mg, 상한은 40 mg으로 보되 <strong>개인 상황</strong>을 계산기로 한 번 정리해 보세요.</p>
+    <a href="#" class="zn-link-btn zn-calc-link">→ 내 아연 권장량 계산/설명 보기</a>
+  </section>
+
+  <section class="zn-section">
+    <h2>부족 시 / 과다 시</h2>
+    <div class="zn-two-col">
+      <div>
+        <h3 class="zn-sub" style="color:#f97316;">부족 시</h3>
+        <ul>
+          <li>잦은 감기·감염, 상처 치유 지연, 피부 트러블 증가</li>
+          <li>식욕 저하, 체중 감소, 성장 지연(소아) 등이 보고됨</li>
+          <li>미각 둔화·탈모 등도 아연 부족과 관련성이 제시됩니다.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="zn-sub" style="color:#22c55e;">과다 시</h3>
+        <ul>
+          <li>장기간 고용량(보통 40 mg 초과) 복용 시 구역·복통·설사 등 위장 장애</li>
+          <li>구리(copper) 흡수 저해로 빈혈·면역 저하를 유발할 수 있음 <span class="zn-info" data-tip="아연을 과하게 오래 복용하면 구리 흡수가 떨어져 빈혈·면역 저하 등이 생길 수 있습니다.">?</span></li>
+          <li>고용량 단독 장기 복용은 피하고, 필요 시 의료진과 병행 영양 상태를 확인해야 합니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="zn-section">
+    <h2>음식·보충제 선택 가이드</h2>
+    <div class="zn-types-grid">
+      <div class="zn-type-card">
+        <h4>음식으로 섭취</h4>
+        <p>굴·홍합 등 해산물, 붉은 고기, 닭고기, 견과류·씨앗·통곡물은 아연이 풍부합니다. 다만 가공식품 위주 식단에서는 부족해지기 쉽습니다.</p>
+        <span class="zn-type-tag">식사 패턴이 좋다면 보충량 ↓</span>
+      </div>
+      <div class="zn-type-card">
+        <h4>아연 글루콘산·황산염</h4>
+        <p>가장 흔히 쓰이는 형태로, 식후 복용 시 위장 부담을 줄일 수 있습니다. 일부 사람에게는 메스꺼움·속 쓰림이 나타날 수 있습니다.</p>
+        <span class="zn-type-tag">일반적인 보충제 형태</span>
+      </div>
+      <div class="zn-type-card">
+        <h4>아연 피콜리네이트·비스글리시네이트</h4>
+        <p>흡수율이 더 좋을 수 있다는 연구가 있으나, 가격이 높은 편입니다. 소화가 약하거나 용량을 많이 못 올리는 경우 고려할 수 있습니다.</p>
+        <span class="zn-type-tag">흡수·위장 쪽을 더 중시할 때</span>
+      </div>
+      <div class="zn-type-card">
+        <h4>기타 영양소와의 조합</h4>
+        <p>비타민 C, 구리, 철 등과 함께 복합제 형태로 들어가는 경우가 많습니다. 각각의 상호작용을 고려해 <strong>총 섭취량</strong>을 계산하는 것이 중요합니다.</p>
+        <span class="zn-type-tag">멀티비타민·복합제 점검 <span class="zn-info" data-tip="서로 다른 제품을 같이 먹을 때, 라벨을 보고 아연/구리/철 총량을 합산해보는 것이 좋습니다.">?</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="zn-section">
+    <h2>간단 체험 — 나는 어느 쪽에 가깝나요?</h2>
+    <p style="margin-bottom:8px;">본인 상황과 가장 가까운 선택지를 하나 골라보세요.</p>
+    <div class="zn-quiz-options">
+      <button type="button" class="zn-quiz-btn"
+        data-type="lowIntake"
+        data-name="육류·해산물 섭취 적음"
+        data-desc="해산물·붉은 고기·견과류를 평소 거의 먹지 않는다면, 음식만으로 아연을 충분히 채우기 어려울 수 있습니다. 기본 권장량을 참고하되, 계산기로 내 섭취량을 한 번 정리해 보세요.">
+        육류·해산물을 거의 안 먹는다
+      </button>
+      <button type="button" class="zn-quiz-btn"
+        data-type="skinWound"
+        data-name="피부·상처 회복이 걱정"
+        data-desc="여드름·피부 트러블·상처가 잘 아물지 않는다면, 아연 상태를 확인해 볼 만합니다. 다만 원인이 매우 다양하므로 혈액검사·피부과 진료와 함께 보는 것이 좋습니다.">
+        피부 트러블·상처 회복이 걱정된다
+      </button>
+      <button type="button" class="zn-quiz-btn"
+        data-type="multiSupps"
+        data-name="보충제 여러 개 복용 중"
+        data-desc="아연, 멀티비타민, 감기용 캔디 등을 동시에 먹고 있다면 상한(40 mg)을 넘지 않는지 확인이 필요합니다. 계산기는 참고 용도로, 실제 조정은 의료진과 상의해 주세요.">
+        아연 들어간 영양제를 여러 개 먹는다
+      </button>
+    </div>
+    <div class="zn-quiz-result" id="znQuizResult">
+      <strong id="znQuizType"></strong>
+      <p id="znQuizDesc" style="margin:6px 0 0;"></p>
+      <a href="#" class="zn-link-btn zn-calc-link">→ 아연/관련 계산·설명 페이지로 이동</a>
+    </div>
+  </section>
+
+  <section class="zn-section zn-trust">
+    <h2>참고 문헌 및 면책</h2>
+    <ul class="zn-trust-list">
+      <li><a href="https://ods.od.nih.gov/factsheets/Zinc-HealthProfessional/" target="_blank" rel="noopener">NIH ODS, Zinc – Health Professional Fact Sheet</a> — 연령·성별별 RDA(남 11 mg, 여 8 mg), 상한(UL 40 mg) 및 연구 정리</li>
+      <li><a href="https://www.kns.or.kr/nutrient.asp" target="_blank" rel="noopener">한국영양학회 영양소 섭취기준</a> — 2020 한국인 영양소 섭취기준(아연 포함)</li>
+    </ul>
+    <small>본 글과 계산기는 참고용이며, 진단·치료·처방을 대체하지 않습니다. 복용 전에는 개인의 질환·복용 약·혈액검사 결과를 함께 고려해 <strong>의료진과 상담</strong>하는 것을 권장합니다.</small>
+  </section>
+
+  <section class="zn-section">
+    <div class="zn-cta-main">
+      <p>성별·나이·식습관·다른 영양제 복용 여부를 입력하면, 하루 아연 권장량과 상한선을 한눈에 볼 수 있어요.</p>
+      <a href="#" class="primary zn-calc-link">아연(또는 비타민 D) 계산/설명 페이지 열기</a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function() {
+  var root = document.getElementById('zn-infographic');
+  if (!root) return;
+  var calcUrl = (root.getAttribute('data-calc-url') || '').trim();
+  if (calcUrl) {
+    root.querySelectorAll('.zn-calc-link').forEach(function(a) { a.href = calcUrl; });
+  }
+  var opts = root.querySelectorAll('.zn-quiz-btn');
+  var result = root.querySelector('#znQuizResult');
+  var typeName = root.querySelector('#znQuizType');
+  var quizDesc = root.querySelector('#znQuizDesc');
+  opts.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      opts.forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      typeName.textContent = '선택한 상황: ' + btn.getAttribute('data-name');
+      quizDesc.textContent = btn.getAttribute('data-desc');
+      result.classList.add('visible');
+    });
+  });
+})();
+</script>
+
